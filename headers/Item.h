@@ -17,7 +17,20 @@ public:
 	void setName(const std::string& newName);
 	void setDescription(const std::string& newDescription);
 	void setValue(int newValue);
-
+	// Equality comparison operator
+	bool operator==(const Item& other) const {
+		return id == other.id; // Compare based on ID
+		// OR for full comparison:
+		// return id == other.id &&
+		//        name == other.name &&
+		//        description == other.description &&
+		//        value == other.value &&
+		//        durability == other.durability &&
+		//        weight == other.weight;
+	}
+	bool operator!=(const Item& other) const {
+		return !(*this == other);
+	}
 private:
 	int id; // Unique identifier for the item
 	std::string name; // Name of the item
