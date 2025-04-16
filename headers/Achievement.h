@@ -3,13 +3,11 @@
 
 class Achievement{
 public:
-	Achievement(int id, const char* name, const char* description, int points)
-		: id(id), name(name), description(description), points(points) {
-	}
-	int getId() const { return id; }
-	const char* getName() const { return name; }
-	const char* getDescription() const { return description; }
-	int getPoints() const { return points; }
+	Achievement(int id, const char* name, const char* description, int points);
+	int getId() const;
+	const char* getName() const;
+	const char* getDescription() const;
+	int getPoints() const;
 private:
 	int id;
 	const char* name;

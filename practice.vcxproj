@@ -132,8 +132,6 @@
     <ClCompile Include="src\Equipment.cpp" />
     <ClCompile Include="src\Achievement.cpp" />
     <ClCompile Include="app.cpp" />
-    <ClCompile Include="src\Quest.cpp" />
-    <ClCompile Include="src\Skill.cpp" />
     <ClCompile Include="src\Item.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\entity.cpp" />

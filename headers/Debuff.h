@@ -1,5 +1,6 @@
 #ifndef DEBUFF_H
 #define DEBUFF_H
+#include <iostream>
 
 class Debuff {
 public:

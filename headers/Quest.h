@@ -1,6 +1,8 @@
 #ifndef QUEST_H
 #define QUEST_H
 
+#include <string>
+
 class Quest{
 public:
 	Quest() = default;

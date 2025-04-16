@@ -1,5 +1,6 @@
 #ifndef BUFF_H
 #define BUFF_H
+#include <iostream>
 
 class Buff {
 public:

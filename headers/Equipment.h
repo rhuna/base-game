@@ -9,7 +9,7 @@ public:
 	// Parameterized constructor
 	Equipment(int id, const std::string& name, const std::string& description, int value, int durability, float weight, const std::string& type, int level);
 	// Copy constructor
-	Equipment(const Equipment& other) : Item(other), durability(other.durability), weight(other.weight), type(other.type), level(other.level);
+	Equipment(const Equipment& other);
 	// Assignment operator
 	Equipment& operator=(const Equipment& other);
 	// Destructor

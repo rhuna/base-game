@@ -9,9 +9,7 @@ class Item{
 public:
 	// Default constructor
 	Item();
-	Item(int id, const std::string& name, const std::string& description, int value, int durability, float weight)
-		: id(id), name(name), description(description), value(value), durability(durability), weight(weight) {
-	}
+	Item(int id, const std::string& name, const std::string& description, int value, int durability, float weight);
 	int getId() const;
 	std::string getName() const;
 	std::string getDescription() const;
@@ -26,7 +24,7 @@ private:
 	std::string description; // Description of the item
 	int value; // Value of the item, could represent cost, worth, etc.
 	// Additional attributes can be added here
-	int weight; // Weight of the item
+	float weight; // Weight of the item
 	std::string itemType; // Type of the item (e.g., weapon, armor, potion)
 	int durability; // Durability of the item, if applicable
 	std::string rarity; // Rarity of the item (e.g., common, rare, epic, legendary)
