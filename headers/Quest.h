@@ -73,7 +73,7 @@ private:
     int id; // Added id to match constructor arguments
     std::string name;
     std::string description;
-    int reward;
+    int reward =0;
     bool active;
 };
 
