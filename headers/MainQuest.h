@@ -14,8 +14,8 @@ public:
 	// Override methods from the Quest class
 	void start() override;
 	void complete() override;
-	const char* getName() const override;
-	const char* getDescription() const override;
+	std::string getName() const override;
+	std::string getDescription() const override;
 	bool isActive() const override;
 	int getReward() const override;
 	bool markAsCompleted() override;

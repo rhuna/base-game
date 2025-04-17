@@ -14,9 +14,9 @@ public:
     // Method to complete the quest
     virtual void complete() = 0;
     // Method to get the name of the quest
-    virtual const char* getName() const = 0;
+    virtual std::string getName() const = 0;
     // Method to get the description of the quest
-    virtual const char* getDescription() const = 0;
+    virtual std::string getDescription() const = 0;
     // Method to check if the quest is active
     virtual bool isActive() const = 0;
     // Method to get the reward for completing the quest

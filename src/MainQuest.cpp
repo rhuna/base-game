@@ -13,11 +13,11 @@ void MainQuest::start(){
 void MainQuest::complete() {
 	// Implementation for completing the main quest
 }
-const char* MainQuest::getName() const {
-	return "Main Quest Name"; // Replace with actual name
+std::string MainQuest::getName() const {
+	return name; // Replace with actual name
 }
-const char* MainQuest::getDescription() const {
-	return "Main Quest Description"; // Replace with actual description
+std::string MainQuest::getDescription() const {
+	return description; // Replace with actual description
 }
 bool MainQuest::isActive() const{
 	return true; // Replace with actual logic to check if the quest is active
