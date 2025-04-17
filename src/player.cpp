@@ -14,36 +14,59 @@ void player::attack(entity& target) {
 		target.takeDamage(getDamage());
 	}
 }
-void player::addQuest(const Quest& quest) {
+void player::addQuest(std::unique_ptr<Quest> quest) {
 	//add quest
-	quests.push_back(quest);
+	m_quests.push_back(std::move(quest));
 
 };
-std::vector<Quest> player::getQuests() {
-	// Logic to retrieve and display player's quests
-	for (const auto& quest : quests) {
-		// Assuming Quest has a method to get its name or description
-		std::cout << "Quest: " << quest.getName() << " - " << quest.getDescription() << std::endl;
+void player::addEquipment(const Equipment& equipment) {
+	// Logic to add equipment to the player's inventory or equipment list
+	// This could involve checking if the player can equip it, updating stats, etc.
+	m_equipment.push_back(equipment);
+	// Assuming equipmentList is a member variable of type std::vector<Equipment>
+
+	// You might want to update player stats or notify the player about the new equipment
+	// For example, if the equipment has a stat boost, apply it to the player
+	// playerStats.applyEquipmentStats(equipment);
+	// If the equipment has a special effect, apply it as well
+	//std::cout << "Equipment " << equipment.getName() << " added to player's inventory." << std::endl;
+
+};
+std::vector<Equipment> player::getEquipment() {
+	// Logic to retrieve and display player's equipment
+	for (const auto& equip : m_equipment) {
+		// Assuming Equipment has a method to get its name or description
+		std::cout << "Equipment: " << equip.getName() << " - " << equip.getDescription() << std::endl;
 	}
-	return quests; // Assuming you want to return the list of quests
+	// You might want to return the equipment list or perform some other action
+	// For example, if you want to return the list of equipment
+	return m_equipment; // Assuming m_equipment is a member variable of type std::vector<Equipment>
+};
+std::vector<std::unique_ptr<Quest>> player::getQuests() {
+	// Logic to retrieve and display player's quests
+	for (const auto& quest : m_quests) {
+		// Assuming Quest has a method to get its name or description
+		std::cout << "Quest: " << quest->getName() << " - " << quest->getDescription() << std::endl;
+	}
+	return m_quests; // Assuming you want to return the list of quests
 }
 void player::removeQuest(const Quest& quest) {
 	//remove quest
-	auto it = std::find(quests.begin(), quests.end(), quest);
-	if (it != quests.end()) {
-		quests.erase(it);
+	auto it = std::find(m_quests.begin(), m_quests.end(), quest);
+	if (it != m_quests.end()) {
+		m_quests.erase(it);
 	}
 	else {
 		// Handle quest not found case, e.g., notify player
 	}
 
 };
-void player::completeQuest(const Quest& quest) {
+void player::completeQuest(std::unique_ptr<Quest> quest) {
 	// Logic to complete a quest, e.g., grant rewards, update status, etc.
-	auto it = std::find(quests.begin(), quests.end(), quest);
-	if (it != quests.end()) {
+	auto it = std::find(m_quests.begin(), m_quests.end(), quest);
+	if (it != m_quests.end()) {
 		// Assuming Quest has a method to mark it as completed
-		it->markAsCompleted();
+		(*it)->markAsCompleted(); // Assuming markAsCompleted is a method in Quest class
 		// Optionally, grant rewards or update player state
 	}
 	else {
@@ -55,80 +78,80 @@ void player::useItem(const Item& item) {
 	// This could involve modifying health, applying buffs, etc.
 }
 void player::addItemToInventory(const Item& item) {
-	if (inventory.size() < inventorySize) {
-		inventory.push_back(item);
+	if (m_inventory.size() < m_inventorySize) {
+		m_inventory.push_back(item);
 	}
 	else {
 		// Handle inventory full case, e.g., notify player or drop item
 	}
 }
 void player::removeItemFromInventory(const Item& item) {
-	auto it = std::find(inventory.begin(), inventory.end(), item);
-	if (it != inventory.end()) {
-		inventory.erase(it);
+	auto it = std::find(m_inventory.begin(), m_inventory.end(), item);
+	if (it != m_inventory.end()) {
+		m_inventory.erase(it);
 	}
 	else {
 		// Handle item not found case, e.g., notify player
 	}
 }
 void player::levelUp() {
-	level++;
-	experiencePoints = 0; // Reset experience points or handle accordingly
+	m_level++;
+	m_experiencePoints = 0; // Reset experience points or handle accordingly
 	// Logic to increase player attributes, unlock skills, etc.
 }
 int player::getInventorySize() const {
-	return inventorySize;
+	return m_inventorySize;
 }
 std::vector<Item> player::getInventory() const {
-	return inventory;
+	return m_inventory;
 }
 int player::getScore() const {
-	return score;
+	return m_score;
 }
 void player::setScore(int newScore) {
-	score = newScore;
+	m_score = newScore;
 }
 int player::getLevel() const {
-	return level;
+	return m_level;
 }
 void player::setLevel(int newLevel) {
-	level = newLevel;
+	m_level = newLevel;
 }
 int player::getExperiencePoints() const {
-	return experiencePoints;
+	return m_experiencePoints;
 }
 void player::setExperiencePoints(int newExperiencePoints) {
-	experiencePoints = newExperiencePoints;
+	m_experiencePoints = newExperiencePoints;
 }
 int player::getHealthPotions() const {
-	return healthPotions;
+	return m_healthPotions;
 }
 
 void player::setHealthPotions(int newHealthPotions) {
-	healthPotions = newHealthPotions;
+	m_healthPotions = newHealthPotions;
 }
 int player::getManaPotions() const {
-	return manaPotions;
+	return m_manaPotions;
 }
 void player::setManaPotions(int newManaPotions) {
-	manaPotions = newManaPotions;
+	m_manaPotions = newManaPotions;
 }
 
 int player::getGold() const {
-	return gold;
+	return m_gold;
 }
 void player::setGold(int newGold) {
-	gold = newGold;
+	m_gold = newGold;
 }
 
 std::string player::getPlayerName() const {
-	return playerName;
+	return m_playerName;
 }
 
 
 void player::setPlayerName(const std::string& newName) {
-	playerName = newName;
+	m_playerName = newName;
 }
 std::string player::getPlayerClass() const {
-	return playerClass;
+	return m_playerClass;
 }

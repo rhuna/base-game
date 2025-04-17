@@ -50,6 +50,8 @@ Equipment::~Equipment() {
 	// For example, if you had dynamically allocated memory, you would release it here
 }
 // Getters and setters for equipment-specific members
+std::string Equipment::getName() const { return name; }
+std::string Equipment::getDescription() const { return description; }
 int Equipment::getDurability() const { return durability; }
 void Equipment::setDurability(int newDurability) { durability = newDurability; }
 float Equipment::getWeight() const { return weight; }

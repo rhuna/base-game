@@ -15,6 +15,8 @@ public:
 	// Destructor
 	~Equipment();
 	// Getters and setters for equipment-specific members
+	std::string getName() const;
+	std::string getDescription() const;
 	int getDurability() const;
 	void setDurability(int newDurability);
 	float getWeight() const;

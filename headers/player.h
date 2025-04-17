@@ -17,10 +17,10 @@ public:
 	void attack(entity& target);
 	void move(int deltaX, int deltaY);
 	void useItem(const Item& item);
-	void addQuest(const Quest& quest);
-	std::vector<Quest> getQuests();
+	void addQuest(std::unique_ptr<Quest> quest);
+	std::vector<std::unique_ptr<Quest>> getQuests();
 	void removeQuest(const Quest& quest);
-	void completeQuest(const Quest& quest);
+	void completeQuest(std::unique_ptr<Quest> quest);
 	void addItemToInventory(const Item& item);
 	void removeItemFromInventory(const Item& item);
 	void levelUp();
@@ -48,23 +48,23 @@ public:
 private:
 	// Player-specific attributes can be added here
 	// For example, inventory, score, etc.
-	int inventorySize;
-	std::vector<Item> inventory; // Assuming Item is a class representing items in the game
-	int score;
+	int m_inventorySize;
+	std::vector<Item> m_inventory; // Assuming Item is a class representing items in the game
+	int m_score;
 	// Additional player attributes can be added here
-	int level;
-	int experiencePoints;
-	int healthPotions;
-	int manaPotions;
-	int gold;
-	std::string playerName;
-	std::string playerClass; // e.g., Warrior, Mage, Archer
-	std::vector<Skill> skills; // Assuming Skill is a class representing skills or abilities
-	std::vector<Quest> quests; // Assuming Quest is a class representing quests or missions
-	std::vector<Achievement> achievements; // Assuming Achievement is a class representing achievements
-	std::vector<Buff> buffs; // Assuming Buff is a class representing temporary effects or enhancements
-	std::vector<Debuff> debuffs; // Assuming Debuff is a class representing negative effects or impairments
-	std::vector<Equipment> equipment; // Assuming Equipment is a class representing equipped items
+	int m_level;
+	int m_experiencePoints;
+	int m_healthPotions;
+	int m_manaPotions;
+	int m_gold;
+	std::string m_playerName;
+	std::string m_playerClass; // e.g., Warrior, Mage, Archer
+	std::vector<Skill> m_skills; // Assuming Skill is a class representing skills or abilities
+	std::vector<std::unique_ptr<Quest>> m_quests; // Assuming Quest is a class representing quests or missions
+	std::vector<Achievement> m_achievements; // Assuming Achievement is a class representing achievements
+	std::vector<Buff> m_buffs; // Assuming Buff is a class representing temporary effects or enhancements
+	std::vector<Debuff> m_debuffs; // Assuming Debuff is a class representing negative effects or impairments
+	std::vector<Equipment> m_equipment; // Assuming Equipment is a class representing equipped items
 };
 
 
