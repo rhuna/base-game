@@ -1,8 +1,9 @@
 
 
-#include <iostream>
-#include "./headers/player.h"
-#include "./headers/MainQuest.h"
+#include <iostream> // For std::cout
+#include "./headers/player.h" // For player class
+#include "./headers/MainQuest.h" // For MainQuest class
+#include <conio.h> // For _kbhit() and _getch()
 
 
 int main() {
@@ -43,7 +44,22 @@ int main() {
 	std::cout << "Player Equipment: " << p1.getEquipment().size() << std::endl;
 
 
-		
+	while (true) {
+		if (_kbhit()) { // Check if a key is pressed
+			char key = _getch();
+
+			switch (key) {
+			case 'w': p1.move(0, -1);  break; // Up
+			case 's': p1.move(0, 1);   break; // Down
+			case 'a': p1.move(-1, 0);  break; // Left
+			case 'd': p1.move(1, 0);   break; // Right
+			case 'q': return 0;       // Quit
+			}
+
+			// Print new position
+			std::cout << "Position: (" << p1.getX() << ", " << p1.getY() << ")\n";
+		}
+	}
 
 
 		
