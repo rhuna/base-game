@@ -4,6 +4,7 @@
 #include "./headers/player.h" // For player class
 #include "./headers/MainQuest.h" // For MainQuest class
 #include <conio.h> // For _kbhit() and _getch()
+#include "Engine/headers/GameEngine.h"
 
 void run(player& p1) {
 	while (true) {
@@ -24,6 +25,20 @@ void run(player& p1) {
 }
 
 int main() {
+
+	GameEngine gameEngine; // Create an instance of GameEngine
+	gameEngine.initialize(); // Initialize the game engine
+	gameEngine.start(); // Start the game engine
+	// Check if the game engine is initialized
+	if (!gameEngine.isInitialized()) {
+		std::cerr << "GameEngine initialization failed." << std::endl;
+		return 1; // Exit if initialization fails
+	}
+	// Print the frame rate and resolution
+	std::cout << "GameEngine Frame Rate: " << gameEngine.getFrameRate() << " FPS" << std::endl;
+	std::cout << "GameEngine Resolution: " << gameEngine.getWidth() << "x" << gameEngine.getHeight() << std::endl;
+
+	
 	//example of using the player class with quest class and equipment class
 	player p1(1, 5,5, 100, 50, 100, 5);
 	p1.setPosition(10, 20);

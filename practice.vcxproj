@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\src\GameEngine.cpp" />
     <ClCompile Include="src\MainQuest.cpp" />
     <ClCompile Include="src\Buff.cpp" />
     <ClCompile Include="src\Debuff.cpp" />
@@ -138,6 +139,8 @@
     <ClCompile Include="src\entity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\headers\Engine.h" />
+    <ClInclude Include="Engine\headers\GameEngine.h" />
     <ClInclude Include="headers\Buff.h" />
     <ClInclude Include="headers\Debuff.h" />
     <ClInclude Include="headers\Equipment.h" />
