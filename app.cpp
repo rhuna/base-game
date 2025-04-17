@@ -33,7 +33,7 @@ int main() {
 		
 	std::cout << "Player Alive: " << (p1.isAlive() ? "Yes" : "No") << std::endl;
 	// Example of using the player class with quest class and equipment class
-	p1.addQuest(quest1);
+	p1.addQuest(std::make_unique<MainQuest>(quest1));
 	p1.addEquipment(equipment1);
 	std::cout << "Player Quests: " << p1.getQuests().size() << std::endl;
 	std::cout << "Player Equipment: " << p1.getEquipment().size() << std::endl;

@@ -18,8 +18,8 @@ public:
 	void move(int deltaX, int deltaY);
 	void useItem(const Item& item);
 	void addQuest(std::unique_ptr<Quest> quest);
-	std::vector<std::unique_ptr<Quest>> getQuests();
-	void removeQuest(const Quest& quest);
+	std::vector<std::unique_ptr<Quest>>& getQuests();
+	void removeQuest(std::unique_ptr<Quest>& quest);
 	void completeQuest(std::unique_ptr<Quest> quest);
 	void addItemToInventory(const Item& item);
 	void removeItemFromInventory(const Item& item);

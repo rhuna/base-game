@@ -42,7 +42,7 @@ std::vector<Equipment> player::getEquipment() {
 	// For example, if you want to return the list of equipment
 	return m_equipment; // Assuming m_equipment is a member variable of type std::vector<Equipment>
 };
-std::vector<std::unique_ptr<Quest>> player::getQuests() {
+std::vector<std::unique_ptr<Quest>>& player::getQuests() {
 	// Logic to retrieve and display player's quests
 	for (const auto& quest : m_quests) {
 		// Assuming Quest has a method to get its name or description
@@ -50,17 +50,22 @@ std::vector<std::unique_ptr<Quest>> player::getQuests() {
 	}
 	return m_quests; // Assuming you want to return the list of quests
 }
-void player::removeQuest(const Quest& quest) {
+void player::removeQuest(std::unique_ptr<Quest>& quest) {
 	//remove quest
-	auto it = std::find(m_quests.begin(), m_quests.end(), quest);
+ // Remove quest by comparing the underlying Quest objects
+	auto it = std::find_if(m_quests.begin(), m_quests.end(),
+		[&quest](const std::unique_ptr<Quest>& q) {
+			return *q == *quest;
+		});
+
 	if (it != m_quests.end()) {
 		m_quests.erase(it);
 	}
 	else {
 		// Handle quest not found case, e.g., notify player
 	}
-
 };
+
 void player::completeQuest(std::unique_ptr<Quest> quest) {
 	// Logic to complete a quest, e.g., grant rewards, update status, etc.
 	auto it = std::find(m_quests.begin(), m_quests.end(), quest);

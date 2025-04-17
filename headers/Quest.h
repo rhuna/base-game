@@ -60,9 +60,11 @@ public:
     };
 
     bool operator==(const Quest& other) const {
+        //logic for == operator
         return this->name == other.name &&
             this->description == other.description &&
-            this->active == other.active;
+            this->id == other.id && this->active == other.active;
+             
     }
 
     bool operator!=(const Quest& other) const {

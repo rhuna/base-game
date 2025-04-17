@@ -9,41 +9,19 @@
 
 class MainQuest : public Quest {
 public:
-	MainQuest(int id, const std::string& name, const std::string& description, bool active)
-		: Quest(id, name, description, active), id(id), name(name), description(description), active(active) {
-	}
+	MainQuest(int id, const std::string& name, const std::string& description, bool active);
+	~MainQuest();
 	// Override methods from the Quest class
-	void start() override {
-		// Implementation for starting the main quest
-	}
-	void complete() override {
-		// Implementation for completing the main quest
-	}
-	const char* getName() const override {
-		return "Main Quest Name"; // Replace with actual name
-	}
-	const char* getDescription() const override {
-		return "Main Quest Description"; // Replace with actual description
-	}
-	bool isActive() const override {
-		return true; // Replace with actual logic to check if the quest is active
-	}
-	int getReward() const override {
-		return 100; // Replace with actual reward logic
-	}
-	bool markAsCompleted() override {
-		return true; // Replace with actual logic to mark the quest as completed
-	}
+	void start() override;
+	void complete() override;
+	const char* getName() const override;
+	const char* getDescription() const override;
+	bool isActive() const override;
+	int getReward() const override;
+	bool markAsCompleted() override;
 	// Additional methods specific to MainQuest can be added here
-	bool operator==(const MainQuest& other) const {
-		return id == other.id &&
-			name == other.name &&
-			description == other.description &&
-			active == other.active; // Compare based on all attributes
-	}
-	bool operator!=(const MainQuest& other) const {
-		return !(*this == other);
-	}
+	bool operator==(std::unique_ptr<Quest>& other) const;
+	bool operator!=(std::unique_ptr<Quest>& other) const;
 private:
 	int id; // Unique identifier for the main quest
 	std::string name; // Name of the main quest
