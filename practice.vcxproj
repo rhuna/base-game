@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\MainQuest.cpp" />
     <ClCompile Include="src\Buff.cpp" />
     <ClCompile Include="src\Debuff.cpp" />
     <ClCompile Include="src\Equipment.cpp" />
@@ -146,6 +147,15 @@
     <ClInclude Include="headers\Item.h" />
     <ClInclude Include="headers\Quest.h" />
     <ClInclude Include="headers\Skill.h" />
+    <ClInclude Include="headers\MainQuest.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

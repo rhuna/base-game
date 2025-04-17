@@ -1,6 +1,7 @@
 #include "../headers/player.h"
 
 
+
 player::player(int id, int x, int y, int width, int height, int health, int damage)
 	: entity(id, x, y, width, height, health, damage) {
 }
@@ -13,6 +14,42 @@ void player::attack(entity& target) {
 		target.takeDamage(getDamage());
 	}
 }
+void player::addQuest(const Quest& quest) {
+	//add quest
+	quests.push_back(quest);
+
+};
+std::vector<Quest> player::getQuests() {
+	// Logic to retrieve and display player's quests
+	for (const auto& quest : quests) {
+		// Assuming Quest has a method to get its name or description
+		std::cout << "Quest: " << quest.getName() << " - " << quest.getDescription() << std::endl;
+	}
+	return quests; // Assuming you want to return the list of quests
+}
+void player::removeQuest(const Quest& quest) {
+	//remove quest
+	auto it = std::find(quests.begin(), quests.end(), quest);
+	if (it != quests.end()) {
+		quests.erase(it);
+	}
+	else {
+		// Handle quest not found case, e.g., notify player
+	}
+
+};
+void player::completeQuest(const Quest& quest) {
+	// Logic to complete a quest, e.g., grant rewards, update status, etc.
+	auto it = std::find(quests.begin(), quests.end(), quest);
+	if (it != quests.end()) {
+		// Assuming Quest has a method to mark it as completed
+		it->markAsCompleted();
+		// Optionally, grant rewards or update player state
+	}
+	else {
+		// Handle quest not found case, e.g., notify player
+	}
+};
 void player::useItem(const Item& item) {
 	// Logic to use an item, e.g., healing potion, equipment, etc.
 	// This could involve modifying health, applying buffs, etc.

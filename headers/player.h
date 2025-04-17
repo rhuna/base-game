@@ -8,6 +8,8 @@
 #include "Buff.h"
 #include "Debuff.h"
 #include "Equipment.h"
+#include <vector>
+
 
 class player : public entity {
 public:
@@ -15,8 +17,10 @@ public:
 	void attack(entity& target);
 	void move(int deltaX, int deltaY);
 	void useItem(const Item& item);
-	
-
+	void addQuest(const Quest& quest);
+	std::vector<Quest> getQuests();
+	void removeQuest(const Quest& quest);
+	void completeQuest(const Quest& quest);
 	void addItemToInventory(const Item& item);
 	void removeItemFromInventory(const Item& item);
 	void levelUp();
@@ -26,6 +30,8 @@ public:
 	void setScore(int newScore);
 	int getLevel() const;
 	void setLevel(int newLevel);
+	void addEquipment(const Equipment& equipment);
+	std::vector<Equipment> getEquipment();
 	int getExperiencePoints() const;
 	void setExperiencePoints(int newExperiencePoints);
 	int getHealthPotions() const;
