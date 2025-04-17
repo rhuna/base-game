@@ -59,7 +59,7 @@ private:
 	int m_gold;
 	std::string m_playerName;
 	std::string m_playerClass; // e.g., Warrior, Mage, Archer
-	std::vector<Skill> m_skills; // Assuming Skill is a class representing skills or abilities
+	std::vector<std::unique_ptr<Skill>> m_skills; // Assuming Skill is a class representing skills or abilities
 	std::vector<std::unique_ptr<Quest>> m_quests; // Assuming Quest is a class representing quests or missions
 	std::vector<Achievement> m_achievements; // Assuming Achievement is a class representing achievements
 	std::vector<Buff> m_buffs; // Assuming Buff is a class representing temporary effects or enhancements

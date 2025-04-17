@@ -3,7 +3,9 @@
 
 
 player::player(int id, int x, int y, int width, int height, int health, int damage)
-	: entity(id, x, y, width, height, health, damage) {
+	: entity(id, x, y, width, height, health, damage), m_gold(0), m_inventorySize(10), m_score(0), m_level(1), m_experiencePoints(0),
+	m_healthPotions(0), m_manaPotions(0), m_playerName("Default Player"), m_playerClass("Warrior") {
+
 }
 // Additional player-specific methods can be added here
 void player::move(int deltaX, int deltaY) {
