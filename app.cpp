@@ -8,7 +8,7 @@
 
 int main() {
 	//example of using the player class with quest class and equipment class
-	player p1(1, 5,5, 100, 50, 10, 5);
+	player p1(1, 5,5, 100, 50, 100, 5);
 	p1.setPosition(10, 20);
 	p1.setPlayerName("Hero");
 	p1.takeDamage(20);
@@ -18,7 +18,8 @@ int main() {
 	std::cout << "Player Position: (" << p1.getX() << ", " << p1.getY() << ")" << std::endl;
 	std::cout << "Player Alive: " << (p1.isAlive() ? "Yes" : "No") << std::endl;
 	// Example of using the player class with quest class and equipment class
-	player p2(2, 6,6, 100, 50, 8, 3);
+	player p2(2, 6,6, 100, 50, 100, 3);
+	p2.setPlayerName("god like being");
 	p2.setPosition(15, 25);
 	p2.takeDamage(30);
 	std::cout << "Player ID: " << p2.getId() << std::endl;
