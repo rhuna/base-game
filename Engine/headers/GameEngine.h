@@ -1,8 +1,24 @@
 #ifndef GAMEENGINE_H
 #define GAMEENGINE_H
 
+#if defined(_WIN64)  
+	#include <SFML/Graphics.hpp>  // Adjusted to use the default include path for Windows 64-bit
+	#include <../../../SFML/x64/include/SFML/Graphics.hpp>  
+#elif defined(__APPLE__) || defined(__MACH__)  
+	#include <SFML/Graphics.hpp> // Adjusted to use the default include path for macOS  
+#elif defined(__linux__)  
+	#include <../../../SFML/x86_64-unknown-linux-gnu/include/SFML/Graphics.hpp>  
+#elif defined(_WIN32)  
+	#include <../../../SFML/x86/include/SFML/Graphics.hpp>
+#else
+	#error "Unsupported platform. Please adjust the include paths for your system."
+#endif
+
+
 #include "Engine.h"
+#include "Window.h" // Include the Window class header
 #include <ctime>
+
 
 class GameEngine : public Engine {
 public:
@@ -40,6 +56,7 @@ public:
 		}
 	}
 private:
+	sf::RenderWindow m_window; // Window object
 	float m_frameRate = 60.0f; // Default frame rate
 	int m_width = 800; // Default width
 	int m_height = 600; // Default height

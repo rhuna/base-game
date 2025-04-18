@@ -23,6 +23,9 @@ GameEngine::GameEngine(int width, int height, float frameRate)
 	std::cout << "GameEngine created with resolution: " << width << "x" << height
 		<< " and frame rate: " << frameRate << " FPS." << std::endl;
 
+
+
+
 }
 
 GameEngine::~GameEngine() = default;

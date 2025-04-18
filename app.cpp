@@ -38,6 +38,8 @@ int main() {
 	std::cout << "Quest Description: " << quest.getDescription() << std::endl;
 	std::cout << "Quest Active: " << (quest.isActive() ? "Yes" : "No") << std::endl;
 
+	
+
 
 
 	return 0;

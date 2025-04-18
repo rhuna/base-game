@@ -2,7 +2,7 @@
 #define WINDOW_H  
 
 #if defined(_WIN64)  
-	#include <SFML/Graphics.hpp>  
+#include <SFML/Graphics.hpp>  // Adjusted to use the default include path for Windows 64-bit
 	#include <../../../SFML/x64/include/SFML/Graphics.hpp>  
 #elif defined(__APPLE__) || defined(__MACH__)  
    #include <SFML/Graphics.hpp> // Adjusted to use the default include path for macOS  
@@ -12,8 +12,8 @@
 	#include <../../../SFML/x86/include/SFML/Graphics.hpp>
 #else
 	#error "Unsupported platform. Please adjust the include paths for your system."
-
 #endif  
+
 
 #include <iostream>  
 class Window {  
