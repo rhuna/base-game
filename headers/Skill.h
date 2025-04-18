@@ -16,6 +16,15 @@ public:
 	// Method to get the cooldown time of the skill
 	virtual int getCooldown() const = 0;
 
+	bool operator==(const Skill& other) const {
+		//logic for == operator
+		return (name == other.name && description == other.description && cooldownTime == other.cooldownTime);
+	}
+
+	bool operator!=(const Skill& other) const {
+		return !(*this == other);
+	}
+
 
 private:
 	// Private members can be added here if needed

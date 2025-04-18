@@ -25,6 +25,20 @@ public:
 	void setDuration(int newDuration);
 	int getEffectValue() const;
 	void setEffectValue(int newEffectValue);
+
+	bool operator==(const Buff& other) const {
+		//logic for == operator
+		return (id == other.id &&
+			name == other.name &&
+			description == other.description &&
+			duration == other.duration &&
+			effectValue == other.effectValue);
+	}
+
+	bool operator!=(const Buff& other) const {
+		return !(*this == other);
+	}
+
 private:
 	int id; // Unique identifier for the buff
 	std::string name; // Name of the buff

@@ -5,6 +5,9 @@ Item::Item() : id(0), name("Default Item"), description("This is a default item.
 Item::Item(int id, const std::string& name, const std::string& description, int value, int durability, float weight)
 	: id(id), name(name), description(description), value(value), durability(durability), weight(weight) {
 }
+Item::Item(std::string name, int amount) : id(0), name(name), description("description"), value(0), durability(100), weight(0.01f) {
+
+};
 int Item::getId() const { return id; }
 std::string Item::getName() const { return name; }
 std::string Item::getDescription() const { return description; }

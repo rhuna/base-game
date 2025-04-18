@@ -32,6 +32,8 @@ public:
 	void setLevel(int newLevel);
 	void addEquipment(const Equipment& equipment);
 	std::vector<Equipment> getEquipment();
+	void setActive(bool active);
+	bool isActive() const;
 	int getExperiencePoints() const;
 	void setExperiencePoints(int newExperiencePoints);
 	int getHealthPotions() const;
@@ -43,6 +45,21 @@ public:
 	std::string getPlayerName() const;
 	void setPlayerName(const std::string& newName);
 	std::string getPlayerClass() const;
+	void setPlayerClass(const std::string& newClass);
+	void addSkill(std::unique_ptr<Skill> skill);
+	void run(player& p1);
+	std::vector<std::unique_ptr<Skill>>& getSkills();
+	void removeSkill(std::unique_ptr<Skill>& skill);
+	void addAchievement(const Achievement& achievement);
+	void removeAchievement(const Achievement& achievement);
+	std::vector<Achievement> getAchievements() const;
+	void addBuff(const Buff& buff);
+	void removeBuff(const Buff& buff);
+	std::vector<Buff> getBuffs() const;
+	void addDebuff(const Debuff& debuff);
+	void removeDebuff(const Debuff& debuff);
+	std::vector<Debuff> getDebuffs() const;
+
 
 
 private:
@@ -51,6 +68,7 @@ private:
 	int m_inventorySize;
 	std::vector<Item> m_inventory; // Assuming Item is a class representing items in the game
 	int m_score;
+	bool m_active; // Assuming this is a flag to indicate if the player is active or not
 	// Additional player attributes can be added here
 	int m_level;
 	int m_experiencePoints;

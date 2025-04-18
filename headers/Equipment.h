@@ -8,6 +8,7 @@ public:
 	Equipment();
 	// Parameterized constructor
 	Equipment(int id, const std::string& name, const std::string& description, int value, int durability, float weight, const std::string& type, int level);
+	Equipment(std::string name, int durability, float weight);
 	// Copy constructor
 	Equipment(const Equipment& other);
 	// Assignment operator

@@ -2,6 +2,9 @@
 #include <iostream>
 #include <stdexcept> // For std::runtime_error
 #include <memory> // For std::unique_ptr
+#include <ctime> // For std::time
+#include <iomanip> // For std::put_time
+#include "../../headers/player.h"
 
 GameEngine::GameEngine() {
 	// Default constructor implementation
@@ -10,6 +13,7 @@ GameEngine::GameEngine() {
 	m_width = 800; // Default width
 	m_height = 600; // Default height
 	m_initialized = false; // Set the initialized flag to false
+
 
 }
 
@@ -40,22 +44,57 @@ void GameEngine::initialize() {
 	else {
 		std::cerr << "GameEngine initialization failed." << std::endl;
 	}
+
+	m_gameState = GameState::RUNNING;
+	m_time = 0.0f; // Initialize time
+	m_deltaTime = 0.0f; // Initialize delta time
+	m_frameTime = 0.0f; // Initialize frame time
+	m_frameCount = 0; // Initialize frame count
+	m_fps = 0.0f; // Initialize FPS
+	m_lastFrameTime = 0.0f; // Initialize last frame time
+	m_currentFrameTime = 0.0f; // Initialize current frame time
 }
 void GameEngine::start(){
 	// Start the engine
 	std::cout << "GameEngine started." << std::endl;
 	// Additional start logic if needed
-
+	std::time_t t = std::time(nullptr); // Get the current time
+	std::tm tm;
+	m_time = static_cast<float>(std::difftime(t, 0)); // Calculate time since epoch
+    if (localtime_s(&tm, &t) != 0) {
+		
+        std::cerr << "Failed to convert time to local time." << std::endl;
+        return;
+    }
+	std::cout << "engine time: " << m_time;
+	std::cout << "Current time: " << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") << std::endl; // Print the current time
+	// Example of using the player class with quest class and equipment class
 	
 }
 void GameEngine::stop(){
 	// Stop the engine
 	std::cout << "GameEngine stopped." << std::endl;
+	// Additional stop logic if needed
+	// Example of using the player class with quest class and equipment class
+	
 }
 void GameEngine::update(float deltaTime){
 	// Update game state
+	// Example delta time (60 FPS)
+	m_time += deltaTime; // Update time
+	m_deltaTime = deltaTime; // Update delta time
+	m_frameTime = deltaTime; // Update frame time
+	m_frameCount++; // Increment frame count
+	if (m_frameCount >= m_frameRate) { // If frame count reaches frame rate
+		m_fps = 1.0f / deltaTime; // Calculate FPS
+		m_frameCount = 0; // Reset frame count
+	}
+	// Example update logic
+	// Update game objects, physics, etc.
+	// For example, update player position, check collisions, etc.
+	
 
-	std::cout << "Updating game state with deltaTime: " << deltaTime << " seconds." << std::endl;
+	std::cout << "Updating game state with deltaTime: " << m_time << " seconds." << std::endl;
 }
 void GameEngine::render()  {
 	// Render game graphics
@@ -72,12 +111,14 @@ void GameEngine::handleInput()  {
 		std::cerr << "GameEngine is not initialized. Cannot handle input." << std::endl;
 		return;
 	}
+
 	// Simulate input handling
 	std::cout << "Input handled successfully." << std::endl;
 }
 void GameEngine::cleanup()  {
 	// Clean up resources
 	std::cout << "Cleaning up GameEngine resources..." << std::endl;
+
 
 }
 void GameEngine::run()  {

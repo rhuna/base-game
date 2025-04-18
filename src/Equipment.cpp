@@ -21,6 +21,18 @@ Equipment::Equipment(int id, const std::string& name, const std::string& descrip
 	this->value = value;
 	this->id = id;
 }
+Equipment::Equipment(std::string name, int durability, float weight) : Item(), durability(durability), weight(weight), name(name) {
+	// Initialize equipment-specific members
+	this->name = name;
+	this->durability = durability;
+	this->weight = weight;
+	this->description = "This is a piece of equipment."; // Default description
+	this->value = 10; // Default value
+	this->id = 0; // Default ID
+	this->level = 1; // Default level
+	this->type = "Generic"; // Default type
+};
+
 // Copy constructor
 Equipment::Equipment(const Equipment& other) : Item(other), durability(other.durability), weight(other.weight), type(other.type), level(other.level) {
 	// Copy equipment-specific members

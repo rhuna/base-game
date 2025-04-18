@@ -10,6 +10,7 @@ public:
 	// Default constructor
 	Item();
 	Item(int id, const std::string& name, const std::string& description, int value, int durability, float weight);
+	Item(std::string name, int amount);
 	int getId() const;
 	std::string getName() const;
 	std::string getDescription() const;

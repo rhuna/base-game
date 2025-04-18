@@ -1,10 +1,10 @@
 #include "../headers/player.h"
-
+#include <conio.h> // For _kbhit() and _getch()
 
 
 player::player(int id, int x, int y, int width, int height, int health, int damage)
 	: entity(id, x, y, width, height, health, damage), m_gold(0), m_inventorySize(10), m_score(0), m_level(1), m_experiencePoints(0),
-	m_healthPotions(0), m_manaPotions(0), m_playerName("Default Player"), m_playerClass("Warrior") {
+	m_healthPotions(0), m_manaPotions(0), m_playerName("Default Player"), m_playerClass("Warrior"), m_active(true) {
 
 }
 // Additional player-specific methods can be added here
@@ -20,6 +20,39 @@ void player::addQuest(std::unique_ptr<Quest> quest) {
 	//add quest
 	m_quests.push_back(std::move(quest));
 
+};
+void player::setActive(bool active) {
+	// Logic to set the player's active status
+	// This could involve updating the player's state, notifying other systems, etc.
+	m_active = active; // Assuming m_active is a member variable of type bool
+	//std::cout << "Player active status set to: " << (active ? "true" : "false") << std::endl;
+
+
+};
+void player::run(player& p1) {
+	while (p1.isActive()) {
+		if (_kbhit()) { // Check if a key is pressed
+			char key = _getch();
+
+			switch (key) {
+			case 'w': p1.move(0, -1);  break; // Up
+			case 's': p1.move(0, 1);   break; // Down
+			case 'a': p1.move(-1, 0);  break; // Left
+			case 'd': p1.move(1, 0);   break; // Right
+			case 'q': p1.setActive(false); // Quit
+			}
+
+			// Print new position
+			std::cout << "Position: (" << p1.getX() << ", " << p1.getY() << ")\n";
+		}
+	}
+}
+bool player::isActive() const {
+
+	// Logic to check if the player is active
+	// This could involve checking the player's state, status effects, etc.
+	return m_active; // Assuming m_active is a member variable of type bool
+	//std::cout << "Player active status: " << (m_active ? "true" : "false") << std::endl;
 };
 void player::addEquipment(const Equipment& equipment) {
 	// Logic to add equipment to the player's inventory or equipment list
@@ -162,3 +195,133 @@ void player::setPlayerName(const std::string& newName) {
 std::string player::getPlayerClass() const {
 	return m_playerClass;
 }
+
+
+
+void player::setPlayerClass(const std::string& newClass) {
+	m_playerClass = newClass;
+};
+void player::addSkill(std::unique_ptr<Skill> skill) {
+	// Logic to add a skill to the player's skill list
+	// This could involve checking if the player can learn it, updating stats, etc.
+	m_skills.push_back(std::move(skill));
+	// Assuming skills is a member variable of type std::vector<Skill>
+	// You might want to update player stats or notify the player about the new skill
+	// For example, if the skill has a stat boost, apply it to the player
+	// playerStats.applySkillStats(skill);
+	// If the skill has a special effect, apply it as well
+	//std::cout << "Skill " << skill->getName() << " added to player's skill list." << std::endl;
+
+};
+std::vector<std::unique_ptr<Skill>>& player::getSkills() {
+	// Logic to retrieve and display player's skills
+	for (const auto& skill : m_skills) {
+		// Assuming Skill has a method to get its name or description
+		std::cout << "Skill: " << skill->getName() << " - " << skill->getDescription() << std::endl;
+	}
+	return m_skills; // Assuming you want to return the list of skills
+};
+void player::removeSkill(std::unique_ptr<Skill>& skill) {
+	// Logic to remove a skill from the player's skill list
+	// This could involve checking if the player can unlearn it, updating stats, etc.
+	auto it = std::find_if(m_skills.begin(), m_skills.end(),
+		[&skill](const std::unique_ptr<Skill>& s) {
+			return *s == *skill;
+		});
+	if (it != m_skills.end()) {
+		m_skills.erase(it);
+	}
+	else {
+		// Handle skill not found case, e.g., notify player
+	}
+};
+void player::addAchievement(const Achievement& achievement) {
+	// Logic to add an achievement to the player's achievement list
+	// This could involve checking if the player has met the criteria, updating stats, etc.
+	m_achievements.push_back(achievement);
+	// Assuming achievements is a member variable of type std::vector<Achievement>
+	// You might want to update player stats or notify the player about the new achievement
+	// For example, if the achievement has a stat boost, apply it to the player
+	// playerStats.applyAchievementStats(achievement);
+	// If the achievement has a special effect, apply it as well
+	//std::cout << "Achievement " << achievement.getName() << " added to player's achievement list." << std::endl;
+};
+void player::removeAchievement(const Achievement& achievement) {
+	// Logic to remove an achievement from the player's achievement list
+	// This could involve checking if the player can unachieve it, updating stats, etc.
+	auto it = std::find(m_achievements.begin(), m_achievements.end(), achievement);
+	if (it != m_achievements.end()) {
+		m_achievements.erase(it);
+	}
+	else {
+		// Handle achievement not found case, e.g., notify player
+	}
+};
+std::vector<Achievement> player::getAchievements() const {
+	// Logic to retrieve and display player's achievements
+	for (const auto& achievement : m_achievements) {
+		// Assuming Achievement has a method to get its name or description
+		std::cout << "Achievement: " << achievement.getName() << " - " << achievement.getDescription() << std::endl;
+	}
+	return m_achievements; // Assuming you want to return the list of achievements
+};
+void player::addBuff(const Buff& buff) {
+	// Logic to add a buff to the player
+	// This could involve checking if the player can receive it, updating stats, etc.
+	m_buffs.push_back(buff);
+	// Assuming buffs is a member variable of type std::vector<Buff>
+	// You might want to update player stats or notify the player about the new buff
+	// For example, if the buff has a stat boost, apply it to the player
+	// playerStats.applyBuffStats(buff);
+	// If the buff has a special effect, apply it as well
+	//std::cout << "Buff " << buff.getName() << " added to player's buffs." << std::endl;
+};
+void player::removeBuff(const Buff& buff) {
+	// Logic to remove a buff from the player
+	// This could involve checking if the player can unbuff it, updating stats, etc.
+	auto it = std::find(m_buffs.begin(), m_buffs.end(), buff);
+	if (it != m_buffs.end()) {
+		m_buffs.erase(it);
+	}
+	else {
+		// Handle buff not found case, e.g., notify player
+	}
+};
+std::vector<Buff> player::getBuffs() const {
+	// Logic to retrieve and display player's buffs
+	for (const auto& buff : m_buffs) {
+		// Assuming Buff has a method to get its name or description
+		std::cout << "Buff: " << buff.getName() << " - " << buff.getDescription() << std::endl;
+	}
+	return m_buffs; // Assuming you want to return the list of buffs
+};
+void player::addDebuff(const Debuff& debuff) {
+	// Logic to add a debuff to the player
+	// This could involve checking if the player can receive it, updating stats, etc.
+	m_debuffs.push_back(debuff);
+	// Assuming debuffs is a member variable of type std::vector<Debuff>
+	// You might want to update player stats or notify the player about the new debuff
+	// For example, if the debuff has a stat reduction, apply it to the player
+	// playerStats.applyDebuffStats(debuff);
+	// If the debuff has a special effect, apply it as well
+	//std::cout << "Debuff " << debuff.getName() << " added to player's debuffs." << std::endl;
+};
+void player::removeDebuff(const Debuff& debuff) {
+	// Logic to remove a debuff from the player
+	// This could involve checking if the player can undebuff it, updating stats, etc.
+	auto it = std::find(m_debuffs.begin(), m_debuffs.end(), debuff);
+	if (it != m_debuffs.end()) {
+		m_debuffs.erase(it);
+	}
+	else {
+		// Handle debuff not found case, e.g., notify player
+	}
+};
+std::vector<Debuff> player::getDebuffs() const {
+	// Logic to retrieve and display player's debuffs
+	for (const auto& debuff : m_debuffs) {
+		// Assuming Debuff has a method to get its name or description
+		std::cout << "Debuff: " << debuff.getName() << " - " << debuff.getDescription() << std::endl;
+	}
+	return m_debuffs; // Assuming you want to return the list of debuffs
+};
