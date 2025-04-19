@@ -19,9 +19,11 @@
 class Window {  
 public:  
    Window();  
+   Window(int width, int height);
+   Window(sf::VideoMode vm, sf::RenderWindow& window);
    Window(int width, int height, std::string title, sf::RenderWindow& window);  
    ~Window();  
-   sf::RenderWindow& createWindow(int width, int height, std::string title, sf::RenderWindow& window);  
+   sf::RenderWindow& createWindow(int width, int height, std::string title);  
    void setTitle(std::string title);  
    void setSize(int width, int height);  
    void setPosition(int x, int y);  
@@ -38,7 +40,8 @@ public:
 
 private:  
    int m_width;  
-   int m_height;  
+   int m_height; 
+   sf::VideoMode m_videoMode;
    sf::RenderWindow& m_window;  
    std::string m_title;  
    bool m_fullscreen;  

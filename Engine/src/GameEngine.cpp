@@ -6,7 +6,10 @@
 #include <iomanip> // For std::put_time
 #include "../../headers/player.h"
 
-GameEngine::GameEngine() {
+GameEngine::GameEngine() 
+	: Engine(), m_window(m_window), m_frameRate(60.0f), m_width(800), m_height(600),
+	m_initialized(false)
+{
 	// Default constructor implementation
 	std::cout << "GameEngine created with default settings." << std::endl;
 	m_frameRate = 60.0f; // Default frame rate
@@ -16,9 +19,19 @@ GameEngine::GameEngine() {
 
 
 }
+GameEngine::GameEngine(sf::RenderWindow& window) : Engine(), m_window(window) {
+
+	m_frameRate = 60.0f; // Default frame rate
+	m_width = 800; // Default width
+	m_height = 600; // Default height
+	m_initialized = false; // Set the initialized flag to false
+	std::cout << "GameEngine created with sf::RenderWindow." << std::endl;
+}
 
 GameEngine::GameEngine(int width, int height, float frameRate)
-	: Engine(), m_width(width), m_height(height), m_frameRate(frameRate), m_initialized(false) {
+	: Engine(), m_width(width), m_height(height), m_frameRate(frameRate), m_initialized(false),
+	m_window(m_window)
+{
 	// Constructor implementation
 	std::cout << "GameEngine created with resolution: " << width << "x" << height
 		<< " and frame rate: " << frameRate << " FPS." << std::endl;
@@ -31,6 +44,8 @@ GameEngine::GameEngine(int width, int height, float frameRate)
 GameEngine::~GameEngine() = default;
 
 void GameEngine::initialize() {
+
+	
 	// Initialization code here
 	m_frameRate = 60.0f; // Default frame rate
 	m_width = 800; // Default width
@@ -58,6 +73,7 @@ void GameEngine::initialize() {
 	m_currentFrameTime = 0.0f; // Initialize current frame time
 }
 void GameEngine::start(){
+	
 	// Start the engine
 	std::cout << "GameEngine started." << std::endl;
 	// Additional start logic if needed

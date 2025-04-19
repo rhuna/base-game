@@ -12,7 +12,29 @@ Window::Window()
 	// Initialize default values
 	// You can also initialize other members here if needed
 	// For example, create a window with default values
-	createWindow(m_width, m_height, m_title, m_window);
+	createWindow(m_width, m_height, m_title);
+	// Set default background color
+	setBackgroundColor(0.0f, 0.0f, 0.0f, 1.0f); // Black background
+};
+Window::Window(int width, int height)
+	: m_width(width), m_height(height), m_title("Default Window"), m_fullscreen(false), m_resizable(true), m_vsync(true),
+	m_backgroundColor{ 0.0f, 0.0f, 0.0f, 1.0f }, m_mouseCursorVisible(true), m_mouseCursorPosition{ 0, 0 },
+	m_mouseCursorGrabbed(false), m_mouseCursorScale(1.0f), m_mouseCursorHidden(false), m_window(m_window)
+{
+	createWindow(width, height, "Window");
+	// Set default background color
+	setBackgroundColor(0.0f, 0.0f, 0.0f, 1.0f); // Black background
+}
+Window::Window(sf::VideoMode vm, sf::RenderWindow& window)
+	: m_width(800), m_height(60), m_title("Default Window"), m_fullscreen(false), m_resizable(true), m_vsync(true),
+	m_backgroundColor{ 0.0f, 0.0f, 0.0f, 1.0f }, m_mouseCursorVisible(true), m_mouseCursorPosition{ 0, 0 },
+	m_mouseCursorGrabbed(false), m_mouseCursorScale(1.0f), m_mouseCursorHidden(false), m_window(window)
+{
+	// Constructor with sf::VideoMode parameter
+	// Initialize member variables with provided values
+	// You can also initialize other members here if needed
+	// For example, create a window with specified values
+	createWindow(m_width, m_height, "Window");
 	// Set default background color
 	setBackgroundColor(0.0f, 0.0f, 0.0f, 1.0f); // Black background
 };
@@ -25,7 +47,7 @@ Window::Window(int width, int height, std::string title, sf::RenderWindow& windo
 	// Initialize member variables with provided values
 	// You can also initialize other members here if needed
 	// For example, create a window with specified values
-	createWindow(width, height, title.c_str(), m_window);
+	createWindow(width, height, title.c_str());
 	// Set default background color
 	setBackgroundColor(0.0f, 0.0f, 0.0f, 1.0f); // Black background
 
@@ -37,11 +59,11 @@ Window::~Window() {
 	m_window.close(); // Close the window if it's open
 
 };
-sf::RenderWindow& Window::createWindow(int width, int height, std::string title, sf::RenderWindow& window) {
-	// Create a window with the specified width, height, and title
-	
+sf::RenderWindow& Window::createWindow(int width, int height, std::string title){
+
 	// using GLFW:
 	// glfwCreateWindow(width, height, title, NULL, NULL);
+
 
 	std::cout << "Creating window: " << title << " (" << width << "x" << height << ")" << std::endl;
 	// Initialize window properties
@@ -63,14 +85,24 @@ sf::RenderWindow& Window::createWindow(int width, int height, std::string title,
 	this->m_mouseCursorHidden = false;
 
 	//create window with SFML library
-	m_window.clear();
-	m_window.create(sf::VideoMode({ 800, 600 }), title, sf::Style::Default);
-	m_window.setFramerateLimit(60); // Set frame rate limit
-	m_window.setVerticalSyncEnabled(true); // Enable VSync
-	m_window.setMouseCursorVisible(true); // Show mouse cursor
-	m_window.setMouseCursorGrabbed(false); // Don't grab mouse cursor
+	//m_window.clear();
+	//m_window.create(sf::VideoMode({ 800, 600 }), title, sf::Style::Default);
+	//m_window.setFramerateLimit(60); // Set frame rate limit
+	//m_window.setVerticalSyncEnabled(true); // Enable VSync
+	//m_window.setMouseCursorVisible(true); // Show mouse cursor
+	//m_window.setMouseCursorGrabbed(false); // Don't grab mouse cursor
+
+	sf::VideoMode vm({ static_cast<unsigned int>(m_width), static_cast<unsigned int>(m_height) });
 	
-	return m_window;
+	m_videoMode = vm;
+	sf::RenderWindow window1(m_videoMode, m_title);
+
+	//m_window = window1;
+
+	//m_window.draw(); // Draw an empty sprite to clear the window
+	window1.display();
+	
+	return window1;
 };
 
 void Window::setTitle(std::string title) {

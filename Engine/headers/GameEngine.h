@@ -23,6 +23,7 @@
 class GameEngine : public Engine {
 public:
 	GameEngine();
+	GameEngine(sf::RenderWindow& window);
 	GameEngine(int width, int height, float frameRate);
 	virtual ~GameEngine();
 	void initialize() override;
@@ -56,7 +57,7 @@ public:
 		}
 	}
 private:
-	sf::RenderWindow m_window; // Window object
+	sf::RenderWindow& m_window; // Window object
 	float m_frameRate = 60.0f; // Default frame rate
 	int m_width = 800; // Default width
 	int m_height = 600; // Default height
