@@ -33,7 +33,7 @@ public:
 	void render() override;
 	void handleInput() override;
 	void cleanup() override;
-	void run() override;
+	void run(sf::VideoMode vm, sf::RenderWindow window) override;
 	float getFrameRate() const override;
 	void setFrameRate(float frameRate) override;
 	void getResolution(int& width, int& height) const override;
@@ -41,21 +41,8 @@ public:
 	bool isInitialized() const;
 	int getHeight() const;
 	int getWidth() const;
-	//game loop
-	void gameLoop() {
-		while (m_gameState == GameState::RUNNING) {
-			m_currentFrameTime = static_cast<float>(clock()) / CLOCKS_PER_SEC; // Get the current time
-			m_deltaTime = m_currentFrameTime - m_lastFrameTime; // Calculate delta time
-			m_lastFrameTime = m_currentFrameTime; // Update last frame time
-			update(m_deltaTime); // Update the game state
-			render(); // Render the game state
-			m_frameCount++; // Increment frame count
-			if (m_frameCount >= m_frameRate) { // If frame count reaches frame rate
-				m_fps = 1.0f / m_deltaTime; // Calculate FPS
-				m_frameCount = 0; // Reset frame count
-			}
-		}
-	}
+
+	
 private:
 	sf::RenderWindow& m_window; // Window object
 	float m_frameRate = 60.0f; // Default frame rate

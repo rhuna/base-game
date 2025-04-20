@@ -59,50 +59,48 @@ Window::~Window() {
 	m_window.close(); // Close the window if it's open
 
 };
-sf::RenderWindow& Window::createWindow(int width, int height, std::string title){
 
-	// using GLFW:
-	// glfwCreateWindow(width, height, title, NULL, NULL);
+sf::RenderWindow& Window::createWindow(int width, int height, std::string title) {
+   std::cout << "Creating window: " << title << " (" << width << "x" << height << ")" << std::endl;
 
+   // Initialize window properties
+   this->m_width = width;
+   this->m_height = height;
+   this->m_title = title;
+   this->m_fullscreen = false;
+   this->m_resizable = true;
+   this->m_vsync = true;
+   this->m_backgroundColor[0] = 0.0f;
+   this->m_backgroundColor[1] = 0.0f;
+   this->m_backgroundColor[2] = 0.0f;
+   this->m_backgroundColor[3] = 1.0f; // Default to black background
+   this->m_mouseCursorVisible = true;
+   this->m_mouseCursorPosition[0] = 0;
+   this->m_mouseCursorPosition[1] = 0;
+   this->m_mouseCursorGrabbed = false;
+   this->m_mouseCursorScale = 1.0f;
+   this->m_mouseCursorHidden = false;
 
-	std::cout << "Creating window: " << title << " (" << width << "x" << height << ")" << std::endl;
-	// Initialize window properties
-	this->m_width = width;
-	this->m_height = height;
-	this->m_title = title;
-	this->m_fullscreen = false;
-	this->m_resizable = true;
-	this->m_vsync = true;
-	this->m_backgroundColor[0] = 0.0f;
-	this->m_backgroundColor[1] = 0.0f;
-	this->m_backgroundColor[2] = 0.0f;
-	this->m_backgroundColor[3] = 1.0f; // Default to black background
-	this->m_mouseCursorVisible = true;
-	this->m_mouseCursorPosition[0] = 0;
-	this->m_mouseCursorPosition[1] = 0;
-	this->m_mouseCursorGrabbed = false;
-	this->m_mouseCursorScale = 1.0f;
-	this->m_mouseCursorHidden = false;
+   sf::VideoMode vm({ static_cast<unsigned int>(m_width), static_cast<unsigned int>(m_height) });
+   m_videoMode = vm;
+   m_window = sf::RenderWindow(vm, "GameEngine Window");
+   m_window.setFramerateLimit(60); // Set frame rate limit
+   m_window.setVerticalSyncEnabled(m_vsync); // Enable VSync
+   m_window.setMouseCursorVisible(m_mouseCursorVisible); // Show mouse cursor
+   m_window.setMouseCursorGrabbed(m_mouseCursorGrabbed); // Don't grab mouse cursor
 
-	//create window with SFML library
-	//m_window.clear();
-	//m_window.create(sf::VideoMode({ 800, 600 }), title, sf::Style::Default);
-	//m_window.setFramerateLimit(60); // Set frame rate limit
-	//m_window.setVerticalSyncEnabled(true); // Enable VSync
-	//m_window.setMouseCursorVisible(true); // Show mouse cursor
-	//m_window.setMouseCursorGrabbed(false); // Don't grab mouse cursor
+   // Fix: Use sf::RectangleShape to draw a rectangle
+   sf::RectangleShape rect(sf::Vector2f(static_cast<float>(m_width), static_cast<float>(m_height)));
+   rect.setFillColor(sf::Color(
+       static_cast<std::uint8_t>(m_backgroundColor[0] * 255),
+       static_cast<std::uint8_t>(m_backgroundColor[1] * 255),
+       static_cast<std::uint8_t>(m_backgroundColor[2] * 255),
+       static_cast<std::uint8_t>(m_backgroundColor[3] * 255)
+   ));
+   m_window.draw(rect); // Draw the rectangle to clear the window
+   m_window.display();
 
-	sf::VideoMode vm({ static_cast<unsigned int>(m_width), static_cast<unsigned int>(m_height) });
-	
-	m_videoMode = vm;
-	sf::RenderWindow window1(m_videoMode, m_title);
-
-	//m_window = window1;
-
-	//m_window.draw(); // Draw an empty sprite to clear the window
-	window1.display();
-	
-	return window1;
+   return m_window;
 };
 
 void Window::setTitle(std::string title) {

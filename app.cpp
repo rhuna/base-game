@@ -9,22 +9,8 @@
 
 
 int main() {
-	//we need to pass in and return the window from initialize to start to render
-	//we may return a vector or array of configs that will allow for multiple returns
-	// Create a window object
-	Window window; // Create a window object
-	// Set window properties
-	window.setTitle("Game Window"); // Set window title
-	window.setSize(800, 600); // Set window size
-	window.setPosition(100, 100); // Set window position
-	window.setFullscreen(false); // Set fullscreen mode
-	window.setResizable(true); // Set resizable mode
-	window.setVSync(true); // Set VSync	
-	window.setBackgroundColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color
-	window.setMouseCursorVisible(true); // Show mouse cursor
-	window.setMouseCursorPosition(400, 300); // Set mouse cursor position
-	window.setMouseCursorGrabbed(false); // Don't grab mouse cursor
-
+	
+	
 	// Create an instance of GameEngine
 	GameEngine engine(800, 600, 60.0f); // Set resolution and frame rate
 	engine.initialize(); // Initialize the engine

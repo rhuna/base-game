@@ -12,29 +12,41 @@ GameEngine::GameEngine()
 {
 	// Default constructor implementation
 	std::cout << "GameEngine created with default settings." << std::endl;
-	m_frameRate = 60.0f; // Default frame rate
-	m_width = 800; // Default width
-	m_height = 600; // Default height
 	m_initialized = false; // Set the initialized flag to false
+	sf::VideoMode vm({ static_cast<unsigned int>(m_width), static_cast<unsigned int>(m_height) });
+	Window win(vm, m_window); // Create a Window object with the provided window
+	//m_window = sf::RenderWindow(vm, "GameEngine Window");
+	// Set default background color
+	//m_window.clear(sf::Color(0, 0, 0)); // Black background
+
 
 
 }
-GameEngine::GameEngine(sf::RenderWindow& window) : Engine(), m_window(window) {
-
-	m_frameRate = 60.0f; // Default frame rate
-	m_width = 800; // Default width
-	m_height = 600; // Default height
+GameEngine::GameEngine(sf::RenderWindow& window) : Engine(), m_window(window), // Initialize the window member variable
+	m_frameRate(60.0f), m_width(800), m_height(600), m_initialized(false)
+{
 	m_initialized = false; // Set the initialized flag to false
-	std::cout << "GameEngine created with sf::RenderWindow." << std::endl;
+	sf::VideoMode vm({ static_cast<unsigned int>(m_width), static_cast<unsigned int>(m_height) });
+	Window win(vm,m_window); // Create a Window object with the provided window
+
+	//m_window = sf::RenderWindow(vm, "GameEngine Window");
+	// Set default background color
+	//m_window.clear(sf::Color(0, 0, 0)); // Black background
+
 }
 
 GameEngine::GameEngine(int width, int height, float frameRate)
 	: Engine(), m_width(width), m_height(height), m_frameRate(frameRate), m_initialized(false),
 	m_window(m_window)
 {
-	// Constructor implementation
-	std::cout << "GameEngine created with resolution: " << width << "x" << height
-		<< " and frame rate: " << frameRate << " FPS." << std::endl;
+	
+	m_initialized = false; // Set the initialized flag to false
+	sf::VideoMode vm({ static_cast<unsigned int>(m_width), static_cast<unsigned int>(m_height) });
+	Window win(vm, m_window); // Create a Window object with the provided window
+	//m_window = sf::RenderWindow(vm, "GameEngine Window");
+	// Set default background color
+	//m_window.clear(sf::Color(0, 0, 0)); // Black background
+	
 
 
 
@@ -45,22 +57,12 @@ GameEngine::~GameEngine() = default;
 
 void GameEngine::initialize() {
 
-	
-	// Initialization code here
-	m_frameRate = 60.0f; // Default frame rate
-	m_width = 800; // Default width
-	m_height = 600; // Default height
 	// Additional initialization logic if needed
 	m_initialized = true; // Set the initialized flag to true
 	if (!m_initialized) {
 		throw std::runtime_error("GameEngine initialization failed.");
-	}
-	// Additional initialization logic if needed
-	if (m_initialized) {
+	}else {
 		std::cout << "GameEngine initialized successfully." << std::endl;
-	}
-	else {
-		std::cerr << "GameEngine initialization failed." << std::endl;
 	}
 
 	m_gameState = GameState::RUNNING;
@@ -97,7 +99,50 @@ void GameEngine::stop(){
 	// Example of using the player class with quest class and equipment class
 	
 }
-void GameEngine::update(float deltaTime){
+
+///// ////	////	////	//////	////	///	/	/	/	//////	/////	/////	///
+
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="vm"></param>
+/// <param name="window"></param>
+
+void GameEngine::run(sf::VideoMode vm, sf::RenderWindow window)  {
+	//open window
+	
+
+	// Main loop of the engine
+	while (window.isOpen()) {
+	
+		while (const std::optional event = window.pollEvent()) {
+			if (event->is<sf::Event::KeyPressed>()) {
+				if (event->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Escape) {
+					std::cout << "Escape key pressed. Closing window." << std::endl;
+					window.close();
+				};
+			}
+		}
+
+		while (m_gameState == GameState::RUNNING) {
+			m_currentFrameTime = static_cast<float>(clock()) / CLOCKS_PER_SEC; // Get the current time
+			m_deltaTime = m_currentFrameTime - m_lastFrameTime; // Calculate delta time
+			m_lastFrameTime = m_currentFrameTime; // Update last frame time
+			update(m_deltaTime); // Update the game state
+			render(); // Render the game state
+			handleInput(); // Handle user input
+			cleanup(); // Clean up resources
+		}
+
+		window.clear();
+		window.display();
+	}
+	
+
+}
+
+void GameEngine::update(float deltaTime) {
 	// Update game state
 	// Example delta time (60 FPS)
 	m_time += deltaTime; // Update time
@@ -111,18 +156,18 @@ void GameEngine::update(float deltaTime){
 	// Example update logic
 	// Update game objects, physics, etc.
 	// For example, update player position, check collisions, etc.
-	
+
 
 	std::cout << "Updating game state with deltaTime: " << m_time << " seconds." << std::endl;
 }
-void GameEngine::render()  {
+void GameEngine::render() {
 	// Render game graphics
 	std::cout << "Rendering game graphics..." << std::endl;
 
-	
+
 
 }
-void GameEngine::handleInput()  {
+void GameEngine::handleInput() {
 	// Handle user input
 	std::cout << "Handling input..." << std::endl;
 	// Example input handling logic
@@ -134,17 +179,34 @@ void GameEngine::handleInput()  {
 	// Simulate input handling
 	std::cout << "Input handled successfully." << std::endl;
 }
-void GameEngine::cleanup()  {
+void GameEngine::cleanup() {
 	// Clean up resources
 	std::cout << "Cleaning up GameEngine resources..." << std::endl;
 
 
 }
-void GameEngine::run()  {
-	// Main loop of the engine
 
 
-}
+
+
+
+
+/// <summary>////	////	////	/////	/////	//	//	///	////	////	//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 float GameEngine::getFrameRate() const  {
 	return m_frameRate;
 }
