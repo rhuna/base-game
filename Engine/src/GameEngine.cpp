@@ -127,7 +127,34 @@ void GameEngine::run()  {
 
 			m_window.display();
 
+			if (m_gameState == GameState::STOPPED) {
+				std::cout << "GameEngine stopped." << std::endl;
+				break; // Exit the loop if the game state is STOPPED
+			}
 			
+			if (m_gameState == GameState::PAUSED) {
+				std::cout << "GameEngine paused." << std::endl;
+				// Pause the game logic
+				// Example: pause game logic, stop rendering, etc.
+			}
+
+			// if (event->is<sf::Event::MouseButtonPressed>()) { ... }
+
+			// if (event->is<sf::Event::MouseMoved>()) { ... }
+
+			// if (event->is<sf::Event::MouseButtonReleased>()) { ... }
+
+			// if (event->is<sf::Event::MouseWheelScrolled>()) { ... }
+
+			// if (event->is<sf::Event::TextEntered>()) { ... }
+
+			// if (event->is<sf::Event::Resized>()) { ... }
+
+			// if (event->is<sf::Event::GainedFocus>()) { ... }
+
+			// if (event->is<sf::Event::LostFocus>()) { ... }
+
+
 		}
 		
 	}
