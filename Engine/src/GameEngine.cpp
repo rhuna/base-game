@@ -112,8 +112,8 @@ void GameEngine::run()  {
 			
 			m_window.clear();
 
-			MapGenerator mapGen(100, 100);
-			mapGen.generateMap(100, 100);
+			MapGenerator mapGen(50, 50);
+			mapGen.generateMap(50, 50);
 			mapGen.displayMap();
 			mapGen.renderMapSFML(m_window);
 		

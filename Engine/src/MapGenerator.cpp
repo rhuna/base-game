@@ -145,14 +145,14 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 
 			// Set color based on tile value
 			switch (map[y][x]) {
-			case 0:  tile.setFillColor(grassColor); break;    // Terrain
-			case 1:  tile.setFillColor(waterColor); break;    // Water
-			case 2:  tile.setFillColor(itemColor); break;     // Items
-			case 3:  tile.setFillColor(obstacleColor); break; // Obstacles
-			case 4:  tile.setFillColor(enemyColor); break;    // Enemies
-			case 5:  tile.setFillColor(npcColor); break;      // NPCs
+			case 15:  tile.setFillColor(grassColor); break;    // Terrain
+			case 10:  tile.setFillColor(waterColor); break;    // Water
+			case 11:  tile.setFillColor(itemColor); break;     // Items
+			case 9:  tile.setFillColor(obstacleColor); break; // Obstacles
+			case 13:  tile.setFillColor(enemyColor); break;    // Enemies
+			case 14:  tile.setFillColor(npcColor); break;      // NPCs
 				// Add more cases for your other tile types
-			default: tile.setFillColor(defaultColor);
+			case 12: tile.setFillColor(defaultColor);
 			}
 
 			// Add outline to make tiles more distinct
