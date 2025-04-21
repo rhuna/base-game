@@ -22,6 +22,7 @@
 #include <memory> // For std::unique_ptr
 #include <iomanip> // For std::put_time
 #include "../../headers/player.h"
+#include "../headers/MapGenerator.h"
 
 class GameEngine : public Engine {
 public:

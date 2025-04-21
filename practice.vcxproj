@@ -188,6 +188,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine\src\GameEngine.cpp" />
+    <ClCompile Include="Engine\src\MapGenerator.cpp" />
     <ClCompile Include="src\MainQuest.cpp" />
     <ClCompile Include="src\Buff.cpp" />
     <ClCompile Include="src\Debuff.cpp" />
@@ -201,6 +202,7 @@
   <ItemGroup>
     <ClInclude Include="Engine\headers\Engine.h" />
     <ClInclude Include="Engine\headers\GameEngine.h" />
+    <ClInclude Include="Engine\headers\MapGenerator.h" />
     <ClInclude Include="headers\Buff.h" />
     <ClInclude Include="headers\Debuff.h" />
     <ClInclude Include="headers\Equipment.h" />

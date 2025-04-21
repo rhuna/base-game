@@ -1,6 +1,7 @@
 #include "../headers/GameEngine.h"
 
 
+
 GameEngine::GameEngine(sf::RenderWindow& window) 
 	: Engine(), m_frameRate(60.0f), m_width(800), m_height(600),
 	m_initialized(false), m_window(window) // Initialize the window member variable
@@ -111,21 +112,13 @@ void GameEngine::run()  {
 			
 			m_window.clear();
 
-
-			// draw background
-			sf::RectangleShape rect(sf::Vector2f(static_cast<float>(m_width), static_cast<float>(m_height)));
-			rect.setFillColor(sf::Color(0, 0, 0, 255)); // Set background color to black
-				//static_cast<std::Uint8>(m_window.getBackgroundColor().r),
-				//static_cast<std::Uint8>(m_window.getBackgroundColor().g),
-				//static_cast<std::Uint8>(m_window.getBackgroundColor().b),
-				//static_cast<std::Uint8>(m_window.getBackgroundColor().a)
-			//));	
-			m_window.draw(rect); // Draw the rectangle to clear the window
-
+			MapGenerator mapGen(100, 100);
+			mapGen.generateMap(100, 100);
+			mapGen.displayMap();
+			mapGen.renderMapSFML(m_window);
+		
 			
 
-
-			
 
 
 			// Draw other game objects here
@@ -135,7 +128,7 @@ void GameEngine::run()  {
 			m_window.display();
 
 			// Example: pause game logic, stop rendering, etc.
-			}
+		}
 
 			// if (event->is<sf::Event::MouseButtonPressed>()) { ... }
 
@@ -154,11 +147,10 @@ void GameEngine::run()  {
 			// if (event->is<sf::Event::LostFocus>()) { ... }
 
 
-		}
+		
 		
 	}
 	
-
 }
 
 void GameEngine::update(float deltaTime) {
