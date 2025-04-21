@@ -108,4 +108,15 @@
   <ItemGroup>
     <Text Include="LICENSE.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\textures\tileset3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\arcadArne_sheet_org_desat.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\tileset2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

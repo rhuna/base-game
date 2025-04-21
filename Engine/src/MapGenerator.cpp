@@ -8,6 +8,7 @@ MapGenerator::MapGenerator() : map(nullptr), width(0), height(0) {
 }
 MapGenerator::MapGenerator(int width, int height) : map(nullptr), width(width), height(height) {
 	std::cout << "Parameterized constructor called." << std::endl;
+	loadTextures();
 	initializeMap();
 	generateMap(width, height);
 }
@@ -88,35 +89,65 @@ void MapGenerator::displayMap() {
 		std::cout << std::endl;
 	}
 }
+void MapGenerator::loadTileset(const std::string& filename, int tileSize) {
+	this->tileSize = tileSize;
+
+	if (!tilesetTexture.loadFromFile(filename)) {
+		std::cerr << "Failed to load tileset: " << filename << std::endl;
+		return;
+	}
+
+	// Calculate how many tiles we have in the tileset
+	int tilesetWidth = tilesetTexture.getSize().x / tileSize;
+	int tilesetHeight = tilesetTexture.getSize().y / tileSize;
+
+
+
+	// Automatically map tile types to texture rects
+	for (int y = 0; y < tilesetHeight; y++) {
+		for (int x = 0; x < tilesetWidth; x++) {
+			int tileType = y * tilesetWidth + x;
+
+			// Create the rectangle using the constructor
+			tileRects[tileType] = sf::IntRect(
+				sf::Vector2i(x * tileSize, y * tileSize),
+				sf::Vector2i(tileSize, tileSize)
+			);
+		}
+	}
+}
+		
+void MapGenerator::loadTextures() {
+	// Define which texture corresponds to which tile type
+		std::map<int, std::string> texturePaths = {
+			{0, "assets/textures/grass.png"},
+			{1, "assets/textures/water.png"},
+			{2, "assets/textures/item.png"},
+			{3, "assets/textures/obstacle.png"},
+			{4, "assets/textures/enemy.png"},
+			{5, "assets/textures/npc.png"}
+			// Add more as needed
+	};
+
+	for (const auto& pair : texturePaths) {
+		sf::Texture texture;
+		if (texture.loadFromFile(pair.second)) {
+			tileTextures[pair.first] = texture;
+		}
+		else {
+			std::cerr << "Failed to load texture: " << pair.second << std::endl;
+			// Fallback: create a colored placeholder texture
+			//sf::Image placeholder;
+			//placeholder.create(32, 32, sf::Color::Magenta); // Magenta = obviously missing
+			//tileTextures[pair.first].loadFromImage(placeholder);
+		}
+	}
+}
 void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
-	//const int tileSize = 10; // Size of each tile in pixels
-	//
-	//for (int y = 0; y < height; ++y) {
-	//	for (int x = 0; x < width; ++x) {
-	//		sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
-	//		{
-	//			sf::Vector2f xy(x * tileSize, y * tileSize);
-	//			tile.setPosition(xy);
-	//		}
-	//
-	//		// Set color based on tile value
-	//		switch (map[y][x]) {
-	//		case 0: tile.setFillColor(sf::Color::Green); break;  // Grass
-	//		case 1: tile.setFillColor(sf::Color::Blue); break;   // Water
-	//		case 2: tile.setFillColor(sf::Color::Yellow); break; // Items
-	//		case 3: tile.setFillColor(sf::Color(139, 69, 19)); break; // Brown for obstacles
-	//		case 4: tile.setFillColor(sf::Color::Red); break;    // Enemies
-	//			// Add more cases for other tile types
-	//		//default: tile.setFillColor(sf::Color::White);
-	//		}
-	//
-	//		window.draw(tile);
-	//	}
-	//}
 	// Define tile size and spacing
 	const int tileSize = 8;  // Size of each tile in pixels
 	const int tileSpacing = 0;  // Space between tiles
-
+	
 	// Define colors for different tile types
 	const sf::Color grassColor(34, 139, 34);       // Green for terrain
 	const sf::Color waterColor(30, 144, 255);      // Blue for water
@@ -125,16 +156,16 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 	const sf::Color enemyColor(220, 20, 60);       // Crimson for enemies
 	const sf::Color npcColor(138, 43, 226);        // Purple for NPCs
 	const sf::Color defaultColor(200, 200, 200);    // Gray for unknown types
-
+	
 	// Calculate view offset to center the map
 	sf::Vector2f viewCenter(width * (tileSize + tileSpacing) / 2.f,
 		height * (tileSize + tileSpacing) / 2.f);
-
+	
 	// Create a view to center the map
 	sf::View view(viewCenter,
 		sf::Vector2f(window.getSize().x, window.getSize().y));
 	window.setView(view);
-
+	
 	// Draw each tile
 	for (int y = 0; y < height; ++y) {
 		for (int x = 0; x < width; ++x) {
@@ -142,7 +173,7 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 			sf::Vector2f xy(x * (tileSize + tileSpacing),
 				y * (tileSize + tileSpacing));
 			tile.setPosition(xy);
-
+	
 			// Set color based on tile value
 			switch (map[y][x]) {
 			case 15:  tile.setFillColor(grassColor); break;    // Terrain
@@ -154,17 +185,52 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 				// Add more cases for your other tile types
 			case 12: tile.setFillColor(defaultColor);
 			}
-
+	
 			// Add outline to make tiles more distinct
 			tile.setOutlineThickness(0.5f);
 			tile.setOutlineColor(sf::Color(50, 50, 50, 100));
-
+	
 			window.draw(tile);
 		}
 	}
-
+	
 	// Reset the view to default for UI elements
 	window.setView(window.getDefaultView());
+	//________________________________________________________________//
+	// Calculate view offset to center the map
+	//sf::Vector2f viewCenter(
+	//	static_cast<float>(width * tileSize) / 2.f,
+	//	static_cast<float>(height * tileSize) / 2.f
+	//);
+	//sf::View view(viewCenter, sf::Vector2f(window.getSize()));
+	//window.setView(view);
+	//
+	//// Draw each tile
+	//sf::Texture texture;
+	//sf::Sprite tileSprite(texture);
+	//for (int y = 0; y < height; ++y) {
+	//	for (int x = 0; x < width; ++x) {
+	//		int tileType = map[y][x];
+	//
+	//		// Safely check if texture exists
+	//		auto textureIt = tileTextures.find(tileType);
+	//		if (textureIt == tileTextures.end()) {
+	//			// Skip rendering if texture not found
+	//			continue;
+	//		}
+	//
+	//		// Set texture and position
+	//		tileSprite.setTexture(textureIt->second);
+	//		tileSprite.setPosition({
+	//			static_cast<float>(x * tileSize),
+	//			static_cast<float>(y * tileSize)
+	//			});
+	//
+	//		window.draw(tileSprite);
+	//	}
+	//}
+	//
+	//window.setView(window.getDefaultView());
 }
 
 void MapGenerator::saveMapToFile(const std::string& filename) {

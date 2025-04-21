@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <map>
 
 class MapGenerator{
 
@@ -34,11 +35,18 @@ public:
 	std::string getMapTileEvent(int x, int y);
 	void setMapTileNPC(int x, int y, const std::string& npc);
 	std::string getMapTileNPC(int x, int y);
+	void loadTextures();
+	void loadTileset(const std::string& filename, int tilesize);
 	
 private:
+
 	int** map;
 	int width;
 	int height;
+	int tileSize = 15;
+	std::map<int, sf::Texture> tileTextures;
+	sf::Texture tilesetTexture;
+	std::unordered_map<int, sf::Rect<int>> tileRects;
 	void initializeMap();
 	void deleteMap();
 	void generateTerrain();
