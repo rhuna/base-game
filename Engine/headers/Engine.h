@@ -20,7 +20,7 @@ public:
 	// Method to clean up resources
 	virtual void cleanup() = 0;
 	// Method to run the main loop of the engine
-	virtual void run(sf::VideoMode vm, sf::RenderWindow window) = 0;
+	virtual void run() = 0;
 	// Method to get the current frame rate
 	virtual float getFrameRate() const = 0;
 	// Method to set the frame rate

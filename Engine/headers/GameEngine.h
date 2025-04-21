@@ -16,15 +16,16 @@
 
 
 #include "Engine.h"
-#include "Window.h" // Include the Window class header
 #include <ctime>
-
+#include <iostream>
+#include <stdexcept> // For std::runtime_error
+#include <memory> // For std::unique_ptr
+#include <iomanip> // For std::put_time
+#include "../../headers/player.h"
 
 class GameEngine : public Engine {
 public:
-	GameEngine();
 	GameEngine(sf::RenderWindow& window);
-	GameEngine(int width, int height, float frameRate);
 	virtual ~GameEngine();
 	void initialize() override;
 	void start() override;
@@ -33,7 +34,7 @@ public:
 	void render() override;
 	void handleInput() override;
 	void cleanup() override;
-	void run(sf::VideoMode vm, sf::RenderWindow window) override;
+	void run() override;
 	float getFrameRate() const override;
 	void setFrameRate(float frameRate) override;
 	void getResolution(int& width, int& height) const override;

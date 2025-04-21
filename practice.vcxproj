@@ -197,7 +197,6 @@
     <ClCompile Include="src\Item.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\entity.cpp" />
-    <ClCompile Include="Engine\src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\headers\Engine.h" />
@@ -212,7 +211,6 @@
     <ClInclude Include="headers\Quest.h" />
     <ClInclude Include="headers\Skill.h" />
     <ClInclude Include="headers\MainQuest.h" />
-    <ClInclude Include="Engine\headers\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\2d_game_boilerplate\sfml-audio-3.dll" />

@@ -1,61 +1,28 @@
 #include "../headers/GameEngine.h"
-#include <iostream>
-#include <stdexcept> // For std::runtime_error
-#include <memory> // For std::unique_ptr
-#include <ctime> // For std::time
-#include <iomanip> // For std::put_time
-#include "../../headers/player.h"
 
-GameEngine::GameEngine() 
-	: Engine(), m_window(m_window), m_frameRate(60.0f), m_width(800), m_height(600),
-	m_initialized(false)
+
+GameEngine::GameEngine(sf::RenderWindow& window) 
+	: Engine(), m_frameRate(60.0f), m_width(800), m_height(600),
+	m_initialized(false), m_window(window) // Initialize the window member variable
 {
+	 // Initialize the window member variable
 	// Default constructor implementation
 	std::cout << "GameEngine created with default settings." << std::endl;
 	m_initialized = false; // Set the initialized flag to false
 	sf::VideoMode vm({ static_cast<unsigned int>(m_width), static_cast<unsigned int>(m_height) });
-	Window win(vm, m_window); // Create a Window object with the provided window
+	m_window.create(vm, "GameEngine Window"); // Create a window with the specified video mode and title
 	//m_window = sf::RenderWindow(vm, "GameEngine Window");
 	// Set default background color
 	//m_window.clear(sf::Color(0, 0, 0)); // Black background
-
-
-
-}
-GameEngine::GameEngine(sf::RenderWindow& window) : Engine(), m_window(window), // Initialize the window member variable
-	m_frameRate(60.0f), m_width(800), m_height(600), m_initialized(false)
-{
-	m_initialized = false; // Set the initialized flag to false
-	sf::VideoMode vm({ static_cast<unsigned int>(m_width), static_cast<unsigned int>(m_height) });
-	Window win(vm,m_window); // Create a Window object with the provided window
-
-	//m_window = sf::RenderWindow(vm, "GameEngine Window");
-	// Set default background color
-	//m_window.clear(sf::Color(0, 0, 0)); // Black background
-
+	//m_window.display(); // Display the window contents
 }
 
-GameEngine::GameEngine(int width, int height, float frameRate)
-	: Engine(), m_width(width), m_height(height), m_frameRate(frameRate), m_initialized(false),
-	m_window(m_window)
-{
-	
-	m_initialized = false; // Set the initialized flag to false
-	sf::VideoMode vm({ static_cast<unsigned int>(m_width), static_cast<unsigned int>(m_height) });
-	Window win(vm, m_window); // Create a Window object with the provided window
-	//m_window = sf::RenderWindow(vm, "GameEngine Window");
-	// Set default background color
-	//m_window.clear(sf::Color(0, 0, 0)); // Black background
-	
-
-
-
-
-}
 
 GameEngine::~GameEngine() = default;
 
 void GameEngine::initialize() {
+
+	// Initialize the engine
 
 	// Additional initialization logic if needed
 	m_initialized = true; // Set the initialized flag to true
@@ -76,9 +43,12 @@ void GameEngine::initialize() {
 }
 void GameEngine::start(){
 	
-	// Start the engine
+	// Start the engine, i.e. time 
+	// Set the game state to RUNNING
+	m_gameState = GameState::RUNNING; // Set the game state to RUNNING
+	// Initialize the game state
 	std::cout << "GameEngine started." << std::endl;
-	// Additional start logic if needed
+	
 	std::time_t t = std::time(nullptr); // Get the current time
 	std::tm tm;
 	m_time = static_cast<float>(std::difftime(t, 0)); // Calculate time since epoch
@@ -89,7 +59,7 @@ void GameEngine::start(){
     }
 	std::cout << "engine time: " << m_time;
 	std::cout << "Current time: " << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") << std::endl; // Print the current time
-	// Example of using the player class with quest class and equipment class
+
 	
 }
 void GameEngine::stop(){
@@ -109,18 +79,25 @@ void GameEngine::stop(){
 /// <param name="vm"></param>
 /// <param name="window"></param>
 
-void GameEngine::run(sf::VideoMode vm, sf::RenderWindow window)  {
+void GameEngine::run()  {
 	//open window
-	
+	//sf::RenderWindow window(sf::VideoMode(vm.width, vm.height), "GameEngine Window");
+	// Set the window properties
+	m_window.setFramerateLimit(60); // Set frame rate limit
+	m_window.setVerticalSyncEnabled(true); // Enable VSync
+	m_window.setMouseCursorVisible(true); // Show mouse cursor
+	m_window.setMouseCursorGrabbed(false); // Don't grab mouse cursor
+
 
 	// Main loop of the engine
-	while (window.isOpen()) {
+	while (m_window.isOpen()) {
 	
-		while (const std::optional event = window.pollEvent()) {
+		// Handle window events
+		while (const std::optional event = m_window.pollEvent()) {
 			if (event->is<sf::Event::KeyPressed>()) {
 				if (event->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Escape) {
 					std::cout << "Escape key pressed. Closing window." << std::endl;
-					window.close();
+					m_window.close();
 				};
 			}
 		}
@@ -130,13 +107,29 @@ void GameEngine::run(sf::VideoMode vm, sf::RenderWindow window)  {
 			m_deltaTime = m_currentFrameTime - m_lastFrameTime; // Calculate delta time
 			m_lastFrameTime = m_currentFrameTime; // Update last frame time
 			update(m_deltaTime); // Update the game state
-			render(); // Render the game state
-			handleInput(); // Handle user input
-			cleanup(); // Clean up resources
-		}
+			//render(); // Render the game state
+			//handleInput(); // Handle user input
+			//cleanup(); // Clean up resources
 
-		window.clear();
-		window.display();
+			m_window.clear();
+			// draw background
+			sf::RectangleShape rect(sf::Vector2f(static_cast<float>(m_width), static_cast<float>(m_height)));
+			rect.setFillColor(sf::Color(0, 0, 0, 255)); // Set background color to black
+				//static_cast<std::Uint8>(m_window.getBackgroundColor().r),
+				//static_cast<std::Uint8>(m_window.getBackgroundColor().g),
+				//static_cast<std::Uint8>(m_window.getBackgroundColor().b),
+				//static_cast<std::Uint8>(m_window.getBackgroundColor().a)
+			//));	
+			m_window.draw(rect); // Draw the rectangle to clear the window
+			// Draw other game objects here
+			// Example: window.draw(playerSprite);
+			// Display the window contents
+
+			m_window.display();
+
+			
+		}
+		
 	}
 	
 
