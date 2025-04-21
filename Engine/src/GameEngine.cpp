@@ -12,6 +12,9 @@ GameEngine::GameEngine(sf::RenderWindow& window)
 	sf::VideoMode vm({ static_cast<unsigned int>(m_width), static_cast<unsigned int>(m_height) });
 	m_window.create(vm, "GameEngine Window"); // Create a window with the specified video mode and title
 	//m_window = sf::RenderWindow(vm, "GameEngine Window");
+	initialize();
+	start();
+	render();
 	// Set default background color
 	//m_window.clear(sf::Color(0, 0, 0)); // Black background
 	//m_window.display(); // Display the window contents
@@ -92,15 +95,7 @@ void GameEngine::run()  {
 	// Main loop of the engine
 	while (m_window.isOpen()) {
 	
-		// Handle window events
-		while (const std::optional event = m_window.pollEvent()) {
-			if (event->is<sf::Event::KeyPressed>()) {
-				if (event->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Escape) {
-					std::cout << "Escape key pressed. Closing window." << std::endl;
-					m_window.close();
-				};
-			}
-		}
+		
 
 		while (m_gameState == GameState::RUNNING) {
 			m_currentFrameTime = static_cast<float>(clock()) / CLOCKS_PER_SEC; // Get the current time
@@ -111,7 +106,12 @@ void GameEngine::run()  {
 			//handleInput(); // Handle user input
 			//cleanup(); // Clean up resources
 
+			// Handle window events
+			const std::optional event = m_window.pollEvent();
+			
 			m_window.clear();
+
+
 			// draw background
 			sf::RectangleShape rect(sf::Vector2f(static_cast<float>(m_width), static_cast<float>(m_height)));
 			rect.setFillColor(sf::Color(0, 0, 0, 255)); // Set background color to black
@@ -121,21 +121,20 @@ void GameEngine::run()  {
 				//static_cast<std::Uint8>(m_window.getBackgroundColor().a)
 			//));	
 			m_window.draw(rect); // Draw the rectangle to clear the window
+
+			
+
+
+			
+
+
 			// Draw other game objects here
 			// Example: window.draw(playerSprite);
 			// Display the window contents
 
 			m_window.display();
 
-			if (m_gameState == GameState::STOPPED) {
-				std::cout << "GameEngine stopped." << std::endl;
-				break; // Exit the loop if the game state is STOPPED
-			}
-			
-			if (m_gameState == GameState::PAUSED) {
-				std::cout << "GameEngine paused." << std::endl;
-				// Pause the game logic
-				// Example: pause game logic, stop rendering, etc.
+			// Example: pause game logic, stop rendering, etc.
 			}
 
 			// if (event->is<sf::Event::MouseButtonPressed>()) { ... }
