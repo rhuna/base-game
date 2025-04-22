@@ -128,7 +128,8 @@ void MapGenerator::loadTileset(const std::string& filename, int tileSize) {
 		}
 	}
 }
-		
+
+// not using at the moment... do not need it currently
 void MapGenerator::loadTextures() {
 	// Define which texture corresponds to which tile type
 		std::map<int, std::string> texturePaths = {
@@ -155,6 +156,9 @@ void MapGenerator::loadTextures() {
 		}
 	}
 }
+
+
+
 void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 	// Define tile size and spacing
 
@@ -213,40 +217,6 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 	// Calculate view offset to center the map
 	const int tileSize = 20;
 	const int tileSpacing = 0;
-
-	//sf::Vector2f viewCenter(
-	//	static_cast<float>(width * tileSize) / 2.f,
-	//	static_cast<float>(height * tileSize) / 2.f
-	//);
-	//sf::View view(viewCenter, sf::Vector2f(window.getSize()));
-	//window.setView(view);
-	//
-	//// Draw each tile
-	//sf::Texture texture;
-	//sf::Sprite tileSprite(texture);
-	//for (int y = 0; y < height; ++y) {
-	//	for (int x = 0; x < width; ++x) {
-	//		int tileType = map[y][x];
-	//
-	//		// Safely check if texture exists
-	//		auto textureIt = tileTextures.find(tileType);
-	//		if (textureIt == tileTextures.end()) {
-	//			// Skip rendering if texture not found
-	//			continue;
-	//		}
-	//
-	//		// Set texture and position
-	//		tileSprite.setTexture(textureIt->second);
-	//		tileSprite.setPosition({
-	//			static_cast<float>(x * tileSize),
-	//			static_cast<float>(y * tileSize)
-	//			});
-	//
-	//		window.draw(tileSprite);
-	//	}
-	//}
-	//
-	//window.setView(window.getDefaultView());
 
 	sf::Vector2f viewCenter(width * tileSize / 2.f, height * tileSize / 2.f);
 	sf::View view(viewCenter, sf::Vector2f(window.getSize().x, window.getSize().y));
