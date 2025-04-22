@@ -118,5 +118,8 @@
     <Image Include="assets\textures\tileset2.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="assets\textures\tileset4.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

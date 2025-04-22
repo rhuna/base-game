@@ -92,7 +92,8 @@ void GameEngine::run()  {
 	m_window.setMouseCursorVisible(true); // Show mouse cursor
 	m_window.setMouseCursorGrabbed(false); // Don't grab mouse cursor
 
-
+	MapGenerator mapGen(100, 100);//mapgenerator function is called in constructor
+	mapGen.displayMap();
 	// Main loop of the engine
 	while (m_window.isOpen()) {
 	
@@ -112,9 +113,8 @@ void GameEngine::run()  {
 			
 			m_window.clear();
 
-			MapGenerator mapGen(50, 50);
-			mapGen.generateMap(50, 50);
-			mapGen.displayMap();
+			
+			
 			mapGen.renderMapSFML(m_window);
 		
 			

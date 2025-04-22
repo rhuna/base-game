@@ -8,14 +8,10 @@ MapGenerator::MapGenerator() : map(nullptr), width(0), height(0) {
 }
 MapGenerator::MapGenerator(int width, int height) : map(nullptr), width(width), height(height) {
 	std::cout << "Parameterized constructor called." << std::endl;
-	loadTileset("assets/textures/tileset1.png",32); //- works
-	//loadTileset("assets/textures/tileset2.png", 20); //- doesnt work
-	//loadTileset("assets/textures/tileset3.png", 20); //- works
+	loadTileset("assets/textures/tileset4.bmp", 16); //- works
 	//loadTextures();
 	initializeMap();
 	generateMap(width, height);
-	//saveMapToFile("assets/textures/tileset3.png"); //- overwrites pngs(use it safely)
-	//loadMapFromFile("assets/textures/tileset3.png");
 }
 MapGenerator::MapGenerator(const MapGenerator& other) : map(nullptr), width(other.width), height(other.height) {
 	std::cout << "Copy constructor called." << std::endl;
@@ -75,16 +71,16 @@ void MapGenerator::generateMap(int width, int height) {
 	generateItems();
 	generateEnemies();
 	generateNPCs();
-	generateQuests();
-	generateEvents();
-	generateWeather();
-	generateDayNightCycle();
-	generateLore();
-	generateMusic();
-	generateSoundEffects();
-	generateGraphics();
-	generateAnimations();
-	generateUserInterface();
+	//generateQuests();
+	//generateEvents();
+	//generateWeather();
+	//generateDayNightCycle();
+	//generateLore();
+	//generateMusic();
+	//generateSoundEffects();
+	//generateGraphics();
+	//generateAnimations();
+	//generateUserInterface();
 }
 void MapGenerator::displayMap() {
 	for (int i = 0; i < height; ++i) {
@@ -121,13 +117,14 @@ void MapGenerator::loadTileset(const std::string& filename, int tileSize) {
 	for (int y = 0; y < tilesetHeight; y++) {
 		for (int x = 0; x < tilesetWidth; x++) {
 			int tileType = y * tilesetWidth + x;
-
+			
 			// Create the rectangle using the constructor
 			tileRects[tileType] = sf::IntRect(
 				sf::Vector2i(x * tileSize, y * tileSize),
 				sf::Vector2i(tileSize, tileSize)
 			);
 		}
+		
 	}
 }
 
@@ -217,7 +214,7 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 	//window.setView(window.getDefaultView());
 	//________________________________________________________________//
 	// Calculate view offset to center the map
-	const int tileSize = 20;
+	const int tileSize = 16;
 	const int tileSpacing = 0;
 
 	sf::Vector2f viewCenter(width * tileSize / 2.f, height * tileSize / 2.f);
@@ -251,6 +248,186 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 
 	window.setView(window.getDefaultView());
 }
+
+
+
+//__________________________________________________________________________//
+//__________________________________________________________________________//
+//__________________________________________________________________________//
+
+void MapGenerator::generateTerrain() {
+	// Implementation for generating terrain
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			map[i][j] = rand() % 2; // Randomly assign terrain type (0 or 1)
+		}
+	}
+	std::cout << "Terrain generated." << std::endl;
+	// Example: 0 for grass, 1 for water
+}
+void MapGenerator::generateObstacles() {
+	// Implementation for generating obstacles
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (rand() % 10 < 2) { // 20% chance to place an obstacle
+				map[i][j] = 3; // Assign obstacle type
+			}
+		}
+	}
+	std::cout << "Obstacles generated." << std::endl;
+}
+void MapGenerator::generateItems() {
+	// Implementation for generating items
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (rand() % 10 < 3) { // 30% chance to place an item
+				map[i][j] = 2; // Assign item type
+			}
+		}
+	}
+	std::cout << "Items generated." << std::endl;
+}
+void MapGenerator::generateEnemies() {
+	// Implementation for generating enemies
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (rand() % 10 < 5) { // 50% chance to place an enemy
+				map[i][j] = 4; // Assign enemy type
+			}
+		}
+	}
+	std::cout << "Enemies generated." << std::endl;
+}
+void MapGenerator::generateNPCs() {
+	// Implementation for generating NPCs
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (rand() % 10 < 4) { // 40% chance to place an NPC
+				map[i][j] = 5; // Assign NPC type
+			}
+		}
+	}
+	std::cout << "NPCs generated." << std::endl;
+}
+void MapGenerator::generateQuests() {
+	// Implementation for generating quests
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (rand() % 10 < 6) { // 60% chance to place a quest
+				map[i][j] = 6; // Assign quest type
+			}
+		}
+	}
+	std::cout << "Quests generated." << std::endl;
+}
+void MapGenerator::generateEvents() {
+	// Implementation for generating events
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (rand() % 10 < 7) { // 70% chance to place an event
+				map[i][j] = 7; // Assign event type
+			}
+		}
+	}
+	std::cout << "Events generated." << std::endl;
+}
+void MapGenerator::generateWeather() {
+	// Implementation for generating weather
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (rand() % 10 < 8) { // 80% chance to place a weather effect
+				map[i][j] = 8; // Assign weather type
+			}
+		}
+	}
+	std::cout << "Weather generated." << std::endl;
+	
+}
+void MapGenerator::generateDayNightCycle() {
+	// Implementation for generating day/night cycle
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (rand() % 10 < 9) { // 90% chance to place a day/night cycle
+				map[i][j] = 9; // Assign day/night type
+			}
+		}
+	}
+	std::cout << "Day/Night cycle generated." << std::endl;
+}
+void MapGenerator::generateLore() {
+	// Implementation for generating lore
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (rand() % 10 < 1) { // 10% chance to place lore
+				map[i][j] = 10; // Assign lore type
+			}
+		}
+	}
+	std::cout << "Lore generated." << std::endl;
+}
+void MapGenerator::generateMusic() {
+	// Implementation for generating music
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (rand() % 10 < 2) { // 20% chance to place music
+				map[i][j] = 11; // Assign music type
+			}
+		}
+	}
+	std::cout << "Music generated." << std::endl;
+}
+void MapGenerator::generateSoundEffects() {
+	// Implementation for generating sound effects
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (rand() % 10 < 3) { // 30% chance to place sound effects
+				map[i][j] = 12; // Assign sound effect type
+			}
+		}
+	}
+	std::cout << "Sound effects generated." << std::endl;
+}
+void MapGenerator::generateGraphics() {
+	// Implementation for generating graphics
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (rand() % 10 < 4) { // 40% chance to place graphics
+				map[i][j] = 13; // Assign graphic type
+			}
+		}
+	}
+	std::cout << "Graphics generated." << std::endl;
+}
+void MapGenerator::generateAnimations() {
+	// Implementation for generating animations
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (rand() % 10 < 5) { // 50% chance to place animations
+				map[i][j] = 14; // Assign animation type
+			}
+		}
+	}
+	std::cout << "Animations generated." << std::endl;
+}
+void MapGenerator::generateUserInterface() {
+	// Implementation for generating user interface
+	for (int i = 0; i < height; ++i) {
+		for (int j = 0; j < width; ++j) {
+			if (rand() % 10 < 6) { // 60% chance to place user interface
+				map[i][j] = 15; // Assign UI type
+			}
+		}
+	}
+	std::cout << "User interface generated." << std::endl;
+}
+
+
+
+//_______________________________________________________________________//
+//_______________________________________________________________________//
+//_______________________________________________________________________//
+
+
 
 void MapGenerator::saveMapToFile(const std::string& filename) {
 	std::ofstream file(filename);
@@ -445,169 +622,4 @@ std::string MapGenerator::getMapTileNPC(int x, int y) {
 	}
 	// Example: return tileNPCs[y][x]; // Assuming tileNPCs is a 2D array of strings
 	
-}
-void MapGenerator::generateTerrain() {
-	// Implementation for generating terrain
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			map[i][j] = rand() % 2; // Randomly assign terrain type (0 or 1)
-		}
-	}
-	std::cout << "Terrain generated." << std::endl;
-	// Example: 0 for grass, 1 for water
-}
-void MapGenerator::generateObstacles() {
-	// Implementation for generating obstacles
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (rand() % 10 < 2) { // 20% chance to place an obstacle
-				map[i][j] = 3; // Assign obstacle type
-			}
-		}
-	}
-	std::cout << "Obstacles generated." << std::endl;
-}
-void MapGenerator::generateItems() {
-	// Implementation for generating items
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (rand() % 10 < 3) { // 30% chance to place an item
-				map[i][j] = 2; // Assign item type
-			}
-		}
-	}
-	std::cout << "Items generated." << std::endl;
-}
-void MapGenerator::generateEnemies() {
-	// Implementation for generating enemies
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (rand() % 10 < 5) { // 50% chance to place an enemy
-				map[i][j] = 4; // Assign enemy type
-			}
-		}
-	}
-	std::cout << "Enemies generated." << std::endl;
-}
-void MapGenerator::generateNPCs() {
-	// Implementation for generating NPCs
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (rand() % 10 < 4) { // 40% chance to place an NPC
-				map[i][j] = 5; // Assign NPC type
-			}
-		}
-	}
-	std::cout << "NPCs generated." << std::endl;
-}
-void MapGenerator::generateQuests() {
-	// Implementation for generating quests
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (rand() % 10 < 6) { // 60% chance to place a quest
-				map[i][j] = 6; // Assign quest type
-			}
-		}
-	}
-	std::cout << "Quests generated." << std::endl;
-}
-void MapGenerator::generateEvents() {
-	// Implementation for generating events
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (rand() % 10 < 7) { // 70% chance to place an event
-				map[i][j] = 7; // Assign event type
-			}
-		}
-	}
-	std::cout << "Events generated." << std::endl;
-}
-void MapGenerator::generateWeather() {
-	// Implementation for generating weather
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (rand() % 10 < 8) { // 80% chance to place a weather effect
-				map[i][j] = 8; // Assign weather type
-			}
-		}
-	}
-	std::cout << "Weather generated." << std::endl;
-	
-}
-void MapGenerator::generateDayNightCycle() {
-	// Implementation for generating day/night cycle
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (rand() % 10 < 9) { // 90% chance to place a day/night cycle
-				map[i][j] = 9; // Assign day/night type
-			}
-		}
-	}
-	std::cout << "Day/Night cycle generated." << std::endl;
-}
-void MapGenerator::generateLore() {
-	// Implementation for generating lore
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (rand() % 10 < 1) { // 10% chance to place lore
-				map[i][j] = 10; // Assign lore type
-			}
-		}
-	}
-	std::cout << "Lore generated." << std::endl;
-}
-void MapGenerator::generateMusic() {
-	// Implementation for generating music
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (rand() % 10 < 2) { // 20% chance to place music
-				map[i][j] = 11; // Assign music type
-			}
-		}
-	}
-	std::cout << "Music generated." << std::endl;
-}
-void MapGenerator::generateSoundEffects() {
-	// Implementation for generating sound effects
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (rand() % 10 < 3) { // 30% chance to place sound effects
-				map[i][j] = 12; // Assign sound effect type
-			}
-		}
-	}
-	std::cout << "Sound effects generated." << std::endl;
-}
-void MapGenerator::generateGraphics() {
-	// Implementation for generating graphics
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (rand() % 10 < 4) { // 40% chance to place graphics
-				map[i][j] = 13; // Assign graphic type
-			}
-		}
-	}
-	std::cout << "Graphics generated." << std::endl;
-}
-void MapGenerator::generateAnimations() {
-	// Implementation for generating animations
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (rand() % 10 < 5) { // 50% chance to place animations
-				map[i][j] = 14; // Assign animation type
-			}
-		}
-	}
-	std::cout << "Animations generated." << std::endl;
-}
-void MapGenerator::generateUserInterface() {
-	// Implementation for generating user interface
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			if (rand() % 10 < 6) { // 60% chance to place user interface
-				map[i][j] = 15; // Assign UI type
-			}
-		}
-	}
-	std::cout << "User interface generated." << std::endl;
 }
