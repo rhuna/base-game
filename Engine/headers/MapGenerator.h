@@ -43,7 +43,7 @@ private:
 	int** map;
 	int width;
 	int height;
-	int tileSize = 15;
+	int tileSize = 20;
 	std::map<int, sf::Texture> tileTextures;
 	sf::Texture tilesetTexture;
 	std::unordered_map<int, sf::Rect<int>> tileRects;

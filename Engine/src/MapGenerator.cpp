@@ -8,7 +8,7 @@ MapGenerator::MapGenerator() : map(nullptr), width(0), height(0) {
 }
 MapGenerator::MapGenerator(int width, int height) : map(nullptr), width(width), height(height) {
 	std::cout << "Parameterized constructor called." << std::endl;
-	loadTileset("assets/textures/tileset3.png",15);
+	loadTileset("assets/textures/tileset3.png",20);
 	//loadTextures();
 	initializeMap();
 	generateMap(width, height);
@@ -209,7 +209,7 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 	//window.setView(window.getDefaultView());
 	//________________________________________________________________//
 	// Calculate view offset to center the map
-	const int tileSize = 32;
+	const int tileSize = 20;
 	const int tileSpacing = 0;
 
 	//sf::Vector2f viewCenter(
