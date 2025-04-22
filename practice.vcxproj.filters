@@ -112,7 +112,7 @@
     <Image Include="assets\textures\tileset3.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="assets\textures\arcadArne_sheet_org_desat.png">
+    <Image Include="assets\textures\tileset1.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="assets\textures\tileset2.png">

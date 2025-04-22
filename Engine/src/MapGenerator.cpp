@@ -8,7 +8,9 @@ MapGenerator::MapGenerator() : map(nullptr), width(0), height(0) {
 }
 MapGenerator::MapGenerator(int width, int height) : map(nullptr), width(width), height(height) {
 	std::cout << "Parameterized constructor called." << std::endl;
-	loadTileset("assets/textures/tileset3.png",20);
+	//loadTileset("assets/textures/tileset1.png",20); //- works
+	//loadTileset("assets/textures/tileset2.png", 20); //- doesnt work
+	loadTileset("assets/textures/tileset3.png", 20); //- works
 	//loadTextures();
 	initializeMap();
 	generateMap(width, height);
