@@ -8,7 +8,8 @@ MapGenerator::MapGenerator() : map(nullptr), width(0), height(0) {
 }
 MapGenerator::MapGenerator(int width, int height) : map(nullptr), width(width), height(height) {
 	std::cout << "Parameterized constructor called." << std::endl;
-	loadTextures();
+	loadTileset("assets/textures/tileset3.png",15);
+	//loadTextures();
 	initializeMap();
 	generateMap(width, height);
 }
@@ -97,6 +98,15 @@ void MapGenerator::loadTileset(const std::string& filename, int tileSize) {
 		return;
 	}
 
+	//tileRects = {
+	//
+	//	{0, sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(tileSize, tileSize))},        // Grass (first tile)
+	//	{1, sf::IntRect(sf::Vector2i(tileSize, 0), sf::Vector2i(tileSize, tileSize))}, // Water (second tile)
+	//	{2, sf::IntRect(sf::Vector2i(0, tileSize), sf::Vector2i(tileSize, tileSize))}, // Stone (first tile, second row)
+	//	{3, sf::IntRect(sf::Vector2i(tileSize, tileSize), sf::Vector2i(tileSize, tileSize))}
+	//
+	//};
+
 	// Calculate how many tiles we have in the tileset
 	int tilesetWidth = tilesetTexture.getSize().x / tileSize;
 	int tilesetHeight = tilesetTexture.getSize().y / tileSize;
@@ -145,59 +155,63 @@ void MapGenerator::loadTextures() {
 }
 void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 	// Define tile size and spacing
-	const int tileSize = 8;  // Size of each tile in pixels
-	const int tileSpacing = 0;  // Space between tiles
-	
-	// Define colors for different tile types
-	const sf::Color grassColor(34, 139, 34);       // Green for terrain
-	const sf::Color waterColor(30, 144, 255);      // Blue for water
-	const sf::Color obstacleColor(139, 69, 19);    // Brown for obstacles
-	const sf::Color itemColor(255, 215, 0);        // Gold for items
-	const sf::Color enemyColor(220, 20, 60);       // Crimson for enemies
-	const sf::Color npcColor(138, 43, 226);        // Purple for NPCs
-	const sf::Color defaultColor(200, 200, 200);    // Gray for unknown types
-	
-	// Calculate view offset to center the map
-	sf::Vector2f viewCenter(width * (tileSize + tileSpacing) / 2.f,
-		height * (tileSize + tileSpacing) / 2.f);
-	
-	// Create a view to center the map
-	sf::View view(viewCenter,
-		sf::Vector2f(window.getSize().x, window.getSize().y));
-	window.setView(view);
-	
-	// Draw each tile
-	for (int y = 0; y < height; ++y) {
-		for (int x = 0; x < width; ++x) {
-			sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
-			sf::Vector2f xy(x * (tileSize + tileSpacing),
-				y * (tileSize + tileSpacing));
-			tile.setPosition(xy);
-	
-			// Set color based on tile value
-			switch (map[y][x]) {
-			case 15:  tile.setFillColor(grassColor); break;    // Terrain
-			case 10:  tile.setFillColor(waterColor); break;    // Water
-			case 11:  tile.setFillColor(itemColor); break;     // Items
-			case 9:  tile.setFillColor(obstacleColor); break; // Obstacles
-			case 13:  tile.setFillColor(enemyColor); break;    // Enemies
-			case 14:  tile.setFillColor(npcColor); break;      // NPCs
-				// Add more cases for your other tile types
-			case 12: tile.setFillColor(defaultColor);
-			}
-	
-			// Add outline to make tiles more distinct
-			tile.setOutlineThickness(0.5f);
-			tile.setOutlineColor(sf::Color(50, 50, 50, 100));
-	
-			window.draw(tile);
-		}
-	}
-	
-	// Reset the view to default for UI elements
-	window.setView(window.getDefaultView());
+
+	//const int tileSize = 8;  // Size of each tile in pixels
+	//const int tileSpacing = 0;  // Space between tiles
+	//
+	//// Define colors for different tile types
+	//const sf::Color grassColor(34, 139, 34);       // Green for terrain
+	//const sf::Color waterColor(30, 144, 255);      // Blue for water
+	//const sf::Color obstacleColor(139, 69, 19);    // Brown for obstacles
+	//const sf::Color itemColor(255, 215, 0);        // Gold for items
+	//const sf::Color enemyColor(220, 20, 60);       // Crimson for enemies
+	//const sf::Color npcColor(138, 43, 226);        // Purple for NPCs
+	//const sf::Color defaultColor(200, 200, 200);    // Gray for unknown types
+	//
+	//// Calculate view offset to center the map
+	//sf::Vector2f viewCenter(width * (tileSize + tileSpacing) / 2.f,
+	//	height * (tileSize + tileSpacing) / 2.f);
+	//
+	//// Create a view to center the map
+	//sf::View view(viewCenter,
+	//	sf::Vector2f(window.getSize().x, window.getSize().y));
+	//window.setView(view);
+	//
+	//// Draw each tile
+	//for (int y = 0; y < height; ++y) {
+	//	for (int x = 0; x < width; ++x) {
+	//		sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
+	//		sf::Vector2f xy(x * (tileSize + tileSpacing),
+	//			y * (tileSize + tileSpacing));
+	//		tile.setPosition(xy);
+	//
+	//		// Set color based on tile value
+	//		switch (map[y][x]) {
+	//		case 15:  tile.setFillColor(grassColor); break;    // Terrain
+	//		case 10:  tile.setFillColor(waterColor); break;    // Water
+	//		case 11:  tile.setFillColor(itemColor); break;     // Items
+	//		case 9:  tile.setFillColor(obstacleColor); break; // Obstacles
+	//		case 13:  tile.setFillColor(enemyColor); break;    // Enemies
+	//		case 14:  tile.setFillColor(npcColor); break;      // NPCs
+	//			// Add more cases for your other tile types
+	//		case 12: tile.setFillColor(defaultColor);
+	//		}
+	//
+	//		// Add outline to make tiles more distinct
+	//		tile.setOutlineThickness(0.5f);
+	//		tile.setOutlineColor(sf::Color(50, 50, 50, 100));
+	//
+	//		window.draw(tile);
+	//	}
+	//}
+	//
+	//// Reset the view to default for UI elements
+	//window.setView(window.getDefaultView());
 	//________________________________________________________________//
 	// Calculate view offset to center the map
+	const int tileSize = 32;
+	const int tileSpacing = 0;
+
 	//sf::Vector2f viewCenter(
 	//	static_cast<float>(width * tileSize) / 2.f,
 	//	static_cast<float>(height * tileSize) / 2.f
@@ -231,6 +245,35 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 	//}
 	//
 	//window.setView(window.getDefaultView());
+
+	sf::Vector2f viewCenter(width * tileSize / 2.f, height * tileSize / 2.f);
+	sf::View view(viewCenter, sf::Vector2f(window.getSize().x, window.getSize().y));
+	window.setView(view);
+
+	// Draw each tile
+	sf::Sprite tileSprite(tilesetTexture);
+	tileSprite.setTexture(tilesetTexture);
+
+	for (int y = 0; y < height; ++y) {
+		for (int x = 0; x < width; ++x) {
+			int tileType = map[y][x];
+
+			// Set the texture rectangle for this tile type
+			if (tileRects.find(tileType) != tileRects.end()) {
+				tileSprite.setTextureRect(tileRects[tileType]);
+			}
+			else {
+				// Default to first tile if type not found
+				tileSprite.setTextureRect(tileRects.begin()->second);
+			}
+
+			// Position the sprite
+			tileSprite.setPosition({ static_cast<float>(x * tileSize), static_cast<float>(y * tileSize )});
+			window.draw(tileSprite);
+		}
+	}
+
+	window.setView(window.getDefaultView());
 }
 
 void MapGenerator::saveMapToFile(const std::string& filename) {
