@@ -1,6 +1,8 @@
 #include "../headers/entity.h"
 
 
+
+
 entity::entity(int id, int x, int y, int width, int height, int health, int damage)
 	: id(id), x(x), y(y), width(width), height(height), health(health), damage(damage), alive(true) {
 }

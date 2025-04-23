@@ -233,6 +233,7 @@
     <Text Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\textures\tileset.png" />
     <Image Include="assets\textures\tileset1.png" />
     <Image Include="assets\textures\tileset2.png" />
     <Image Include="assets\textures\tileset3.png" />

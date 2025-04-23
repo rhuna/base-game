@@ -8,7 +8,7 @@ MapGenerator::MapGenerator() : map(nullptr), width(0), height(0) {
 }
 MapGenerator::MapGenerator(int width, int height) : map(nullptr), width(width), height(height) {
 	std::cout << "Parameterized constructor called." << std::endl;
-	loadTileset("assets/textures/tileset4.bmp", 16); //- works
+	loadTileset("assets/textures/tileset.png", 32); //- works
 	//loadTextures();
 	initializeMap();
 	generateMap(width, height);
@@ -82,6 +82,7 @@ void MapGenerator::generateMap(int width, int height) {
 	//generateAnimations();
 	//generateUserInterface();
 }
+
 void MapGenerator::displayMap() {
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
@@ -90,13 +91,9 @@ void MapGenerator::displayMap() {
 		std::cout << std::endl;
 	}
 }
-void MapGenerator::loadTileset(const std::string& filename, int tileSize) {
+std::unordered_map<int,sf::IntRect> MapGenerator::loadTileset(const std::string& filename, int tileSize) {
 	this->tileSize = tileSize;
 
-	if (!tilesetTexture.loadFromFile(filename)) {
-		std::cerr << "Failed to load tileset: " << filename << std::endl;
-		return;
-	}
 
 	//tileRects = {
 	//
@@ -126,8 +123,32 @@ void MapGenerator::loadTileset(const std::string& filename, int tileSize) {
 		}
 		
 	}
+	return tileRects;
 }
 
+sf::Texture& MapGenerator::getTexture(const char* filename, int tiletype) {
+
+	tileRects = loadTileset(filename,32);
+	// Load the texture from the file
+	if (!tilesetTexture.loadFromFile(filename)) {
+		std::cerr << "Failed to load texture: " << filename << std::endl;
+		// Handle error (e.g., throw an exception or return a default texture)
+	}
+	// Check if the tile type exists in the map
+	if (tileTextures.find(tiletype) == tileTextures.end()) {
+		std::cerr << "Tile type not found: " << tiletype << std::endl;
+		// Handle error (e.g., throw an exception or return a default texture)
+	}
+	// Return the texture for the specified tile type
+	std::cout << "Tile type: " << tiletype << std::endl;
+	std::cout << "Texture: " << tileTextures[tiletype].getSize().x << std::endl;
+	std::cout << "Texture: " << tileTextures[tiletype].getSize().y << std::endl;
+	std::cout << "Texture: " << tileTextures[tiletype].getSize().x << std::endl;
+	std::cout << "Texture: " << tileTextures[tiletype].getSize().y << std::endl;
+
+
+	return tileTextures[tiletype];
+};
 // not using at the moment... do not need it currently
 void MapGenerator::loadTextures() {
 	// Define which texture corresponds to which tile type
@@ -214,7 +235,7 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 	//window.setView(window.getDefaultView());
 	//________________________________________________________________//
 	// Calculate view offset to center the map
-	const int tileSize = 16;
+	const int tileSize = 32;
 	const int tileSpacing = 0;
 
 	sf::Vector2f viewCenter(width * tileSize / 2.f, height * tileSize / 2.f);
@@ -259,7 +280,9 @@ void MapGenerator::generateTerrain() {
 	// Implementation for generating terrain
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
-			map[i][j] = rand() % 2; // Randomly assign terrain type (0 or 1)
+			//assign terrain based on the appropriate tile
+			map[i][j] = 608;
+			//map[i][j] = rand() % 2; // Randomly assign terrain type (0 or 1)
 		}
 	}
 	std::cout << "Terrain generated." << std::endl;
@@ -270,7 +293,7 @@ void MapGenerator::generateObstacles() {
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
 			if (rand() % 10 < 2) { // 20% chance to place an obstacle
-				map[i][j] = 3; // Assign obstacle type
+				map[i][j] = 835; // Assign obstacle type
 			}
 		}
 	}
@@ -281,7 +304,7 @@ void MapGenerator::generateItems() {
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
 			if (rand() % 10 < 3) { // 30% chance to place an item
-				map[i][j] = 2; // Assign item type
+				map[i][j] = 610; // Assign item type
 			}
 		}
 	}
@@ -292,7 +315,7 @@ void MapGenerator::generateEnemies() {
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
 			if (rand() % 10 < 5) { // 50% chance to place an enemy
-				map[i][j] = 4; // Assign enemy type
+				map[i][j] = 612; // Assign enemy type
 			}
 		}
 	}
@@ -303,7 +326,7 @@ void MapGenerator::generateNPCs() {
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
 			if (rand() % 10 < 4) { // 40% chance to place an NPC
-				map[i][j] = 5; // Assign NPC type
+				map[i][j] = 611; // Assign NPC type
 			}
 		}
 	}

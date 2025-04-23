@@ -1,5 +1,22 @@
 #ifndef PLAYER_H
 #define PLAYER_H
+
+#if defined(_WIN64)  
+	#include <SFML/Graphics.hpp>  // Adjusted to use the default include path for Windows 64-bit
+	#include <../../../SFML/x64/include/SFML/Graphics.hpp>  
+#elif defined(__APPLE__) || defined(__MACH__)  
+	#include <SFML/Graphics.hpp> // Adjusted to use the default include path for macOS  
+#elif defined(__linux__)  
+	#include <../../../SFML/x86_64-unknown-linux-gnu/include/SFML/Graphics.hpp>  
+#elif defined(_WIN32)  
+	#include <../../../SFML/x86/include/SFML/Graphics.hpp>
+#else
+	#error "Unsupported platform. Please adjust the include paths for your system."
+#endif
+
+
+
+
 #include "Item.h"
 #include "entity.h"
 #include "Quest.h"
@@ -13,7 +30,7 @@
 
 class player : public entity {
 public:
-	player(int id, int x, int y, int width, int height, int health, int damage);
+	player(int id, int x, int y, int width, int height, int health, int damage, sf::Sprite sprite);
 	void attack(entity& target);
 	void move(int deltaX, int deltaY);
 	void useItem(const Item& item);
@@ -59,10 +76,14 @@ public:
 	void addDebuff(const Debuff& debuff);
 	void removeDebuff(const Debuff& debuff);
 	std::vector<Debuff> getDebuffs() const;
-
-
+	sf::Sprite& getSprite() const;
 
 private:
+
+	//player sprite and texture setup
+	sf::Sprite& m_sprite;
+
+
 	// Player-specific attributes can be added here
 	// For example, inventory, score, etc.
 	int m_inventorySize;

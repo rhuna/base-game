@@ -1,11 +1,25 @@
 #include "../headers/player.h"
+#include "../Engine/headers/MapGenerator.h"
 #include <conio.h> // For _kbhit() and _getch()
 
 
-player::player(int id, int x, int y, int width, int height, int health, int damage)
+player::player(int id, int x, int y, int width, int height, int health, int damage, sf::Sprite sprite)
 	: entity(id, x, y, width, height, health, damage), m_gold(0), m_inventorySize(10), m_score(0), m_level(1), m_experiencePoints(0),
-	m_healthPotions(0), m_manaPotions(0), m_playerName("Default Player"), m_playerClass("Warrior"), m_active(true) {
+	m_healthPotions(0), m_manaPotions(0), m_playerName("Default Player"), m_playerClass("Warrior"), m_active(true),
+	m_quests(), m_equipment(), m_inventory(), m_skills(), m_achievements(), m_buffs(), m_debuffs(), m_sprite(sprite) // Initialize sprite
+{
+	//m_texture.loadFromFile("assets/textures/player.png");
+	//m_sprite.setTexture(m_texture);
+	//m_sprite.setPosition({ static_cast<float>(x), static_cast<float>(y) });
+	//m_sprite.setScale({ static_cast<float>(width) / m_texture.getSize().x, static_cast<float>(height) / m_texture.getSize().y });
+	// Set the sprite's origin to the center of the texture
+	//m_sprite.setOrigin({ static_cast<float>(width) / 2, static_cast<float>(height) / 2 });
 
+
+}
+
+sf::Sprite& player::getSprite() const {
+	return m_sprite;
 }
 // Additional player-specific methods can be added here
 void player::move(int deltaX, int deltaY) {
