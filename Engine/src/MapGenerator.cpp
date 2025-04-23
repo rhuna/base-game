@@ -48,6 +48,7 @@ MapGenerator::~MapGenerator() {
 	deleteMap();
 }
 void MapGenerator::initializeMap() {
+	std::cout << "initialized map\n";
 	map = new int* [height];
 	for (int i = 0; i < height; ++i) {
 		map[i] = new int[width];
@@ -91,19 +92,16 @@ void MapGenerator::displayMap() {
 		std::cout << std::endl;
 	}
 }
-std::unordered_map<int,sf::IntRect> MapGenerator::loadTileset(const std::string& filename, int tileSize) {
+bool MapGenerator::loadTileset(const std::string& filename, int tileSize) {
 	this->tileSize = tileSize;
 
-
-	//tileRects = {
-	//
-	//	{0, sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(tileSize, tileSize))},        // Grass (first tile)
-	//	{1, sf::IntRect(sf::Vector2i(tileSize, 0), sf::Vector2i(tileSize, tileSize))}, // Water (second tile)
-	//	{2, sf::IntRect(sf::Vector2i(0, tileSize), sf::Vector2i(tileSize, tileSize))}, // Stone (first tile, second row)
-	//	{3, sf::IntRect(sf::Vector2i(tileSize, tileSize), sf::Vector2i(tileSize, tileSize))}
-	//
-	//};
-
+	if (!tilesetTexture.loadFromFile(filename)) {
+		std::cerr << "ERROR: Failed to load texture: " << filename << "\n";
+		return false;
+	}
+	else {
+		std::cout << "Loaded texture: " << filename << "\n";
+	}
 	// Calculate how many tiles we have in the tileset
 	int tilesetWidth = tilesetTexture.getSize().x / tileSize;
 	int tilesetHeight = tilesetTexture.getSize().y / tileSize;
@@ -116,19 +114,19 @@ std::unordered_map<int,sf::IntRect> MapGenerator::loadTileset(const std::string&
 			int tileType = y * tilesetWidth + x;
 			
 			// Create the rectangle using the constructor
-			tileRects[tileType] = sf::IntRect(
+			this->tileRects[tileType] = sf::IntRect(
 				sf::Vector2i(x * tileSize, y * tileSize),
 				sf::Vector2i(tileSize, tileSize)
 			);
 		}
 		
 	}
-	return tileRects;
+	return true;
 }
 
 sf::Texture& MapGenerator::getTexture(const char* filename, int tiletype) {
 
-	tileRects = loadTileset(filename,32);
+	//tileRects = loadTileset(filename,32);
 	// Load the texture from the file
 	if (!tilesetTexture.loadFromFile(filename)) {
 		std::cerr << "Failed to load texture: " << filename << std::endl;
@@ -139,12 +137,6 @@ sf::Texture& MapGenerator::getTexture(const char* filename, int tiletype) {
 		std::cerr << "Tile type not found: " << tiletype << std::endl;
 		// Handle error (e.g., throw an exception or return a default texture)
 	}
-	// Return the texture for the specified tile type
-	std::cout << "Tile type: " << tiletype << std::endl;
-	std::cout << "Texture: " << tileTextures[tiletype].getSize().x << std::endl;
-	std::cout << "Texture: " << tileTextures[tiletype].getSize().y << std::endl;
-	std::cout << "Texture: " << tileTextures[tiletype].getSize().x << std::endl;
-	std::cout << "Texture: " << tileTextures[tiletype].getSize().y << std::endl;
 
 
 	return tileTextures[tiletype];
@@ -239,7 +231,7 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 	const int tileSpacing = 0;
 
 	sf::Vector2f viewCenter(width * tileSize / 2.f, height * tileSize / 2.f);
-	sf::View view(viewCenter, sf::Vector2f(window.getSize().x, window.getSize().y));
+	sf::View view(viewCenter, sf::Vector2f( static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y) ));
 	window.setView(view);
 
 	// Draw each tile
@@ -250,14 +242,27 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 		for (int x = 0; x < width; ++x) {
 			int tileType = map[y][x];
 
+			if (tileRects.empty()) {
+				std::cerr << "Error: tileRects is empty in renderMapSFML()\n";
+				return;
+			}
+			else if (!tilesetTexture.getSize().x) {
+				std::cerr << "Error: tilesetTexture not loaded properly\n";
+				return;
+			}
+
+			// Check if the tile type exists in the map
+			
+
 			// Set the texture rectangle for this tile type
 			if (tileRects.find(tileType) != tileRects.end()) {
 				tileSprite.setTextureRect(tileRects[tileType]);
-
+				std::cout << tileType;
 			}
 			else {
 				// Default to first tile if type not found
 				tileSprite.setTextureRect(tileRects.begin()->second);
+				std::cerr << "Tile type not found: " << tileType << std::endl;
 			}
 
 			// Position the sprite
@@ -293,7 +298,7 @@ void MapGenerator::generateObstacles() {
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
 			if (rand() % 10 < 2) { // 20% chance to place an obstacle
-				map[i][j] = 835; // Assign obstacle type
+				map[i][j] = 609; // Assign obstacle type
 			}
 		}
 	}

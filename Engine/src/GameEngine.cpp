@@ -96,22 +96,23 @@ void GameEngine::run()  {
 	mapGen.displayMap();
 
 	//-load texture to player1 using file and tile number
-	sf::Texture texture = mapGen.getTexture("assets/textures/tileset.png",15);
-	sf::Sprite sprite(texture);
+	//sf::Texture texture;
+	//texture.loadFromFile("assets/textures/tileset3.png");
+	//sf::Sprite sprite(texture);
 
-	player player1(1, 50,50,32,32,100,5, sprite);
-	player1.setPlayerName("Hero");
-	player1.setPlayerClass("Warrior");
-	player1.setGold(100);
-	player1.setManaPotions(5);
-	player1.setHealthPotions(3);
-	player1.setExperiencePoints(0);
-	player1.setLevel(1);
-	player1.setActive(true);
+	//player player1(1, 50,50,32,32,100,5, sprite);
+	//player1.setPlayerName("Hero");
+	//player1.setPlayerClass("Warrior");
+	//player1.setGold(100);
+	//player1.setManaPotions(5);
+	//player1.setHealthPotions(3);
+	//player1.setExperiencePoints(0);
+	//player1.setLevel(1);
+	//player1.setActive(true);
 
-	sf::RectangleShape playerShape(sf::Vector2f(static_cast<float>(player1.getWidth()), static_cast<float>(player1.getHeight())));
-	playerShape.setPosition({ static_cast<float>(player1.getX()), static_cast<float>(player1.getY())});
-	playerShape.setFillColor(sf::Color::Red); // Set player color
+	//sf::RectangleShape playerShape(sf::Vector2f(static_cast<float>(player1.getWidth()), static_cast<float>(player1.getHeight())));
+	//playerShape.setPosition({ static_cast<float>(player1.getX()), static_cast<float>(player1.getY())});
+	//playerShape.setFillColor(sf::Color::Red); // Set player color
 
 	// Main loop of the engine
 	while (m_window.isOpen()) {
@@ -140,7 +141,7 @@ void GameEngine::run()  {
 			
 			//draw player
 			
-			m_window.draw(player1.getSprite()); // Draw the player shape
+			//m_window.draw(player1.getSprite()); // Draw the player shape
 
 
 

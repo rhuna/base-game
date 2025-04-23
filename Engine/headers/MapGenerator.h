@@ -37,7 +37,8 @@ public:
 	std::string getMapTileNPC(int x, int y);
 	void loadTextures();
 	sf::Texture& getTexture(const char* filename, int tileNumber);
-	std::unordered_map<int, sf::IntRect> loadTileset(const std::string& filename, int tilesize);
+	bool loadTileset(const std::string& filename, int tilesize);
+	//void loadTileset(const std::string& filename, int tilesize);
 	
 private:
 
