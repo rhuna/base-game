@@ -4,9 +4,9 @@
 Server::Server(unsigned short port)
 	: m_port(port), m_running(false), m_listener()  // Initialize listener
 {
-    if (m_listener.listen(port) != sf::Socket::Done) {
-        std::cerr << "Failed to bind to port " << port << std::endl;
-    }
+    //if (m_listener.listen(port) != sf::Socket::Done) {
+    //    std::cerr << "Failed to bind to port " << port << std::endl;
+    //}
 }
 
 Server::~Server() {
@@ -34,19 +34,19 @@ void Server::stop() {
 void Server::handleConnections() {
     while (m_running) {
         sf::TcpSocket* client = new sf::TcpSocket;
-        if (m_listener.accept(*client) == sf::Socket::Done) {
-            m_clients.push_back(client);
-            std::cout << "New client connected: "
-                << client->getRemoteAddress() << std::endl;
-
-            // Send initial game state to new client
-            sf::Packet welcomePacket;
-            welcomePacket << "Welcome to the game server!";
-            client->send(welcomePacket);
-        }
-        else {
-            delete client;
-        }
+        //if (m_listener.accept(*client) == sf::Socket::Done) {
+        //    m_clients.push_back(client);
+        //    std::cout << "New client connected: "
+        //        << client->getRemoteAddress() << std::endl;
+        //
+        //    // Send initial game state to new client
+        //    sf::Packet welcomePacket;
+        //    welcomePacket << "Welcome to the game server!";
+        //    client->send(welcomePacket);
+        //}
+        //else {
+        //    delete client;
+        //}
     }
 }
 
@@ -56,25 +56,25 @@ void Server::processPackets() {
             sf::TcpSocket& client = *m_clients[i];
             sf::Packet packet;
 
-            if (client.receive(packet) == sf::Socket::Done) {
-                // Handle client input
-                std::string message;
-                if (packet >> message) {
-                    std::cout << "Received: " << message << std::endl;
-
-                    // Broadcast to all clients
-                    for (auto& otherClient : m_clients) {
-                        otherClient->send(packet);
-                    }
-                }
-            }
-            else if (client.receive(packet) == sf::Socket::Disconnected) {
-                std::cout << "Client disconnected: "
-                    << client.getRemoteAddress() << std::endl;
-                delete m_clients[i];
-                m_clients.erase(m_clients.begin() + i);
-                --i;
-            }
+            //if (client.receive(packet) == sf::Socket::Done) {
+            //    // Handle client input
+            //    std::string message;
+            //    if (packet >> message) {
+            //        std::cout << "Received: " << message << std::endl;
+            //
+            //        // Broadcast to all clients
+            //        for (auto& otherClient : m_clients) {
+            //            otherClient->send(packet);
+            //        }
+            //    }
+            //}
+            //else if (client.receive(packet) == sf::Socket::Disconnected) {
+            //    std::cout << "Client disconnected: "
+            //        << client.getRemoteAddress() << std::endl;
+            //    delete m_clients[i];
+            //    m_clients.erase(m_clients.begin() + i);
+            //    --i;
+            //}
         }
 
         // Broadcast game state periodically
