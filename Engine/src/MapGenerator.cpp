@@ -3,17 +3,22 @@
 
 
 
-MapGenerator::MapGenerator() : map(nullptr), width(0), height(0) {
+MapGenerator::MapGenerator() : map(nullptr), width(100), height(100), 
+tileSize(32)
+{
 	std::cout << "Default constructor called." << std::endl;
 }
 MapGenerator::MapGenerator(int width, int height) : map(nullptr), width(width), height(height) {
 	std::cout << "Parameterized constructor called." << std::endl;
-	loadTileset("assets/textures/tileset.png", 32); //- works
+	tileRects = loadTileset("assets/textures/tileset.png", 32); //- works
+	characters = loadTileset("assets/textures/32rogues/rogues.png", 32);
 	//loadTextures();
 	initializeMap();
 	generateMap(width, height);
 }
-MapGenerator::MapGenerator(const MapGenerator& other) : map(nullptr), width(other.width), height(other.height) {
+MapGenerator::MapGenerator(const MapGenerator& other) : map(nullptr), width(other.width), height(other.height),
+tileRects(other.tileRects), tileTextures(other.tileTextures), tileSize(32)  // Copy constructor
+{
 	std::cout << "Copy constructor called." << std::endl;
 	initializeMap();
 	for (int i = 0; i < height; ++i) {
@@ -37,8 +42,10 @@ MapGenerator& MapGenerator::operator=(const MapGenerator& other) {
 	}
 	return *this;
 }
-MapGenerator::MapGenerator(MapGenerator&& other) noexcept : map(other.map), width(other.width), height(other.height) {
-	std::cout << "Move constructor called." << std::endl;
+MapGenerator::MapGenerator(MapGenerator&& other) noexcept : map(other.map), width(other.width), height(other.height),
+tileRects(std::move(other.tileRects)), tileTextures(std::move(other.tileTextures)),tileSize(32) {
+	// Move constructor
+	std::cout << "Move assignment operator called." << std::endl;
 	other.map = nullptr;
 	other.width = 0;
 	other.height = 0;
@@ -92,19 +99,22 @@ void MapGenerator::displayMap() {
 		std::cout << std::endl;
 	}
 }
-bool MapGenerator::loadTileset(const std::string& filename, int tileSize) {
+std::unordered_map<int, sf::Rect<int>> MapGenerator::loadTileset(const std::string& filename, int tileSize) {
 	this->tileSize = tileSize;
 
-	if (!tilesetTexture.loadFromFile(filename)) {
+	std::unordered_map<int, sf::Rect<int>> p_tileRects;
+	sf::Texture p_tilesetTexture;
+
+	if (!p_tilesetTexture.loadFromFile(filename)) {
 		std::cerr << "ERROR: Failed to load texture: " << filename << "\n";
-		return false;
+		return tileRects;
 	}
 	else {
 		std::cout << "Loaded texture: " << filename << "\n";
 	}
 	// Calculate how many tiles we have in the tileset
-	int tilesetWidth = tilesetTexture.getSize().x / tileSize;
-	int tilesetHeight = tilesetTexture.getSize().y / tileSize;
+	int tilesetWidth = p_tilesetTexture.getSize().x / tileSize;
+	int tilesetHeight = p_tilesetTexture.getSize().y / tileSize;
 
 
 
@@ -114,33 +124,48 @@ bool MapGenerator::loadTileset(const std::string& filename, int tileSize) {
 			int tileType = y * tilesetWidth + x;
 			
 			// Create the rectangle using the constructor
-			this->tileRects[tileType] = sf::IntRect(
+			p_tileRects[tileType] = sf::IntRect(
 				sf::Vector2i(x * tileSize, y * tileSize),
 				sf::Vector2i(tileSize, tileSize)
 			);
 		}
 		
 	}
-	return true;
+	if (filename != "assets/textures/tileset.png") {
+		std::cout << "Loaded tileset: " << filename << "\n";
+	}
+	else {
+		std::cout << "Loaded tileset: " << filename << "\n";
+		tileRects = p_tileRects;
+		tilesetTexture = p_tilesetTexture;
+	}
+	
+	return p_tileRects;
 }
 
-sf::Texture& MapGenerator::getTexture(const char* filename, int tiletype) {
 
-	//tileRects = loadTileset(filename,32);
-	// Load the texture from the file
-	if (!tilesetTexture.loadFromFile(filename)) {
-		std::cerr << "Failed to load texture: " << filename << std::endl;
-		// Handle error (e.g., throw an exception or return a default texture)
-	}
-	// Check if the tile type exists in the map
-	if (tileTextures.find(tiletype) == tileTextures.end()) {
-		std::cerr << "Tile type not found: " << tiletype << std::endl;
-		// Handle error (e.g., throw an exception or return a default texture)
+std::pair<sf::Texture&, sf::Rect<int>> MapGenerator::getTextureFromMap(int x, int y) {
+	// Check coordinates
+	if (x < 0 || x >= width || y < 0 || y >= height) {
+		std::cerr << "ERROR: Invalid coordinates\n";
+		return { tilesetTexture, sf::Rect<int>() };
 	}
 
+	// Get tile type
+	int tileType = map[y][x];
 
-	return tileTextures[tiletype];
+	// Check if tile type exists
+	if (tileRects.find(tileType) == tileRects.end()) {
+		std::cerr << "ERROR: Tile type not found\n";
+		return { tilesetTexture, sf::Rect<int>() };
+	}
+
+	return { tilesetTexture, tileRects[tileType] };
 };
+
+std::unordered_map<int, sf::Rect<int>> MapGenerator::getCharacters() const {
+	return characters;
+}
 // not using at the moment... do not need it currently
 void MapGenerator::loadTextures() {
 	// Define which texture corresponds to which tile type
@@ -257,7 +282,7 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 			// Set the texture rectangle for this tile type
 			if (tileRects.find(tileType) != tileRects.end()) {
 				tileSprite.setTextureRect(tileRects[tileType]);
-				std::cout << tileType;
+				//std::cout << tileType;
 			}
 			else {
 				// Default to first tile if type not found

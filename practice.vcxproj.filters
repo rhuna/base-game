@@ -107,6 +107,14 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="LICENSE.txt" />
+    <Text Include="assets\textures\32rogues\animals.txt" />
+    <Text Include="assets\textures\32rogues\animated-tiles.txt" />
+    <Text Include="assets\textures\32rogues\autotiles.txt" />
+    <Text Include="assets\textures\32rogues\items.txt" />
+    <Text Include="assets\textures\32rogues\LICENSE.txt" />
+    <Text Include="assets\textures\32rogues\monsters.txt" />
+    <Text Include="assets\textures\32rogues\rogues.txt" />
+    <Text Include="assets\textures\32rogues\tiles.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\textures\tileset3.png">
@@ -122,6 +130,33 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="assets\textures\tileset.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\32rogues\32rogues-palette.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\32rogues\animals.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\32rogues\animated-tiles.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\32rogues\autotiles.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\32rogues\items.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\32rogues\items-palette-swaps.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\32rogues\monsters.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\32rogues\rogues.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\32rogues\tiles.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

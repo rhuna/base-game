@@ -96,19 +96,19 @@ void GameEngine::run()  {
 	mapGen.displayMap();
 
 	//-load texture to player1 using file and tile number
-	//sf::Texture texture;
-	//texture.loadFromFile("assets/textures/tileset3.png");
-	//sf::Sprite sprite(texture);
+	sf::Texture texture;
+	texture = mapGen.tileRects[45];
+	sf::Sprite sprite(texture);
 
-	//player player1(1, 50,50,32,32,100,5, sprite);
-	//player1.setPlayerName("Hero");
-	//player1.setPlayerClass("Warrior");
-	//player1.setGold(100);
-	//player1.setManaPotions(5);
-	//player1.setHealthPotions(3);
-	//player1.setExperiencePoints(0);
-	//player1.setLevel(1);
-	//player1.setActive(true);
+	player player1(1, 50,50,32,32,100,5, sprite);
+	player1.setPlayerName("Hero");
+	player1.setPlayerClass("Warrior");
+	player1.setGold(100);
+	player1.setManaPotions(5);
+	player1.setHealthPotions(3);
+	player1.setExperiencePoints(0);
+	player1.setLevel(1);
+	player1.setActive(true);
 
 	//sf::RectangleShape playerShape(sf::Vector2f(static_cast<float>(player1.getWidth()), static_cast<float>(player1.getHeight())));
 	//playerShape.setPosition({ static_cast<float>(player1.getX()), static_cast<float>(player1.getY())});
@@ -129,6 +129,7 @@ void GameEngine::run()  {
 			//cleanup(); // Clean up resources
 
 
+
 			
 
 			
@@ -139,7 +140,9 @@ void GameEngine::run()  {
 			
 			mapGen.renderMapSFML(m_window);
 			
-			//draw player
+			//draw moveable playershape
+			//m_window.draw(playerShape); // Draw the player shape
+			m_window.draw(player1.getSprite());
 			
 			//m_window.draw(player1.getSprite()); // Draw the player shape
 

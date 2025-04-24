@@ -36,19 +36,21 @@ public:
 	void setMapTileNPC(int x, int y, const std::string& npc);
 	std::string getMapTileNPC(int x, int y);
 	void loadTextures();
-	sf::Texture& getTexture(const char* filename, int tileNumber);
-	bool loadTileset(const std::string& filename, int tilesize);
+	std::pair<sf::Texture&, sf::Rect<int>> getTextureFromMap(int x, int y);
+	std::unordered_map<int, sf::Rect<int>> getCharacters() const;
+	std::unordered_map<int, sf::Rect<int>> loadTileset(const std::string& filename, int tilesize);
 	//void loadTileset(const std::string& filename, int tilesize);
+	std::unordered_map<int, sf::Rect<int>> tileRects;
 	
 private:
 
 	int** map;
 	int width;
 	int height;
-	int tileSize = 32;
+	int tileSize;
 	std::map<int, sf::Texture> tileTextures;
 	sf::Texture tilesetTexture;
-	std::unordered_map<int, sf::Rect<int>> tileRects;
+	std::unordered_map<int, sf::Rect<int>> characters;
 	void initializeMap();
 	void deleteMap();
 	void generateTerrain();

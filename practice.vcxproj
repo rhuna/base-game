@@ -230,9 +230,26 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="assets\textures\32rogues\animals.txt" />
+    <Text Include="assets\textures\32rogues\animated-tiles.txt" />
+    <Text Include="assets\textures\32rogues\autotiles.txt" />
+    <Text Include="assets\textures\32rogues\items.txt" />
+    <Text Include="assets\textures\32rogues\LICENSE.txt" />
+    <Text Include="assets\textures\32rogues\monsters.txt" />
+    <Text Include="assets\textures\32rogues\rogues.txt" />
+    <Text Include="assets\textures\32rogues\tiles.txt" />
     <Text Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\textures\32rogues\32rogues-palette.png" />
+    <Image Include="assets\textures\32rogues\animals.png" />
+    <Image Include="assets\textures\32rogues\animated-tiles.png" />
+    <Image Include="assets\textures\32rogues\autotiles.png" />
+    <Image Include="assets\textures\32rogues\items-palette-swaps.png" />
+    <Image Include="assets\textures\32rogues\items.png" />
+    <Image Include="assets\textures\32rogues\monsters.png" />
+    <Image Include="assets\textures\32rogues\rogues.png" />
+    <Image Include="assets\textures\32rogues\tiles.png" />
     <Image Include="assets\textures\tileset.png" />
     <Image Include="assets\textures\tileset1.png" />
     <Image Include="assets\textures\tileset2.png" />
