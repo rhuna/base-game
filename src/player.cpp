@@ -43,23 +43,25 @@ void player::setActive(bool active) {
 
 
 };
-void player::run(player& p1) {
-	while (p1.isActive()) {
-		if (_kbhit()) { // Check if a key is pressed
-			char key = _getch();
 
-			switch (key) {
-			case 'w': p1.move(0, -1);  break; // Up
-			case 's': p1.move(0, 1);   break; // Down
-			case 'a': p1.move(-1, 0);  break; // Left
-			case 'd': p1.move(1, 0);   break; // Right
-			case 'q': p1.setActive(false); // Quit
-			}
+void player::handleInput() {
+	float moveSpeed = 5.0f; // Adjust speed as needed
 
-			// Print new position
-			std::cout << "Position: (" << p1.getX() << ", " << p1.getY() << ")\n";
-		}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+		move(0, -moveSpeed);
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+		move(0, moveSpeed);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
+		move(-moveSpeed, 0);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
+		move(moveSpeed, 0);
+	}
+
+	// Update sprite position to match entity position
+	m_sprite.setPosition({ static_cast<float>(getX()), static_cast<float>(getY()) });
 }
 bool player::isActive() const {
 

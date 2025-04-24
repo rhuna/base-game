@@ -42,6 +42,7 @@ public:
 	//void loadTileset(const std::string& filename, int tilesize);
 	std::unordered_map<int, sf::Rect<int>> tileRects;
 	
+	
 private:
 
 	int** map;

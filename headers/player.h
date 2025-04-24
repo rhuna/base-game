@@ -64,7 +64,6 @@ public:
 	std::string getPlayerClass() const;
 	void setPlayerClass(const std::string& newClass);
 	void addSkill(std::unique_ptr<Skill> skill);
-	void run(player& p1);
 	std::vector<std::unique_ptr<Skill>>& getSkills();
 	void removeSkill(std::unique_ptr<Skill>& skill);
 	void addAchievement(const Achievement& achievement);
@@ -77,6 +76,7 @@ public:
 	void removeDebuff(const Debuff& debuff);
 	std::vector<Debuff> getDebuffs() const;
 	sf::Sprite& getSprite() const;
+	void handleInput();
 
 private:
 

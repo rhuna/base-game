@@ -168,6 +168,7 @@ sf::Sprite MapGenerator::getTileSprite(int tileX, int tileY) {
 std::unordered_map<int, sf::Rect<int>> MapGenerator::getCharacters() const {
 	return characters;
 }
+
 // not using at the moment... do not need it currently
 void MapGenerator::loadTextures() {
 	// Define which texture corresponds to which tile type

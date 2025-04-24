@@ -139,7 +139,8 @@ void GameEngine::run()  {
 			armored_devil_troll.setPosition({ 100,100 });
 			yellow_dragon.setPosition({ 150,150 });
 			
-			
+		
+			player1.handleInput();
 			m_window.clear();
 
 			
