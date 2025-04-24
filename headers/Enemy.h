@@ -2,7 +2,22 @@
 #define ENEMY_H
 #include <iostream>
 
-#include <SFML/Graphics.hpp>
+
+#if defined(_WIN64)  
+	#include <SFML/Graphics.hpp>  // Adjusted to use the default include path for Windows 64-bit
+	//#include <../../../SFML/x64/include/SFML/Graphics.hpp>  
+#elif defined(__APPLE__) || defined(__MACH__)  
+	#include <SFML/Graphics.hpp> // Adjusted to use the default include path for macOS  
+#elif defined(__linux__)  
+	#include <../../../SFML/x86_64-unknown-linux-gnu/include/SFML/Graphics.hpp>  
+#elif defined(_WIN32)  
+	#include <SFML/Graphics.hpp>
+	//#include <../../../SFML/x86/include/SFML/Graphics.hpp>
+#else
+	#error "Unsupported platform. Please adjust the include paths for your system."
+#endif
+
+
 #include "Item.h"
 #include "entity.h"
 

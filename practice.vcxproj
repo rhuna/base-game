@@ -187,6 +187,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="server\Server.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="Engine\src\GameEngine.cpp" />
     <ClCompile Include="Engine\src\MapGenerator.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="headers\Quest.h" />
     <ClInclude Include="headers\Skill.h" />
     <ClInclude Include="headers\MainQuest.h" />
+    <ClInclude Include="server\Server.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\2d_game_boilerplate\sfml-audio-3.dll" />

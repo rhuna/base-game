@@ -3,7 +3,8 @@
 
 
 Enemy::Enemy(int id, int x, int y, int width, int height, int health, int damage, sf::Sprite sprite)
-	: entity(id, x, y, width, height, health, damage), m_aggroRange(0), m_loot(), m_aiType("default"), m_sprite(sprite)
+	: entity(id, x, y, width, height, health, damage), m_aggroRange(0), m_loot(), m_aiType("default"), m_sprite(sprite),
+	m_texture(), m_health(health), m_damage(damage), alive(true) // Initialize sprite
 {
 	//m_texture.loadFromFile("assets/textures/enemy.png");
 	//m_sprite.setTexture(m_texture);

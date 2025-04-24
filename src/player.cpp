@@ -10,6 +10,7 @@ player::player(int id, int x, int y, int width, int height, int health, int dama
 {
 	//m_texture.loadFromFile("assets/textures/player.png");
 	//m_sprite.setTexture(m_texture);
+	//setSprite(m_sprite);
 	//m_sprite.setPosition({ static_cast<float>(x), static_cast<float>(y) });
 	//m_sprite.setScale({ static_cast<float>(width) / m_texture.getSize().x, static_cast<float>(height) / m_texture.getSize().y });
 	// Set the sprite's origin to the center of the texture
@@ -17,6 +18,9 @@ player::player(int id, int x, int y, int width, int height, int health, int dama
 
 
 }
+void player::setSprite(sf::Sprite& sprite) {
+	m_sprite = sprite;
+};
 
 sf::Sprite& player::getSprite() const {
 	return m_sprite;

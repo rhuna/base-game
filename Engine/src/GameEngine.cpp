@@ -97,7 +97,7 @@ void GameEngine::run()  {
 
 	//-load texture to player1 using file and tile number
 	
-	sf::Sprite player_Sprite = mapGen.getTileSprite(4, 60);
+	sf::Sprite player_Sprite = mapGen.getTileSprite(15, 60);
 	sf::Sprite wizard_Sprite = mapGen.getTileSprite(0, 60);
 	sf::Sprite armored_devil_troll_Sprite = mapGen.getTileSprite(1, 60);
 	sf::Sprite yellow_dragon_Sprite = mapGen.getTileSprite(3, 60);
