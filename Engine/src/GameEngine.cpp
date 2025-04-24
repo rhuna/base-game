@@ -96,15 +96,14 @@ void GameEngine::run()  {
 	mapGen.displayMap();
 
 	//-load texture to player1 using file and tile number
-	sf::Texture texture;
-	sf::Sprite sprite(texture);
+	
+	sf::Sprite player_Sprite = mapGen.getTileSprite(4, 60);
 	sf::Sprite wizard_Sprite = mapGen.getTileSprite(0, 60);
 	sf::Sprite armored_devil_troll_Sprite = mapGen.getTileSprite(1, 60);
 	sf::Sprite yellow_dragon_Sprite = mapGen.getTileSprite(3, 60);
 
-	sprite = mapGen.getTileSprite(4, 60);
 
-	player player1(1, 50,50,32,32,100,5, sprite);
+	player player1(1, 50,50,32,32,100,5, player_Sprite);
 	player1.setPlayerName("Hero");
 	player1.setPlayerClass("Warrior");
 	player1.setGold(100);
@@ -138,9 +137,9 @@ void GameEngine::run()  {
 
 
 
-	
-			
-			
+
+
+
 			wizard.attack(player1); // Attack the player
 			armored_devil_troll.attack(player1); // Attack the player
 			yellow_dragon.attack(player1); // Attack the player
@@ -148,48 +147,21 @@ void GameEngine::run()  {
 			player1.handleInput();
 			m_window.clear();
 
-			
-			
+
+
 			mapGen.renderMapSFML(m_window);
-			
-			//draw moveable playershape
-			//m_window.draw(playerShape); // Draw the player shape
+
 			m_window.draw(player1.getSprite());
 			m_window.draw(wizard.getSprite()); // Draw the wizard sprite -- works
 			m_window.draw(armored_devil_troll.getSprite()); // Draw the armored devil troll sprite
 			m_window.draw(yellow_dragon.getSprite()); // Draw the yellow dragon sprite
 
-			//m_window.draw(player1.getSprite()); // Draw the player shape
 
-
-
-			// Draw other game objects here
-			// Example: window.draw(playerSprite);
-			// Display the window contents
 
 			m_window.display();
 
-			// Example: pause game logic, stop rendering, etc.
+
 		}
-
-			// if (event->is<sf::Event::MouseButtonPressed>()) { ... }
-
-			// if (event->is<sf::Event::MouseMoved>()) { ... }
-
-			// if (event->is<sf::Event::MouseButtonReleased>()) { ... }
-
-			// if (event->is<sf::Event::MouseWheelScrolled>()) { ... }
-
-			// if (event->is<sf::Event::TextEntered>()) { ... }
-
-			// if (event->is<sf::Event::Resized>()) { ... }
-
-			// if (event->is<sf::Event::GainedFocus>()) { ... }
-
-			// if (event->is<sf::Event::LostFocus>()) { ... }
-
-
-		
 		
 	}
 	
