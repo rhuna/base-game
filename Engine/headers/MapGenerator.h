@@ -36,7 +36,7 @@ public:
 	void setMapTileNPC(int x, int y, const std::string& npc);
 	std::string getMapTileNPC(int x, int y);
 	void loadTextures();
-	std::pair<sf::Texture&, sf::Rect<int>> getTextureFromMap(int x, int y);
+	sf::Sprite getTileSprite(int tileX, int tileY);
 	std::unordered_map<int, sf::Rect<int>> getCharacters() const;
 	std::unordered_map<int, sf::Rect<int>> loadTileset(const std::string& filename, int tilesize);
 	//void loadTileset(const std::string& filename, int tilesize);

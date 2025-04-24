@@ -97,8 +97,8 @@ void GameEngine::run()  {
 
 	//-load texture to player1 using file and tile number
 	sf::Texture texture;
-	texture = mapGen.tileRects[45];
 	sf::Sprite sprite(texture);
+	sprite = mapGen.getTileSprite(56, 48);
 
 	player player1(1, 50,50,32,32,100,5, sprite);
 	player1.setPlayerName("Hero");

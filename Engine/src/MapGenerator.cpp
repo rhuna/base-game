@@ -143,25 +143,27 @@ std::unordered_map<int, sf::Rect<int>> MapGenerator::loadTileset(const std::stri
 	return p_tileRects;
 }
 
+sf::Sprite MapGenerator::getTileSprite(int tileX, int tileY) {
+	// Validate tile coordinates against tilesheet dimensions
+	int tilesheetWidth = tilesetTexture.getSize().x / tileSize;
+	int tilesheetHeight = tilesetTexture.getSize().y / tileSize;
 
-std::pair<sf::Texture&, sf::Rect<int>> MapGenerator::getTextureFromMap(int x, int y) {
-	// Check coordinates
-	if (x < 0 || x >= width || y < 0 || y >= height) {
-		std::cerr << "ERROR: Invalid coordinates\n";
-		return { tilesetTexture, sf::Rect<int>() };
+	if (tileX < 0 || tileX >= tilesheetWidth ||
+		tileY < 0 || tileY >= tilesheetHeight) {
+		std::cerr << "Invalid tile coordinates (" << tileX << "," << tileY << ")\n";
+		sf::Texture texture;
+		return sf::Sprite(texture); // Return empty sprite
 	}
 
-	// Get tile type
-	int tileType = map[y][x];
+	sf::Sprite tileSprite(tilesetTexture);
+	tileSprite.setTextureRect(sf::IntRect(
+		sf::Vector2i(tileX * tileSize, tileY * tileSize),
+		sf::Vector2i(tileSize, tileSize)
+	));
 
-	// Check if tile type exists
-	if (tileRects.find(tileType) == tileRects.end()) {
-		std::cerr << "ERROR: Tile type not found\n";
-		return { tilesetTexture, sf::Rect<int>() };
-	}
+	return tileSprite;
+}
 
-	return { tilesetTexture, tileRects[tileType] };
-};
 
 std::unordered_map<int, sf::Rect<int>> MapGenerator::getCharacters() const {
 	return characters;
