@@ -98,7 +98,9 @@ void GameEngine::run()  {
 	//-load texture to player1 using file and tile number
 	sf::Texture texture;
 	sf::Sprite sprite(texture);
-	sprite = mapGen.getTileSprite(56, 48);
+	sf::Sprite wizard = mapGen.getTileSprite(0, 60);
+	
+	sprite = mapGen.getTileSprite(0, 60);
 
 	player player1(1, 50,50,32,32,100,5, sprite);
 	player1.setPlayerName("Hero");
@@ -131,7 +133,7 @@ void GameEngine::run()  {
 
 
 			
-
+			wizard.setPosition({ 50,50 });
 			
 			
 			m_window.clear();
@@ -143,6 +145,7 @@ void GameEngine::run()  {
 			//draw moveable playershape
 			//m_window.draw(playerShape); // Draw the player shape
 			m_window.draw(player1.getSprite());
+			m_window.draw(wizard); // Draw the wizard sprite
 			
 			//m_window.draw(player1.getSprite()); // Draw the player shape
 
