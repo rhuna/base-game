@@ -99,8 +99,10 @@ void GameEngine::run()  {
 	sf::Texture texture;
 	sf::Sprite sprite(texture);
 	sf::Sprite wizard = mapGen.getTileSprite(0, 60);
-	
-	sprite = mapGen.getTileSprite(0, 60);
+	sf::Sprite armored_devil_troll = mapGen.getTileSprite(1, 60);
+	sf::Sprite yellow_dragon = mapGen.getTileSprite(3, 60);
+
+	sprite = mapGen.getTileSprite(4, 60);
 
 	player player1(1, 50,50,32,32,100,5, sprite);
 	player1.setPlayerName("Hero");
@@ -134,6 +136,8 @@ void GameEngine::run()  {
 
 			
 			wizard.setPosition({ 50,50 });
+			armored_devil_troll.setPosition({ 100,100 });
+			yellow_dragon.setPosition({ 150,150 });
 			
 			
 			m_window.clear();
@@ -145,8 +149,10 @@ void GameEngine::run()  {
 			//draw moveable playershape
 			//m_window.draw(playerShape); // Draw the player shape
 			m_window.draw(player1.getSprite());
-			m_window.draw(wizard); // Draw the wizard sprite
-			
+			m_window.draw(wizard); // Draw the wizard sprite -- works
+			m_window.draw(armored_devil_troll); // Draw the armored devil troll sprite
+			m_window.draw(yellow_dragon); // Draw the yellow dragon sprite
+
 			//m_window.draw(player1.getSprite()); // Draw the player shape
 
 
