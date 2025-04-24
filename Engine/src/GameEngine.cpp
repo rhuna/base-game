@@ -98,9 +98,9 @@ void GameEngine::run()  {
 	//-load texture to player1 using file and tile number
 	sf::Texture texture;
 	sf::Sprite sprite(texture);
-	sf::Sprite wizard = mapGen.getTileSprite(0, 60);
-	sf::Sprite armored_devil_troll = mapGen.getTileSprite(1, 60);
-	sf::Sprite yellow_dragon = mapGen.getTileSprite(3, 60);
+	sf::Sprite wizard_Sprite = mapGen.getTileSprite(0, 60);
+	sf::Sprite armored_devil_troll_Sprite = mapGen.getTileSprite(1, 60);
+	sf::Sprite yellow_dragon_Sprite = mapGen.getTileSprite(3, 60);
 
 	sprite = mapGen.getTileSprite(4, 60);
 
@@ -113,6 +113,10 @@ void GameEngine::run()  {
 	player1.setExperiencePoints(0);
 	player1.setLevel(1);
 	player1.setActive(true);
+
+	Enemy wizard(1, 50, 50, 32, 32, 100, 5, wizard_Sprite);
+	Enemy armored_devil_troll(2, 100, 100, 32, 32, 100, 5, armored_devil_troll_Sprite);
+	Enemy yellow_dragon(3, 250, 250, 32, 32, 100, 5, yellow_dragon_Sprite);
 
 	//sf::RectangleShape playerShape(sf::Vector2f(static_cast<float>(player1.getWidth()), static_cast<float>(player1.getHeight())));
 	//playerShape.setPosition({ static_cast<float>(player1.getX()), static_cast<float>(player1.getY())});
@@ -134,12 +138,13 @@ void GameEngine::run()  {
 
 
 
+	
 			
-			wizard.setPosition({ 50,50 });
-			armored_devil_troll.setPosition({ 100,100 });
-			yellow_dragon.setPosition({ 150,150 });
 			
-		
+			wizard.attack(player1); // Attack the player
+			armored_devil_troll.attack(player1); // Attack the player
+			yellow_dragon.attack(player1); // Attack the player
+
 			player1.handleInput();
 			m_window.clear();
 
@@ -150,9 +155,9 @@ void GameEngine::run()  {
 			//draw moveable playershape
 			//m_window.draw(playerShape); // Draw the player shape
 			m_window.draw(player1.getSprite());
-			m_window.draw(wizard); // Draw the wizard sprite -- works
-			m_window.draw(armored_devil_troll); // Draw the armored devil troll sprite
-			m_window.draw(yellow_dragon); // Draw the yellow dragon sprite
+			m_window.draw(wizard.getSprite()); // Draw the wizard sprite -- works
+			m_window.draw(armored_devil_troll.getSprite()); // Draw the armored devil troll sprite
+			m_window.draw(yellow_dragon.getSprite()); // Draw the yellow dragon sprite
 
 			//m_window.draw(player1.getSprite()); // Draw the player shape
 

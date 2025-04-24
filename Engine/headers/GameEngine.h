@@ -23,6 +23,7 @@
 #include <iomanip> // For std::put_time
 #include "../../headers/player.h"
 #include "../headers/MapGenerator.h"
+#include "../../headers/Enemy.h"
 
 class GameEngine : public Engine {
 public:

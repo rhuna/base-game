@@ -48,16 +48,16 @@ void player::handleInput() {
 	float moveSpeed = 5.0f; // Adjust speed as needed
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-		move(0, -moveSpeed);
+		move(0.0f, -moveSpeed);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-		move(0, moveSpeed);
+		move(0.0f, moveSpeed);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
-		move(-moveSpeed, 0);
+		move(-moveSpeed, 0.0f);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
-		move(moveSpeed, 0);
+		move(moveSpeed, 0.0f);
 	}
 
 	// Update sprite position to match entity position

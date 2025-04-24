@@ -187,6 +187,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="Engine\src\GameEngine.cpp" />
     <ClCompile Include="Engine\src\MapGenerator.cpp" />
     <ClCompile Include="src\MainQuest.cpp" />
@@ -200,6 +201,7 @@
     <ClCompile Include="src\entity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="headers\Enemy.h" />
     <ClInclude Include="Engine\headers\Engine.h" />
     <ClInclude Include="Engine\headers\GameEngine.h" />
     <ClInclude Include="Engine\headers\MapGenerator.h" />
