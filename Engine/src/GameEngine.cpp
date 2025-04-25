@@ -2,15 +2,14 @@
 
 
 
-GameEngine::GameEngine(sf::RenderWindow& window) 
+GameEngine::GameEngine(sf::VideoMode& vm, sf::RenderWindow& window) 
 	: Engine(), m_frameRate(60.0f), m_width(800), m_height(600),
-	m_initialized(false), m_window(window) // Initialize the window member variable
+	m_initialized(false), m_window(window), m_vm(vm) // Initialize the window member variable
 {
 	 // Initialize the window member variable
 	// Default constructor implementation
 	std::cout << "GameEngine created with default settings." << std::endl;
 	m_initialized = false; // Set the initialized flag to false
-	sf::VideoMode vm({ static_cast<unsigned int>(m_width), static_cast<unsigned int>(m_height) });
 	m_window.create(vm, "GameEngine Window"); // Create a window with the specified video mode and title
 	//m_window = sf::RenderWindow(vm, "GameEngine Window");
 	initialize();
@@ -19,6 +18,10 @@ GameEngine::GameEngine(sf::RenderWindow& window)
 	// Set default background color
 	//m_window.clear(sf::Color(0, 0, 0)); // Black background
 	//m_window.display(); // Display the window contents
+
+	 
+
+
 }
 
 
@@ -36,7 +39,8 @@ void GameEngine::initialize() {
 		std::cout << "GameEngine initialized successfully." << std::endl;
 	}
 
-	m_gameState = GameState::RUNNING;
+	m_State = State::RUNNING;
+
 	m_time = 0.0f; // Initialize time
 	m_deltaTime = 0.0f; // Initialize delta time
 	m_frameTime = 0.0f; // Initialize frame time
@@ -49,7 +53,7 @@ void GameEngine::start(){
 	
 	// Start the engine, i.e. time 
 	// Set the game state to RUNNING
-	m_gameState = GameState::RUNNING; // Set the game state to RUNNING
+	m_State = State::RUNNING; // Set the game state to RUNNING
 	// Initialize the game state
 	std::cout << "GameEngine started." << std::endl;
 	
@@ -94,6 +98,7 @@ void GameEngine::run()  {
 
 	MapGenerator mapGen(100, 100);//mapgenerator function is called in constructor
 	mapGen.displayMap();
+	m_maps.push_back(mapGen); // Add the map to the maps vector
 
 	//-load texture to player1 using file and tile number
 	
@@ -116,17 +121,37 @@ void GameEngine::run()  {
 	Enemy wizard(1, 50, 50, 32, 32, 100, 5, wizard_Sprite);
 	Enemy armored_devil_troll(2, 100, 100, 32, 32, 100, 5, armored_devil_troll_Sprite);
 	Enemy yellow_dragon(3, 250, 250, 32, 32, 100, 5, yellow_dragon_Sprite);
+	m_enemies.push_back(wizard);
+	m_enemies.push_back(armored_devil_troll);
+	m_enemies.push_back(yellow_dragon);
 
-	//sf::RectangleShape playerShape(sf::Vector2f(static_cast<float>(player1.getWidth()), static_cast<float>(player1.getHeight())));
-	//playerShape.setPosition({ static_cast<float>(player1.getX()), static_cast<float>(player1.getY())});
-	//playerShape.setFillColor(sf::Color::Red); // Set player color
+	GameState currentGameState = {
+				0, // ID
+				m_clock, // clock
+				m_time, // time
+				m_deltaTime, // deltaTime
+				m_frameTime, // frameTime
+				m_fps, // fps
+				m_lastFrameTime, // lastFrameTime
+				m_currentFrameTime, // currentFrameTime
+				m_initialized, // initialized
+				m_width, // width
+				m_height, // height
+				m_frameRate, // frameRate
+				m_window, // Initialize window 
+				player(0, 0, 0, 32, 32, 100, 10, player1.getSprite()), // player object
+				m_enemies, // enemies
+				m_maps, // maps 
+				m_lootableItems, // lootableItems
+				m_obstacles, // obstacles
+				m_walls // walls
+	};
 
 	// Main loop of the engine
 	while (m_window.isOpen()) {
-	
 		
 
-		while (m_gameState == GameState::RUNNING) {
+		while (m_State == State::RUNNING) {
 			m_currentFrameTime = static_cast<float>(clock()) / CLOCKS_PER_SEC; // Get the current time
 			m_deltaTime = m_currentFrameTime - m_lastFrameTime; // Calculate delta time
 			m_lastFrameTime = m_currentFrameTime; // Update last frame time
@@ -135,7 +160,7 @@ void GameEngine::run()  {
 			//handleInput(); // Handle user input
 			//cleanup(); // Clean up resources
 
-
+			
 
 
 

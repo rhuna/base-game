@@ -26,9 +26,50 @@
 #include "../headers/MapGenerator.h"
 #include "../../headers/Enemy.h"
 
+
+
+
+struct GameState
+{
+   int ID; // Unique identifier for the game state
+   enum class State; // Current state of the game
+   sf::Clock clock; // Clock for measuring time
+   float time; // Time since the game started
+   float deltaTime; // Time between frames
+   float frameTime; // Time taken to render a frame
+   float fps; // Frames per second
+   float lastFrameTime; // Time of the last frame
+   float currentFrameTime; // Time of the current frame
+   bool initialized; // Flag to check if the game state is initialized
+   int width; // Width of the game window
+   int height; // Height of the game window
+   float frameRate; // Frame rate of the game
+   sf::RenderWindow& window; // Changed from reference to value
+   player player; // Player object
+   std::vector<Enemy> enemies; // Changed to unique_ptr without reference
+   std::vector<MapGenerator> maps; // Changed to unique_ptr without reference
+   std::vector<Item> lootableItems; // Changed to value type
+   std::vector<sf::Sprite> obstacles; // Vector of obstacle sprites
+   std::vector<sf::Sprite> walls; // Vector of wall sprites
+
+};   
+
+
+
+
+
 class GameEngine : public Engine {
 public:
-	GameEngine(sf::RenderWindow& window);
+	enum class State {
+		INITIALIZING,
+		RUNNING,
+		PAUSED,
+		STOPPED
+	};
+
+	
+
+	GameEngine(sf::VideoMode& vm, sf::RenderWindow& window);
 	virtual ~GameEngine();
 	void initialize() override;
 	void start() override;
@@ -46,8 +87,19 @@ public:
 	int getHeight() const;
 	int getWidth() const;
 
+
+
 	
 private:
+
+	 // Game state object
+	std::vector<sf::Sprite> m_obstacles; // Vector of obstacle sprites
+	std::vector<sf::Sprite> m_walls; // Vector of wall sprites
+	std::vector<MapGenerator> m_maps; // Changed to unique_ptr without reference
+	std::vector<Item> m_lootableItems;
+	std::vector<Enemy> m_enemies; // Pointer to the enemy object
+	sf::VideoMode m_vm; // Video mode object
+	int m_ID; // Unique identifier for the game engine instance
 	sf::RenderWindow& m_window; // Window object
 	float m_frameRate = 60.0f; // Default frame rate
 	int m_width = 800; // Default width
@@ -68,13 +120,13 @@ private:
 	//current frame time
 	float m_currentFrameTime = 0.0f; // Time of the current frame
 	//game state
-	enum class GameState {
-		INITIALIZING,
-		RUNNING,
-		PAUSED,
-		STOPPED
-	};
-	GameState m_gameState = GameState::INITIALIZING; // Current game state
+	
+	
+
+	State m_State = State::INITIALIZING; // Current game state
+
+	sf::Clock m_clock; // Clock for measuring time
+	
 
 };
 

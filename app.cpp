@@ -25,7 +25,7 @@ int main() {
 
 
 	// Create a GameEngine object
-	GameEngine engine(vw); // Set resolution and frame rate
+	GameEngine engine(vm,vw); // Set resolution and frame rate
 	engine.run();	
 
 
