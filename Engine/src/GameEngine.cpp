@@ -106,7 +106,10 @@ void GameEngine::run()  {
 	sf::Sprite wizard_Sprite = mapGen.getTileSprite(0, 60);
 	sf::Sprite armored_devil_troll_Sprite = mapGen.getTileSprite(1, 60);
 	sf::Sprite yellow_dragon_Sprite = mapGen.getTileSprite(3, 60);
-
+	sf::Sprite Shirtless_baldy_sprite = mapGen.getTileSprite(19,61);
+	sf::Sprite minotaur_with_bow = mapGen.getTileSprite(5, 59);
+	sf::Sprite rock_with_eyes = mapGen.getTileSprite(16, 61);
+	sf::Sprite Frog_sprite = mapGen.getTileSprite(56, 62);
 
 	player player1(1, 50,50,32,32,100,5, player_Sprite);
 	player1.setPlayerName("Hero");
@@ -118,12 +121,20 @@ void GameEngine::run()  {
 	player1.setLevel(1);
 	player1.setActive(true);
 
+
+	Enemy minotaur(5, 300, 450, 32, 32, 100, 5, minotaur_with_bow);
+	Enemy rockEyes(5, 300, 50, 432, 32, 100, 5, rock_with_eyes);
+	Enemy frog(5, 300, 150, 132, 32, 100, 5, Frog_sprite);
+	Enemy shirtless_bald_guy(5, 300, 50, 32, 32, 100, 5, Shirtless_baldy_sprite);
 	Enemy wizard(1, 50, 50, 32, 32, 100, 5, wizard_Sprite);
 	Enemy armored_devil_troll(2, 100, 100, 32, 32, 100, 5, armored_devil_troll_Sprite);
 	Enemy yellow_dragon(3, 250, 250, 32, 32, 100, 5, yellow_dragon_Sprite);
 	m_enemies.push_back(wizard);
 	m_enemies.push_back(armored_devil_troll);
 	m_enemies.push_back(yellow_dragon);
+	m_enemies.push_back(minotaur);
+	m_enemies.push_back(rockEyes);
+	m_enemies.push_back(frog);
 
 	GameState currentGameState = {
 		0, // ID
@@ -163,7 +174,7 @@ void GameEngine::run()  {
 
 			mapGen.renderMapSFML(m_window);
 
-			m_window.draw(player1.getSprite());
+			//m_window.draw(player1.getSprite());
 
 			for (auto& enemy : m_enemies) {
 				m_window.draw(enemy.getSprite());
