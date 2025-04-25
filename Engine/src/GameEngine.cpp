@@ -126,60 +126,49 @@ void GameEngine::run()  {
 	m_enemies.push_back(yellow_dragon);
 
 	GameState currentGameState = {
-				0, // ID
-				m_clock, // clock
-				m_time, // time
-				m_deltaTime, // deltaTime
-				m_frameTime, // frameTime
-				m_fps, // fps
-				m_lastFrameTime, // lastFrameTime
-				m_currentFrameTime, // currentFrameTime
-				m_initialized, // initialized
-				m_width, // width
-				m_height, // height
-				m_frameRate, // frameRate
-				m_window, // Initialize window 
-				player(0, 0, 0, 32, 32, 100, 10, player1.getSprite()), // player object
-				m_enemies, // enemies
-				m_maps, // maps 
-				m_lootableItems, // lootableItems
-				m_obstacles, // obstacles
-				m_walls // walls
+		0, // ID
+		m_clock, // clock
+		m_time, // time
+		m_deltaTime, // deltaTime
+		m_frameTime, // frameTime
+		m_fps, // fps
+		m_lastFrameTime, // lastFrameTime
+		m_currentFrameTime, // currentFrameTime
+		m_initialized, // initialized
+		m_width, // width
+		m_height, // height
+		m_frameRate, // frameRate
+		m_window, // Initialize window 
+		player(0, 0, 0, 32, 32, 100, 10, player1.getSprite()), // player object
+		m_enemies, // enemies
+		m_maps, // maps 
+		m_lootableItems, // lootableItems
+		m_obstacles, // obstacles
+		m_walls // walls
 	};
 
 	// Main loop of the engine
 	while (m_window.isOpen()) {
 		
-
 		while (m_State == State::RUNNING) {
-			m_currentFrameTime = static_cast<float>(clock()) / CLOCKS_PER_SEC; // Get the current time
-			m_deltaTime = m_currentFrameTime - m_lastFrameTime; // Calculate delta time
-			m_lastFrameTime = m_currentFrameTime; // Update last frame time
-			update(m_deltaTime); // Update the game state
-			//render(); // Render the game state
-			//handleInput(); // Handle user input
-			//cleanup(); // Clean up resources
+			currentGameState.currentFrameTime = static_cast<float>(clock()) / CLOCKS_PER_SEC; // Get the current time
+			currentGameState.deltaTime = m_currentFrameTime - m_lastFrameTime; // Calculate delta time
+			currentGameState.lastFrameTime = m_currentFrameTime; // Update last frame time
+			update(m_deltaTime); // Update the game state // Handle user input
 
-			
-
-
-
-
-			wizard.attack(player1); // Attack the player
-			armored_devil_troll.attack(player1); // Attack the player
-			yellow_dragon.attack(player1); // Attack the player
 
 			player1.handleInput();
+
 			m_window.clear();
-
-
 
 			mapGen.renderMapSFML(m_window);
 
 			m_window.draw(player1.getSprite());
-			m_window.draw(wizard.getSprite()); // Draw the wizard sprite -- works
-			m_window.draw(armored_devil_troll.getSprite()); // Draw the armored devil troll sprite
-			m_window.draw(yellow_dragon.getSprite()); // Draw the yellow dragon sprite
+
+			for (auto& enemy : m_enemies) {
+				m_window.draw(enemy.getSprite());
+				enemy.attack(player1);
+			}
 
 
 

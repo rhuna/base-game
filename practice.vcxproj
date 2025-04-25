@@ -187,6 +187,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="client\client.cpp" />
     <ClCompile Include="server\Server.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="Engine\src\GameEngine.cpp" />
@@ -202,6 +203,7 @@
     <ClCompile Include="src\entity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="client\client.h" />
     <ClInclude Include="headers\Enemy.h" />
     <ClInclude Include="Engine\headers\Engine.h" />
     <ClInclude Include="Engine\headers\GameEngine.h" />
