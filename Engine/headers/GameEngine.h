@@ -30,6 +30,9 @@
 
 
 
+
+
+
 struct GameState
 {
    int ID; // Unique identifier for the game state
@@ -87,7 +90,7 @@ public:
 	bool isInitialized() const;
 	int getHeight() const;
 	int getWidth() const;
-	sf::RenderWindow getWindow();
+	sf::RenderWindow& getWindow();
 
 
 	
@@ -101,7 +104,7 @@ private:
 	std::vector<Enemy> m_enemies; // Pointer to the enemy object
 	sf::VideoMode m_vm; // Video mode object
 	int m_ID; // Unique identifier for the game engine instance
-	sf::RenderWindow m_window; // Window object
+	sf::RenderWindow& m_window; // Window object
 	float m_frameRate = 60.0f; // Default frame rate
 	int m_width = 800; // Default width
 	int m_height = 600; // Default height

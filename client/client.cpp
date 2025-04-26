@@ -1,10 +1,12 @@
 #include "client.h"
+#include "../Engine/headers/GameEngine.h"
 #include <iostream>
 
 
 client::client() 
 	: m_connected(false), m_serverPort(0), m_State(State::STOPPED),
-	m_serverAddress(sf::IpAddress::Any)
+	m_serverAddress(sf::IpAddress::Any), m_serverPlayerStateReceived(false),
+	m_localPlayerState({ 0, 0 }), m_serverPlayerState({ 0, 0 }) // Initialize member variables
 {
 	m_socket.setBlocking(false);
 	m_serverPort = 0;
@@ -26,7 +28,7 @@ client::~client() {
 bool client::connect(const sf::IpAddress& serverAddress, unsigned short port){
 	m_serverAddress = serverAddress;
 	m_serverPort = port;
-	if (m_socket.connect(serverAddress, port) != sf::Socket::Done) {
+	if (m_socket.connect(serverAddress, port) != sf::Socket::Status::Done) {
 		std::cerr << "Failed to connect to server at "
 			<< serverAddress.toString() << ":" << port << std::endl;
 		m_connected = false;
@@ -92,7 +94,7 @@ void client::handleGameStatePacket(sf::Packet& packet) {
 
 };
 
-auto client::processLocalInput(const GameEngine& engine) {
+InputState client::processLocalInput(GameEngine& engine) {
 	// Process local input and update the input state
 	InputState input;
 
@@ -129,34 +131,12 @@ auto client::processLocalInput(const GameEngine& engine) {
 	input.aimX = mousePos.x;
 	input.aimY = mousePos.y;
 
-	// Joystick support (optional)
-	if (sf::Joystick::isConnected(0)) { // Check first joystick
-		// Movement (left stick)
-		float axisX = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
-		float axisY = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
-
-		// Apply deadzone
-		const float deadzone = 25.f;
-		if (std::abs(axisX) > deadzone) {
-			if (axisX < -deadzone) input.moveLeft = true;
-			if (axisX > deadzone) input.moveRight = true;
-		}
-		if (std::abs(axisY) > deadzone) {
-			if (axisY < -deadzone) input.moveUp = true;
-			if (axisY > deadzone) input.moveDown = true;
-		}
-
-		// Buttons
-		input.jump = input.jump || sf::Joystick::isButtonPressed(0, 0); // A button
-		input.attack = input.attack || sf::Joystick::isButtonPressed(0, 2); // X button
-		input.special = input.special || sf::Joystick::isButtonPressed(0, 3); // Y button
-	}
 
 	return input;
 }
 
 
-client::PlayerState client::predictMovement(const PlayerState& state, const InputState& input) {
+PlayerState client::predictMovement(const PlayerState& state, const InputState& input) {
 	PlayerState predictedState = state;
 	// Apply input to predicted state (pseudo-code)
 	if (input.moveUp) {
@@ -174,10 +154,16 @@ client::PlayerState client::predictMovement(const PlayerState& state, const Inpu
 	return predictedState;
 };
 void client::reconcileStates() {
-	// Compare predicted state with server state and reconcile
-	// Example: If the server state is different, adjust the local state
-	if (m_serverPlayerStateReceived) {
-		// Reconcile logic here
+	// Compare predicted state with server state
+	if (std::abs(m_localPlayerState.x - m_serverPlayerState.x) > 1.0f ||
+		std::abs(m_localPlayerState.y - m_serverPlayerState.y) > 1.0f) {
+		// Significant difference - snap to server state
+		m_localPlayerState = m_serverPlayerState;
+	}
+	else {
+		// Small difference - interpolate
+		m_localPlayerState.x = lerp(m_localPlayerState.x, m_serverPlayerState.x, 0.2f);
+		m_localPlayerState.y = lerp(m_localPlayerState.y, m_serverPlayerState.y, 0.2f);
 	}
 };
 void client::sendInputToServer(const InputState& input) {
@@ -186,8 +172,11 @@ void client::sendInputToServer(const InputState& input) {
 	packet << input.moveUp << input.moveDown << input.moveLeft << input.moveRight;
 	sendPacket(packet);
 };
+float client::lerp(float a, float b, float t) {
+	return a + (b - a) * t;
+}
 
-void client::update(const GameEngine& engine) {
+void client::update(GameEngine& engine) {
 	// 1. Process local input
 	InputState input = processLocalInput(engine);
 
