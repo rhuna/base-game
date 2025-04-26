@@ -77,6 +77,10 @@ void GameEngine::stop(){
 	// Example of using the player class with quest class and equipment class
 	
 }
+sf::RenderWindow GameEngine::getWindow() {
+	return m_window;
+
+};
 
 ///// ////	////	////	//////	////	///	/	/	/	//////	/////	/////	///
 
@@ -173,8 +177,10 @@ void GameEngine::run()  {
 			m_window.clear();
 
 			mapGen.renderMapSFML(m_window);
-
-			//m_window.draw(player1.getSprite());
+			auto& playerSprite = player1.getSprite();
+			std::cout << "Sprite position: " << playerSprite.getPosition().x << ", " << playerSprite.getPosition().y << std::endl;
+			
+			m_window.draw(playerSprite);
 
 			for (auto& enemy : m_enemies) {
 				m_window.draw(enemy.getSprite());

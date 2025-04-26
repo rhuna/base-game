@@ -35,29 +35,19 @@ void Enemy::attack(entity& target) {
 	}
 	//follow target
 	followTarget(target);
-
-	// Logic to attack the target entity
-	// This could involve reducing the target's health, applying effects, etc.
-	// For example:
-	// target.takeDamage(getDamage());
-	// std::cout << "Attacking target with ID: " << target.getId() << std::endl;
 }
 void Enemy::move(int deltaX, int deltaY) {
 
-	// Logic to move the enemy entity
-	// This could involve updating its position, checking for collisions, etc.
-	// For example:
+
 	this->setPosition(getX() + deltaX, getY() + deltaY);
 	std::cout << "Enemy moved to position: (" << getX() << ", " << getY() << ")" << std::endl;
 	m_sprite.move({ static_cast<float>(deltaX), static_cast<float>(deltaY) });
-	// Update sprite position to match entity position
+
 	m_sprite.setPosition({ static_cast<float>(getX()), static_cast<float>(getY()) });
 
 };
 void Enemy::takeDamage(int damage) {
-	// Logic to take damage
-	// This could involve reducing health, checking for death, etc.
-	// For example:
+
 	if (isAlive()) {
 		setHealth(getHealth() - damage);
 		std::cout << "Enemy took " << damage << " damage. Remaining health: " << getHealth() << std::endl;
@@ -70,41 +60,35 @@ void Enemy::takeDamage(int damage) {
 	}
 };
 void Enemy::setAlive() {
-	// Logic to set the enemy as alive
-	// This could involve resetting health, status effects, etc.
-	// For example:
+
+
 	alive = true;
 	std::cout << "Enemy is now alive." << std::endl;
 }
 bool Enemy::isAlive() {
-	// Logic to check if the enemy is alive
-	// This could involve checking health, status effects, etc.
-	// For example:
+
 	return getHealth() > 0;
 };
 void Enemy::setHealth(int damage) {
-	// Logic to set health
-	// This could involve updating the enemy's health, checking for death, etc.
-	// For example:
+
+
 	m_health = getHealth() - damage;
 	std::cout << "Enemy health set to: " << getHealth() << std::endl;
 };
 void Enemy::die() {
-	// Logic to handle enemy death
-	// This could involve removing the enemy from the game, playing a death animation, etc.
-	// For example:
+
 	std::cout << "Enemy has died." << std::endl;
-	// Remove enemy from game or perform other actions
+
 	setHealth(0); // Set health to 0 to indicate death
-	alive = false;// Assuming isAlive() is a method that checks if the enemy is alive
+	alive = false;
 
 };
 void Enemy::setAggroRange(int range) {
-	// Logic to set the aggro range
-	// This could involve updating the enemy's behavior, AI, etc.
-	// For example:
+	
 	m_aggroRange = range;
+
 	std::cout << "Enemy aggro range set to: " << m_aggroRange << std::endl;
+	
 };
 int Enemy::getAggroRange() const {
 	// Logic to get the aggro range

@@ -1,26 +1,63 @@
 #ifndef CLIENT_H
 #define CLIENT_H
+#include <SFML/Network.hpp>
+#include <SFML/Graphics.hpp>
+#include "../Engine/headers/GameEngine.h"
 
 class client{
+private:
+    sf::TcpSocket m_socket;
+    sf::IpAddress m_serverAddress;
+    unsigned short m_serverPort;
+    bool m_connected;
+	sf::Packet m_packet;
+    bool m_serverPlayerStateReceived;
+
 public:
+    enum class PacketType : std::uint8_t {
+        GameState,
+        PlayerInput,
+        ChatMessage,
+        // Add more as needed
+    };
+
+    struct InputState {
+        bool moveUp;
+        bool moveDown;
+        bool moveLeft;
+        bool moveRight;
+        bool jump;
+        bool attack;
+        bool special;
+        bool fire;
+        bool altFire;
+        int aimX;
+        int aimY;
+        // Add other input states
+    };
+
+    struct PlayerState {
+        float x, y;
+        // Other player properties
+    };
+    PlayerState m_localPlayerState;
+
 	client();
 	~client();
-	void initialize();
-	void start();
-	void render();
-	void update();
-	void run();
-	void stop();
-private:
-	bool m_initialized;
-	float m_time;
-	float m_deltaTime;
-	float m_frameTime;
-	float m_frameRate;
-	int m_frameCount;
-	float m_fps;
-	float m_lastFrameTime;
-	float m_currentFrameTime;
+    void update(const GameEngine& engine);
+    bool connect(const sf::IpAddress& serverAddress, unsigned short port);
+    void disconnect();
+    bool isConnected() const;
+    void sendPacket(sf::Packet& packet);
+    void receivePackets();
+	void handlePacket(sf::Packet& packet);
+	void handleGameStatePacket(sf::Packet& packet);
+    auto processLocalInput(const GameEngine& engine);
+	void reconcileStates();
+    void sendInputToServer(const InputState& input);
+
+    PlayerState predictMovement(const PlayerState& state, const InputState& input);
+
 	enum class State {
 		STOPPED,
 		RUNNING,
@@ -28,7 +65,7 @@ private:
 		RENDERING
 	};
 	State m_State;
-
+	
 };
 
 
