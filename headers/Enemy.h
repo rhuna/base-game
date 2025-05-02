@@ -54,6 +54,7 @@ public:
 
 private:
 
+	int m_speed;
 	int m_health;
 	int m_damage;
 	bool alive;
