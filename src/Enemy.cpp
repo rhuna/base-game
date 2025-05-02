@@ -3,67 +3,54 @@
 
 
 Enemy::Enemy(int id, int x, int y, int width, int height, int health, int damage, sf::Sprite sprite)
-	: entity(id, x, y, width, height, health, damage), m_aggroRange(15), m_loot(), m_aiType("default"), m_sprite(sprite),
-	m_texture(), m_health(health), m_damage(damage), alive(true), m_speed(5) // Initialize sprite
+	: entity(id, x, y, width, height, health, damage), m_aggroRange(100), m_loot(), m_aiType("default"), m_sprite(sprite),
+	m_texture(), m_health(health), m_damage(damage), alive(true), m_speed(5) // Initialize other member variables
 {
-	//m_texture.loadFromFile("assets/textures/enemy.png");
-	//m_sprite.setTexture(m_texture);
-	//m_sprite.setPosition({ static_cast<float>(x), static_cast<float>(y) });
-	//m_sprite.setScale({ static_cast<float>(width) / m_texture.getSize().x, static_cast<float>(height) / m_texture.getSize().y });
-	// Set the sprite's origin to the center of the texture
-	//m_sprite.setOrigin({ static_cast<float>(width) / 2, static_cast<float>(height) / 2 });
+	m_sprite.setPosition({ static_cast<float>(x), static_cast<float>(y) });
 };
 
-void Enemy::followTarget(entity& target) {
+void Enemy::followTarget(entity& target, float deltaTime) {
 
 	if (!isAlive() || !target.isAlive()) return;
 
-	// Get positions as Vector2f
-	sf::Vector2f enemyPos(static_cast<float>(getX()), static_cast<float>(getY()));
-	sf::Vector2f targetPos(static_cast<float>(target.getX()), static_cast<float>(target.getY()));
+	// Get target position (convert to float if needed)
+	sf::Vector2f targetPos(static_cast<float>(target.getX()),
+		static_cast<float>(target.getY()));
 
-	// Calculate distance to target
-	float dx = targetPos.x - enemyPos.x;
-	float dy = targetPos.y - enemyPos.y;
-	float distance = std::sqrt(dx * dx + dy * dy);
+	// Calculate direction vector
+	sf::Vector2f direction = targetPos - sf::Vector2f(getX(), getY());
+	float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
-	// Only follow if within aggro range but not too close
-	if (distance <= m_aggroRange && distance > 10.0f) {
-		// Normalize direction vector
-		dx /= distance;
-		dy /= distance;
-
-		// Calculate movement with speed and deltaTime
-		float moveX = dx * m_speed;
-		float moveY = dy * m_speed;
-
-		// Update position
-		setPosition(static_cast<int>(enemyPos.x + moveX),
-			static_cast<int>(enemyPos.y + moveY));
-
-		// Update sprite position
-		m_sprite.setPosition({ static_cast<float>(getX()), static_cast<float>(getY())});
+	// Normalize direction and scale by speed
+	if (distance > 0) {
+		direction /= distance;
+		deltaTime = 5;
+		// Move toward target (frame-rate independent)
+		float moveDistance = m_speed * deltaTime;
+		if (distance > 15.0f) {  // Stop when close enough
+			// If we're closer than our move distance, just go directly to target
+			if (moveDistance > distance) {
+				setPosition(targetPos.x, targetPos.y);
+			}
+			else {
+				setPosition(getX() + direction.x * moveDistance,
+					getY() + direction.y * moveDistance);
+			}
+		}
 	}
 }
-void Enemy::attack(entity& target) {
+void Enemy::attack(entity& target, float deltaTime) {
 	if (isAlive() && target.isAlive()) {
 		target.takeDamage(getDamage());
+		followTarget(target, deltaTime);
 	}
 	else {
 		std::cout << "Target is not alive." << std::endl;
 	}
 	//follow target
-	followTarget(target);
 }
-void Enemy::move(int deltaX, int deltaY) {
-	
-	this->setPosition(getX() + deltaX, getY() + deltaY);
-
-	std::cout << "Enemy moved to position: (" << getX() << ", " << getY() << ")" << std::endl;
-	//m_sprite.move({ static_cast<float>(deltaX), static_cast<float>(deltaY) });
-
-	m_sprite.setPosition({ static_cast<float>(getX() + deltaX), static_cast<float>(getY() + deltaY)});
-
+void Enemy::move(float deltaX, float deltaY) {
+	setPosition(getX() + deltaX, getY() + deltaY );
 };
 void Enemy::takeDamage(int damage) {
 

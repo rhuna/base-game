@@ -125,13 +125,13 @@ void GameEngine::run()  {
 	player1.setActive(true);
 
 
-	Enemy minotaur(5, 300, 450, 32, 32, 100, 1, minotaur_with_bow);
-	Enemy rockEyes(4, 300, 50, 432, 32, 100, 1, rock_with_eyes);
-	Enemy frog(5, 300, 150, 132, 32, 100, 1, Frog_sprite);
-	Enemy shirtless_bald_guy(5, 300, 50, 32, 32, 100, 1, Shirtless_baldy_sprite);
+	Enemy minotaur(5, 300, 450, 32, 32, 100, 5, minotaur_with_bow);
+	Enemy rockEyes(4, 300, 50, 432, 32, 100, 5, rock_with_eyes);
+	Enemy frog(5, 300, 150, 132, 32, 100, 5, Frog_sprite);
+	Enemy shirtless_bald_guy(5, 300, 50, 32, 32, 100, 15 ,Shirtless_baldy_sprite);
 	Enemy wizard(1, 50, 50, 32, 32, 100, 1, wizard_Sprite);
-	Enemy armored_devil_troll(2, 100, 100, 32, 32, 100, 1, armored_devil_troll_Sprite);
-	Enemy yellow_dragon(3, 250, 250, 32, 32, 100, 1, yellow_dragon_Sprite);
+	Enemy armored_devil_troll(2, 100, 100, 32, 32, 100, 5, armored_devil_troll_Sprite);
+	Enemy yellow_dragon(3, 250, 250, 32, 32, 100, 5, yellow_dragon_Sprite);
 	m_enemies.push_back(wizard);
 	m_enemies.push_back(armored_devil_troll);
 	m_enemies.push_back(yellow_dragon);
@@ -165,9 +165,12 @@ void GameEngine::run()  {
 	while (m_window.isOpen()) {
 		
 		while (m_State == State::RUNNING) {
+			float dt = m_clock.restart().asSeconds(); // Restart the clock and get the delta time
+			m_deltaTime = dt;
 			currentGameState.currentFrameTime = static_cast<float>(clock()) / CLOCKS_PER_SEC; // Get the current time
-			currentGameState.deltaTime = m_currentFrameTime - m_lastFrameTime; // Calculate delta time
+			currentGameState.deltaTime = m_deltaTime; // Calculate delta time
 			currentGameState.lastFrameTime = m_currentFrameTime; // Update last frame time
+			float FrameTime = m_currentFrameTime - m_lastFrameTime;
 			update(m_deltaTime); // Update the game state // Handle user input
 
 
@@ -185,10 +188,10 @@ void GameEngine::run()  {
 			for (auto& enemy : m_enemies) {
 				m_window.draw(enemy.getSprite());
 				if (checkCollision(player1.getSprite(), enemy.getSprite())) {
-					enemy.attack(player1);
+					enemy.attack(player1, m_deltaTime);
 				}
 				else {
-					enemy.followTarget(player1);
+					enemy.followTarget(player1, m_deltaTime);
 				}
 			}
 

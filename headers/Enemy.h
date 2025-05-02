@@ -27,8 +27,8 @@ class Enemy : public entity
 
 public:
 	Enemy(int id, int x, int y, int width, int height, int health, int damage, sf::Sprite sprite);
-	void attack(entity& target);
-	void move(int deltaX, int deltaY);
+	void attack(entity& target, float deltaTime);
+	void move(float deltaX, float deltaY);
 	void takeDamage(int damage);
 	void setHealth(int damage);
 	void die();
@@ -48,12 +48,13 @@ public:
 	void setAlive();
 	void setSprite(sf::Sprite& sprite);
 	bool isAlive();
-	void followTarget(entity& target);
+	void followTarget(entity& target, float deltaTime);
 	void setX(int x);
 	void setY(int y);
 
 private:
 
+	
 	int m_speed;
 	int m_health;
 	int m_damage;

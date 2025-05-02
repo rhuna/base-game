@@ -30,10 +30,14 @@ public:
 	bool isAlive() const;
 	void setPosition(int newX, int newY);
 	void takeDamage(int amount);
-
+	int getPreviousX() const { return m_previousX; }
+	int getPreviousY() const { return m_previousY; }
 
 
 private:
+
+	int m_previousX;
+	int m_previousY;
 	int id;
 	int x, y;
 	int width, height;
