@@ -86,7 +86,7 @@ public:
 	bool isInitialized() const;
 	int getHeight() const;
 	int getWidth() const;
-
+	bool checkCollision(const sf::Sprite& sprite1, const sf::Sprite& sprite2);
 
 
 	

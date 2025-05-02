@@ -164,6 +164,7 @@ void GameEngine::run()  {
 			mapGen.renderMapSFML(m_window);
 
 			m_window.draw(player1.getSprite());
+			checkCollision(player1.getSprite(), wizard.getSprite());
 
 			for (auto& enemy : m_enemies) {
 				m_window.draw(enemy.getSprite());
@@ -179,6 +180,16 @@ void GameEngine::run()  {
 		
 	}
 	
+}
+
+bool  GameEngine::checkCollision(const sf::Sprite& sprite1, const sf::Sprite& sprite2) {
+	// Check if the two sprites are colliding
+	if (sprite1.getGlobalBounds() == sprite2.getLocalBounds()) {
+		std::cout << "Collision detected!" << std::endl;
+		return true; // Collision detected
+	}
+	std::cout << "No collision detected." << std::endl;
+	return false; // No collision
 }
 
 void GameEngine::update(float deltaTime) {

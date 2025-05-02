@@ -112,16 +112,6 @@
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
     <None Include="README.md" />
-    <None Include="..\2d_game_boilerplate\sfml-audio-3.dll" />
-    <None Include="..\2d_game_boilerplate\sfml-audio-d-3.dll" />
-    <None Include="..\2d_game_boilerplate\sfml-graphics-3.dll" />
-    <None Include="..\2d_game_boilerplate\sfml-graphics-d-3.dll" />
-    <None Include="..\2d_game_boilerplate\sfml-network-3.dll" />
-    <None Include="..\2d_game_boilerplate\sfml-network-d-3.dll" />
-    <None Include="..\2d_game_boilerplate\sfml-system-3.dll" />
-    <None Include="..\2d_game_boilerplate\sfml-system-d-3.dll" />
-    <None Include="..\2d_game_boilerplate\sfml-window-3.dll" />
-    <None Include="..\2d_game_boilerplate\sfml-window-d-3.dll" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="LICENSE.txt" />
