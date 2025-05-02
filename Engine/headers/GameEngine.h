@@ -25,6 +25,10 @@
 #include "../../headers/player.h"
 #include "../headers/MapGenerator.h"
 #include "../../headers/Enemy.h"
+#include "../../client/client.h"
+
+
+
 
 
 
@@ -67,7 +71,7 @@ public:
 		STOPPED
 	};
 
-	
+	client m_gameClient;
 
 	GameEngine(sf::VideoMode& vm, sf::RenderWindow& window);
 	virtual ~GameEngine();
@@ -86,7 +90,9 @@ public:
 	bool isInitialized() const;
 	int getHeight() const;
 	int getWidth() const;
+	sf::RenderWindow& getWindow();
 	bool checkCollision(const sf::Sprite& sprite1, const sf::Sprite& sprite2);
+
 
 
 	
