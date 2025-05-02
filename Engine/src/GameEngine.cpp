@@ -178,7 +178,7 @@ void GameEngine::run()  {
 			mapGen.renderMapSFML(m_window);
 
 			m_window.draw(player1.getSprite());
-			checkCollision(player1.getSprite(), wizard.getSprite());
+			checkCollision(player1.getSprite(), wizard_Sprite);
 
 
 			for (auto& enemy : m_enemies) {
