@@ -187,12 +187,40 @@ void GameEngine::run()  {
 
 			for (auto& enemy : m_enemies) {
 				m_window.draw(enemy.getSprite());
-				if (checkCollision(player1.getSprite(), enemy.getSprite())) {
+				bool isColliding = checkCollision(player1.getSprite(), enemy.getSprite());
+				
+				if (isColliding) {
+					// Calculate push-back direction
+					sf::Vector2f playerPos(player1.getX(), player1.getY());
+					sf::Vector2f enemyPos(enemy.getX(), enemy.getY());
+					sf::Vector2f direction = enemyPos - playerPos;
+					float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
 					enemy.attack(player1, m_deltaTime);
+
+					if (distance > 0) {
+						direction /= distance;
+
+						// Push enemy back to just outside collision range
+						float minDistance = (player1.getWidth() + enemy.getWidth()) / 2.0f;
+						sf::Vector2f newPos = playerPos + direction * minDistance;
+						enemy.setPosition(newPos.x, newPos.y);
+					}
 				}
 				else {
 					enemy.followTarget(player1, m_deltaTime);
 				}
+				// Check if the enemy is within aggro range
+				float distance = std::sqrt(std::pow(player1.getX() - enemy.getX(), 2) + std::pow(player1.getY() - enemy.getY(), 2));
+				if (distance < enemy.getAggroRange()) {
+					// Enemy is within aggro range, follow the player
+					enemy.followTarget(player1, m_deltaTime);
+				}
+				else {
+					// Enemy is out of aggro range, stop following
+					enemy.setPosition(enemy.getX(), enemy.getY());
+				}
+				
 			}
 
 

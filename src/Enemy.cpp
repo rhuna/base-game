@@ -24,7 +24,7 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 	// Normalize direction and scale by speed
 	if (distance > 0) {
 		direction /= distance;
-		deltaTime = 5;
+		deltaTime = 10;
 		// Move toward target (frame-rate independent)
 		float moveDistance = m_speed * deltaTime;
 		if (distance > 15.0f) {  // Stop when close enough
@@ -42,12 +42,11 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 void Enemy::attack(entity& target, float deltaTime) {
 	if (isAlive() && target.isAlive()) {
 		target.takeDamage(getDamage());
-		followTarget(target, deltaTime);
 	}
 	else {
 		std::cout << "Target is not alive." << std::endl;
 	}
-	//follow target
+	
 }
 void Enemy::move(float deltaX, float deltaY) {
 	setPosition(getX() + deltaX, getY() + deltaY );
