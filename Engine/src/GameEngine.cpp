@@ -212,6 +212,23 @@ void GameEngine::run()  {
 			for (auto& enemy : m_enemies) {
 				m_window.draw(enemy.getSprite());
 				bool isColliding = checkCollision(player1.getSprite(), enemy.getSprite());
+
+				if (checkCollision(player1.getSprite(), enemy.getSprite())) {
+					//logic for wall collision
+
+					if ((enemy.getSprite().getGlobalBounds().getCenter().x + 15) == (player1.getSprite().getGlobalBounds().getCenter().x)) {
+						player1.setPosition(player1.getX() + 5, player1.getY());
+					}
+					else if ((enemy.getSprite().getGlobalBounds().getCenter().x - 15) == (player1.getSprite().getGlobalBounds().getCenter().x)) {
+						player1.setPosition(player1.getX() - 5, player1.getY());
+					}
+					if ((enemy.getSprite().getGlobalBounds().getCenter().y - 15) == (player1.getSprite().getGlobalBounds().getCenter().y)) {
+						player1.setPosition(player1.getX(), player1.getY() - 5);
+					}
+					else if ((enemy.getSprite().getGlobalBounds().getCenter().y + 15) == (player1.getSprite().getGlobalBounds().getCenter().y)) {
+						player1.setPosition(player1.getX(), player1.getY() + 5);
+					}
+				}
 				
 				if (isColliding) {
 					// Calculate push-back direction
