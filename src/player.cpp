@@ -3,13 +3,25 @@
 #include <conio.h> // For _kbhit() and _getch()
 
 
-player::player(int id, int x, int y, int width, int height, int health, int damage, sf::Sprite sprite)
+player::player(int id, int x, int y, int width, int height, int health, int damage, MapGenerator mapGen)
 	: entity(id, x, y, width, height, health, damage), m_gold(0), m_inventorySize(10), m_score(0), m_level(1), m_experiencePoints(0),
 	m_healthPotions(0), m_manaPotions(0), m_playerName("Default Player"), m_playerClass("Warrior"), m_active(true),
-	m_quests(), m_equipment(), m_inventory(), m_skills(), m_achievements(), m_buffs(), m_debuffs(), m_sprite(sprite) // Initialize sprite
+	m_quests(), m_equipment(), m_inventory(), m_skills(), m_achievements(), m_buffs(), m_debuffs(), m_sprite(m_sprite)
 {
+	 // Assuming MapGenerator is a class that handles map generation
+	 // Assuming getTileSprite is a method in MapGenerator that returns a sprite
 	
+	sf::Sprite tempSprite = mapGen.getTileSprite(60, 15);
+	m_sprite.setTexture(tempSprite.getTexture()); // Copy the sprite
+	m_sprite.setPosition({ static_cast<float>(x), static_cast<float>(y) });
 
+
+}
+player::~player() {
+	
+	// Destructor logic if needed
+	// Clean up resources, etc.
+	//std::cout << "Player destroyed." << std::endl;
 
 }
 void player::setSprite(sf::Sprite& sprite) {

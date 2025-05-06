@@ -93,6 +93,7 @@ sf::RenderWindow& GameEngine::getWindow() {
 void GameEngine::run()  {
 	//open window
 	//sf::RenderWindow window(sf::VideoMode(vm.width, vm.height), "GameEngine Window");
+	// 
 	// Set the window properties
 	m_window.setFramerateLimit(60); // Set frame rate limit
 	m_window.setVerticalSyncEnabled(true); // Enable VSync
@@ -101,11 +102,11 @@ void GameEngine::run()  {
 
 	MapGenerator mapGen(100, 100);//mapgenerator function is called in constructor
 	mapGen.displayMap();
-	m_maps.push_back(mapGen); // Add the map to the maps vector
+	//m_maps.push_back(mapGen); // Add the map to the maps vector
 
 	//-load texture to player1 using file and tile number
 	
-	sf::Sprite player_Sprite = mapGen.getTileSprite(15, 60);
+	
 	sf::Sprite wizard_Sprite = mapGen.getTileSprite(0, 60);
 	sf::Sprite armored_devil_troll_Sprite = mapGen.getTileSprite(1, 60);
 	sf::Sprite yellow_dragon_Sprite = mapGen.getTileSprite(3, 60);
@@ -113,8 +114,9 @@ void GameEngine::run()  {
 	sf::Sprite minotaur_with_bow = mapGen.getTileSprite(5, 59);
 	sf::Sprite rock_with_eyes = mapGen.getTileSprite(16, 61);
 	sf::Sprite Frog_sprite = mapGen.getTileSprite(56, 62);
+	sf::Sprite unknown = mapGen.getTileSprite(0, 0);
 
-	player player1(1, 50,50,32,32,1000,5, player_Sprite);
+	player player1(1, 50,50,32,32,1000,5, mapGen);
 	player1.setPlayerName("Hero");
 	player1.setPlayerClass("Warrior");
 	player1.setGold(100);
@@ -132,6 +134,7 @@ void GameEngine::run()  {
 	Enemy wizard(1, 50, 50, 32, 32, 100, 1, wizard_Sprite);
 	Enemy armored_devil_troll(2, 100, 100, 32, 32, 100, 5, armored_devil_troll_Sprite);
 	Enemy yellow_dragon(3, 250, 250, 32, 32, 100, 5, yellow_dragon_Sprite);
+	//Enemy armored_devil_troll(2, 100, 100, 32, 32, 100, 5, armored_devil_troll_Sprite);
 	m_enemies.push_back(wizard);
 	m_enemies.push_back(armored_devil_troll);
 	m_enemies.push_back(yellow_dragon);
@@ -153,7 +156,7 @@ void GameEngine::run()  {
 		m_height, // height
 		m_frameRate, // frameRate
 		m_window, // Initialize window 
-		player(0, 0, 0, 32, 32, 1000, 10, player1.getSprite()), // player object
+		player(0, 0, 0, 32, 32, 1000, 10, mapGen), // player object
 		m_enemies, // enemies
 		m_maps, // maps 
 		m_lootableItems, // lootableItems
@@ -206,6 +209,8 @@ void GameEngine::run()  {
 						sf::Vector2f newPos = playerPos + direction * minDistance;
 						enemy.setPosition(newPos.x, newPos.y);
 					}
+					float pushdist = 20.0f;
+					enemy.setPosition(enemy.getX() + direction.x * pushdist, enemy.getY() + direction.y * pushdist);
 				}
 				else {
 					enemy.followTarget(player1, m_deltaTime);

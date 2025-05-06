@@ -1,6 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+class MapGenerator;
+
 #if defined(_WIN64)  
 	#include <SFML/Graphics.hpp>  // Adjusted to use the default include path for Windows 64-bit
 	//#include <../../../SFML/x64/include/SFML/Graphics.hpp>  
@@ -17,7 +19,6 @@
 
 
 
-
 #include "Item.h"
 #include "entity.h"
 #include "Quest.h"
@@ -31,7 +32,8 @@
 
 class player : public entity {
 public:
-	player(int id, int x, int y, int width, int height, int health, int damage, sf::Sprite sprite);
+	player(int id, int x, int y, int width, int height, int health, int damage, MapGenerator mapGen);
+	~player();
 	void attack(entity& target);
 	void move(int deltaX, int deltaY);
 	void useItem(const Item& item);
