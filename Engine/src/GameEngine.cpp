@@ -4,14 +4,13 @@
 
 GameEngine::GameEngine(sf::VideoMode& vm, sf::RenderWindow& window) 
 	: Engine(), m_frameRate(60.0f), m_width(800), m_height(600),
-	m_initialized(false), m_window(window), m_vm(vm) // Initialize the window member variable
+	m_initialized(false), m_vm(vm), m_window(window) // Initialize the window member variable
 {
 	 // Initialize the window member variable
 	// Default constructor implementation
 	std::cout << "GameEngine created with default settings." << std::endl;
 	m_initialized = false; // Set the initialized flag to false
-	m_window.create(vm, "GameEngine Window"); // Create a window with the specified video mode and title
-	//m_window = sf::RenderWindow(vm, "GameEngine Window");
+	//m_window.create(vm, "GameEngine Window"); // Create a window with the specified video mode and title
 	initialize();
 	start();
 	render();

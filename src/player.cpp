@@ -12,8 +12,14 @@ player::player(int id, int x, int y, int width, int height, int health, int dama
 	 // Assuming getTileSprite is a method in MapGenerator that returns a sprite
 	
 	sf::Sprite tempSprite = mapGen.getTileSprite(60, 15);
-	m_sprite.setTexture(tempSprite.getTexture()); // Copy the sprite
-	m_sprite.setPosition({ static_cast<float>(x), static_cast<float>(y) });
+	if (!tempSprite.getLocalBounds().getCenter().x) {
+		std::cout << " tile sprite not loaded\n";
+	}
+	else {
+		m_sprite.setTexture(tempSprite.getTexture()); // Copy the sprite
+		m_sprite.setPosition({ static_cast<float>(x), static_cast<float>(y) });
+
+	}
 
 
 }
