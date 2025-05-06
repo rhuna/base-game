@@ -104,7 +104,7 @@ void GameEngine::run()  {
 	m_maps.push_back(mapGen); // Add the map to the maps vector
 
 	//-load texture to player1 using file and tile number
-	
+	sf::Sprite wall_Sprite = mapGen.getTileSprite(50, 50);
 	sf::Sprite player_Sprite = mapGen.getTileSprite(15, 60);
 	sf::Sprite wizard_Sprite = mapGen.getTileSprite(0, 60);
 	sf::Sprite armored_devil_troll_Sprite = mapGen.getTileSprite(1, 60);
@@ -181,17 +181,32 @@ void GameEngine::run()  {
 			mapGen.renderMapSFML(m_window);
 
 			
-#ifndef _WIN32
-#define _WIN32
+#if defined(_WIN32)
 			m_window.draw(player1.getSprite());
-
-	
+#elif defined(_WIN64)
+			m_window.draw(player1.getSprite());
 #endif // _WIN32
-
-
+	
 
 			
-			
+			wall_Sprite.setPosition({ 300,300 });
+			m_window.draw(wall_Sprite);
+			if (checkCollision(player1.getSprite(), wall_Sprite)) {
+				//logic for wall collision
+
+				if ((wall_Sprite.getGlobalBounds().getCenter().x + 15) == (player1.getSprite().getGlobalBounds().getCenter().x - 15)) {
+					player1.setPosition(player1.getX() + 5, player1.getY());
+				}
+				else if ((wall_Sprite.getGlobalBounds().getCenter().x - 15) == (player1.getSprite().getGlobalBounds().getCenter().x + 15)) {
+					player1.setPosition(player1.getX() - 5, player1.getY());
+				}
+				if ((wall_Sprite.getGlobalBounds().getCenter().y - 15) == (player1.getSprite().getGlobalBounds().getCenter().y + 15)) {
+					player1.setPosition(player1.getX(), player1.getY()-5);
+				}
+				else if ((wall_Sprite.getGlobalBounds().getCenter().y + 15) == (player1.getSprite().getGlobalBounds().getCenter().y - 15)) {
+					player1.setPosition(player1.getX(), player1.getY() + 5);
+				}
+			}
 
 
 			for (auto& enemy : m_enemies) {
@@ -205,7 +220,9 @@ void GameEngine::run()  {
 					sf::Vector2f direction = enemyPos - playerPos;
 					float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
-					enemy.attack(player1, m_deltaTime);
+					if (playerPos == enemyPos) {
+						enemy.attack(player1, m_deltaTime);
+					}
 
 					if (distance > 0) {
 						direction /= distance;
@@ -242,6 +259,8 @@ void GameEngine::run()  {
 	}
 	
 }
+
+
 
 bool  GameEngine::checkCollision(const sf::Sprite& sprite1, const sf::Sprite& sprite2) {
 	// Check if the two sprites are colliding
