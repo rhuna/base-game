@@ -94,7 +94,6 @@ public:
 	bool checkCollision(const sf::Sprite& sprite1, const sf::Sprite& sprite2);
 
 
-
 	
 private:
 

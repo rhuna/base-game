@@ -74,7 +74,7 @@ void GameEngine::stop(){
 	std::cout << "GameEngine stopped." << std::endl;
 	// Additional stop logic if needed
 	// Example of using the player class with quest class and equipment class
-	
+	std::cout << "engine time: " << m_time;
 }
 sf::RenderWindow& GameEngine::getWindow() {
 	return m_window;
@@ -105,8 +105,8 @@ void GameEngine::run()  {
 	//m_maps.push_back(mapGen); // Add the map to the maps vector
 
 	//-load texture to player1 using file and tile number
-	
-	
+	sf::Sprite wall_Sprite = mapGen.getTileSprite(50, 50);
+	sf::Sprite player_Sprite = mapGen.getTileSprite(15, 60);
 	sf::Sprite wizard_Sprite = mapGen.getTileSprite(0, 60);
 	sf::Sprite armored_devil_troll_Sprite = mapGen.getTileSprite(1, 60);
 	sf::Sprite yellow_dragon_Sprite = mapGen.getTileSprite(3, 60);
@@ -134,7 +134,6 @@ void GameEngine::run()  {
 	Enemy wizard(1, 50, 50, 32, 32, 100, 1, wizard_Sprite);
 	Enemy armored_devil_troll(2, 100, 100, 32, 32, 100, 5, armored_devil_troll_Sprite);
 	Enemy yellow_dragon(3, 250, 250, 32, 32, 100, 5, yellow_dragon_Sprite);
-	//Enemy armored_devil_troll(2, 100, 100, 32, 32, 100, 5, armored_devil_troll_Sprite);
 	m_enemies.push_back(wizard);
 	m_enemies.push_back(armored_devil_troll);
 	m_enemies.push_back(yellow_dragon);
@@ -168,12 +167,16 @@ void GameEngine::run()  {
 	while (m_window.isOpen()) {
 		
 		while (m_State == State::RUNNING) {
+			//state time
 			float dt = m_clock.restart().asSeconds(); // Restart the clock and get the delta time
 			m_deltaTime = dt;
+
+			//state game
 			currentGameState.currentFrameTime = static_cast<float>(clock()) / CLOCKS_PER_SEC; // Get the current time
 			currentGameState.deltaTime = m_deltaTime; // Calculate delta time
 			currentGameState.lastFrameTime = m_currentFrameTime; // Update last frame time
 			float FrameTime = m_currentFrameTime - m_lastFrameTime;
+			std::cout << "Deltatime: " << m_deltaTime << "\nTime: " << m_time - 0.05f << "\n";
 			update(m_deltaTime); // Update the game state // Handle user input
 
 
@@ -183,14 +186,61 @@ void GameEngine::run()  {
 
 			mapGen.renderMapSFML(m_window);
 
+			
+#if defined(_WIN32)
 			m_window.draw(player1.getSprite());
-			
-			
+#elif defined(_WIN64)
+			m_window.draw(player1.getSprite());
+#endif // _WIN32
+	
+
+			for (int i = 0; i < 10; i++) {
+				m_walls.push_back(wall_Sprite);
+			}
+			int i = 0;
+			for (auto& wall : m_walls) {
+				wall.setPosition({ static_cast<float>(i * i),static_cast<float>(i * i) });
+				m_window.draw(wall);
+				i++;
+			}
+			if (checkCollision(player1.getSprite(), wall_Sprite)) {
+				//logic for wall collision
+
+				if ((wall_Sprite.getGlobalBounds().getCenter().x + 15) == (player1.getSprite().getGlobalBounds().getCenter().x - 15)) {
+					player1.setPosition(player1.getX() + 5, player1.getY());
+				}
+				else if ((wall_Sprite.getGlobalBounds().getCenter().x - 15) == (player1.getSprite().getGlobalBounds().getCenter().x + 15)) {
+					player1.setPosition(player1.getX() - 5, player1.getY());
+				}
+				if ((wall_Sprite.getGlobalBounds().getCenter().y - 15) == (player1.getSprite().getGlobalBounds().getCenter().y + 15)) {
+					player1.setPosition(player1.getX(), player1.getY()-5);
+				}
+				else if ((wall_Sprite.getGlobalBounds().getCenter().y + 15) == (player1.getSprite().getGlobalBounds().getCenter().y - 15)) {
+					player1.setPosition(player1.getX(), player1.getY() + 5);
+				}
+			}
 
 
 			for (auto& enemy : m_enemies) {
 				m_window.draw(enemy.getSprite());
 				bool isColliding = checkCollision(player1.getSprite(), enemy.getSprite());
+
+				if (checkCollision(player1.getSprite(), enemy.getSprite())) {
+					//logic for wall collision
+
+					if ((enemy.getSprite().getGlobalBounds().getCenter().x + 15) == (player1.getSprite().getGlobalBounds().getCenter().x)) {
+						player1.setPosition(player1.getX() + 5, player1.getY());
+					}
+					else if ((enemy.getSprite().getGlobalBounds().getCenter().x - 15) == (player1.getSprite().getGlobalBounds().getCenter().x)) {
+						player1.setPosition(player1.getX() - 5, player1.getY());
+					}
+					if ((enemy.getSprite().getGlobalBounds().getCenter().y - 15) == (player1.getSprite().getGlobalBounds().getCenter().y)) {
+						player1.setPosition(player1.getX(), player1.getY() - 5);
+					}
+					else if ((enemy.getSprite().getGlobalBounds().getCenter().y + 15) == (player1.getSprite().getGlobalBounds().getCenter().y)) {
+						player1.setPosition(player1.getX(), player1.getY() + 5);
+					}
+				}
 				
 				if (isColliding) {
 					// Calculate push-back direction
@@ -199,7 +249,9 @@ void GameEngine::run()  {
 					sf::Vector2f direction = enemyPos - playerPos;
 					float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
-					enemy.attack(player1, m_deltaTime);
+					if (playerPos == enemyPos) {
+						enemy.attack(player1, m_deltaTime);
+					}
 
 					if (distance > 0) {
 						direction /= distance;
@@ -239,6 +291,8 @@ void GameEngine::run()  {
 	
 }
 
+
+
 bool  GameEngine::checkCollision(const sf::Sprite& sprite1, const sf::Sprite& sprite2) {
 	// Check if the two sprites are colliding
 	if (sprite1.getGlobalBounds().findIntersection(sprite2.getGlobalBounds()).has_value()) {
@@ -253,12 +307,12 @@ bool  GameEngine::checkCollision(const sf::Sprite& sprite1, const sf::Sprite& sp
 void GameEngine::update(float deltaTime) {
 	// Update game state
 	// Example delta time (60 FPS)
-	m_time += deltaTime; // Update time
 	m_deltaTime = deltaTime; // Update delta time
-	m_frameTime = deltaTime; // Update frame time
+	m_time += m_deltaTime; // Update time
+	m_frameTime = m_deltaTime; // Update frame time
 	m_frameCount++; // Increment frame count
 	if (m_frameCount >= m_frameRate) { // If frame count reaches frame rate
-		m_fps = 1.0f / deltaTime; // Calculate FPS
+		m_fps = 1.0f / m_deltaTime; // Calculate FPS
 		m_frameCount = 0; // Reset frame count
 	}
 	// Example update logic

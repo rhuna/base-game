@@ -12,16 +12,31 @@ Enemy::Enemy(int id, int x, int y, int width, int height, int health, int damage
 void Enemy::followTarget(entity& target, float deltaTime) {
 	if (!isAlive() || !target.isAlive()) return;
 
-	// 1. Get positions
-	float enemyX = getX();
-	float enemyY = getY();
-	float targetX = target.getX();
-	float targetY = target.getY();
+	// Get target position (convert to float if needed)
+	sf::Vector2f targetPos(static_cast<float>(target.getX()),
+		static_cast<float>(target.getY()));
 
 	// 2. Calculate direction vector
 	float dx = targetX - enemyX;
 	float dy = targetY - enemyY;
 
+	// Normalize direction and scale by speed
+	if (distance > 0) {
+		direction /= distance;
+		deltaTime = 10;
+		// Move toward target (frame-rate independent)
+		float moveDistance = m_speed * deltaTime;
+		if (distance > 15.0f) {  // Stop when close enough
+			// If we're closer than our move distance, just go directly to target
+			//if (moveDistance > distance) {
+			//	setPosition(targetPos.x, targetPos.y);
+			//}
+			//else {
+				setPosition(getX() + direction.x * moveDistance,
+					getY() + direction.y * moveDistance);
+			//}
+		}
+	}
 	// 3. Normalize the direction (convert to unit vector)
 	float length = sqrt(dx * dx + dy * dy);
 	if (length > 0) {

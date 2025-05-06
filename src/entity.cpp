@@ -1,3 +1,4 @@
+//#pragma warning(disable: 4275)
 #include "../headers/entity.h"
 
 
