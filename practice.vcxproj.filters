@@ -112,7 +112,6 @@
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
     <None Include="README.md" />
-    <None Include="practice.pdb" />
     <None Include="sfml-audio-3.dll" />
     <None Include="sfml-audio-d-3.dll" />
     <None Include="sfml-graphics-3.dll" />

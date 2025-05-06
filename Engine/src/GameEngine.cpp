@@ -180,7 +180,16 @@ void GameEngine::run()  {
 
 			mapGen.renderMapSFML(m_window);
 
+			
+#ifndef _WIN32
+#define _WIN32
 			m_window.draw(player1.getSprite());
+
+	
+#endif // _WIN32
+
+
+
 			
 			
 

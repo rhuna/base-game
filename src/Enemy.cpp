@@ -29,13 +29,13 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 		float moveDistance = m_speed * deltaTime;
 		if (distance > 15.0f) {  // Stop when close enough
 			// If we're closer than our move distance, just go directly to target
-			if (moveDistance > distance) {
-				setPosition(targetPos.x, targetPos.y);
-			}
-			else {
+			//if (moveDistance > distance) {
+			//	setPosition(targetPos.x, targetPos.y);
+			//}
+			//else {
 				setPosition(getX() + direction.x * moveDistance,
 					getY() + direction.y * moveDistance);
-			}
+			//}
 		}
 	}
 }
