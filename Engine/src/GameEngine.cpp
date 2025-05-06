@@ -74,7 +74,7 @@ void GameEngine::stop(){
 	std::cout << "GameEngine stopped." << std::endl;
 	// Additional stop logic if needed
 	// Example of using the player class with quest class and equipment class
-	
+	std::cout << "engine time: " << m_time;
 }
 sf::RenderWindow& GameEngine::getWindow() {
 	return m_window;
@@ -167,12 +167,16 @@ void GameEngine::run()  {
 	while (m_window.isOpen()) {
 		
 		while (m_State == State::RUNNING) {
+			//state time
 			float dt = m_clock.restart().asSeconds(); // Restart the clock and get the delta time
 			m_deltaTime = dt;
+
+			//state game
 			currentGameState.currentFrameTime = static_cast<float>(clock()) / CLOCKS_PER_SEC; // Get the current time
 			currentGameState.deltaTime = m_deltaTime; // Calculate delta time
 			currentGameState.lastFrameTime = m_currentFrameTime; // Update last frame time
 			float FrameTime = m_currentFrameTime - m_lastFrameTime;
+			std::cout << "Deltatime: " << m_deltaTime << "\nTime: " << m_time - 0.05f << "\n";
 			update(m_deltaTime); // Update the game state // Handle user input
 
 
@@ -190,9 +194,15 @@ void GameEngine::run()  {
 #endif // _WIN32
 	
 
-			
-			wall_Sprite.setPosition({ 300,300 });
-			m_window.draw(wall_Sprite);
+			for (int i = 0; i < 10; i++) {
+				m_walls.push_back(wall_Sprite);
+			}
+			int i = 0;
+			for (auto& wall : m_walls) {
+				wall.setPosition({ static_cast<float>(i * i),static_cast<float>(i * i) });
+				m_window.draw(wall);
+				i++;
+			}
 			if (checkCollision(player1.getSprite(), wall_Sprite)) {
 				//logic for wall collision
 
@@ -297,12 +307,12 @@ bool  GameEngine::checkCollision(const sf::Sprite& sprite1, const sf::Sprite& sp
 void GameEngine::update(float deltaTime) {
 	// Update game state
 	// Example delta time (60 FPS)
-	m_time += deltaTime; // Update time
 	m_deltaTime = deltaTime; // Update delta time
-	m_frameTime = deltaTime; // Update frame time
+	m_time += m_deltaTime; // Update time
+	m_frameTime = m_deltaTime; // Update frame time
 	m_frameCount++; // Increment frame count
 	if (m_frameCount >= m_frameRate) { // If frame count reaches frame rate
-		m_fps = 1.0f / deltaTime; // Calculate FPS
+		m_fps = 1.0f / m_deltaTime; // Calculate FPS
 		m_frameCount = 0; // Reset frame count
 	}
 	// Example update logic
