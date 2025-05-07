@@ -3,27 +3,27 @@
 
 
 
-MapGenerator::MapGenerator() : map(nullptr), width(100), height(100), 
-tileSize(32)
+MapGenerator::MapGenerator() : m_map(nullptr), m_width(100), m_height(100),
+m_tileSize(32)
 {
 	std::cout << "Default constructor called." << std::endl;
 }
-MapGenerator::MapGenerator(int width, int height) : map(nullptr), width(width), height(height) {
+MapGenerator::MapGenerator(int width, int height) : m_map(nullptr), m_width(width), m_height(height) {
 	std::cout << "Parameterized constructor called." << std::endl;
 	tileRects = loadTileset("assets/textures/tileset.png", 32); //- works
-	characters = loadTileset("assets/textures/32rogues/rogues.png", 32);
+	m_characters = loadTileset("assets/textures/32rogues/rogues.png", 32);
 	//loadTextures();
 	initializeMap();
 	generateMap(width, height);
 }
-MapGenerator::MapGenerator(const MapGenerator& other) : map(nullptr), width(other.width), height(other.height),
-tileRects(other.tileRects), tileTextures(other.tileTextures), tileSize(32)  // Copy constructor
+MapGenerator::MapGenerator(const MapGenerator& other) : m_map(nullptr), m_width(other.m_width), m_height(other.m_height),
+tileRects(other.tileRects), m_tileTextures(other.m_tileTextures), m_tileSize(32)  // Copy constructor
 {
 	std::cout << "Copy constructor called." << std::endl;
 	initializeMap();
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			map[i][j] = other.map[i][j];
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
+			m_map[i][j] = other.m_map[i][j];
 		}
 	}
 }
@@ -31,24 +31,24 @@ MapGenerator& MapGenerator::operator=(const MapGenerator& other) {
 	std::cout << "Copy assignment operator called." << std::endl;
 	if (this != &other) {
 		deleteMap();
-		width = other.width;
-		height = other.height;
+		m_width = other.m_width;
+		m_height = other.m_height;
 		initializeMap();
-		for (int i = 0; i < height; ++i) {
-			for (int j = 0; j < width; ++j) {
-				map[i][j] = other.map[i][j];
+		for (int i = 0; i < m_height; ++i) {
+			for (int j = 0; j < m_width; ++j) {
+				m_map[i][j] = other.m_map[i][j];
 			}
 		}
 	}
 	return *this;
 }
-MapGenerator::MapGenerator(MapGenerator&& other) noexcept : map(other.map), width(other.width), height(other.height),
-tileRects(std::move(other.tileRects)), tileTextures(std::move(other.tileTextures)),tileSize(32) {
+MapGenerator::MapGenerator(MapGenerator&& other) noexcept : m_map(other.m_map), m_width(other.m_width), m_height(other.m_height),
+tileRects(std::move(other.tileRects)), m_tileTextures(std::move(other.m_tileTextures)), m_tileSize(32) {
 	// Move constructor
 	std::cout << "Move assignment operator called." << std::endl;
-	other.map = nullptr;
-	other.width = 0;
-	other.height = 0;
+	other.m_map = nullptr;
+	other.m_width = 0;
+	other.m_height = 0;
 }
 MapGenerator::~MapGenerator() {
 	std::cout << "Destructor called." << std::endl;
@@ -56,23 +56,23 @@ MapGenerator::~MapGenerator() {
 }
 void MapGenerator::initializeMap() {
 	std::cout << "initialized map\n";
-	map = new int* [height];
-	for (int i = 0; i < height; ++i) {
-		map[i] = new int[width];
+	m_map = new int* [m_height];
+	for (int i = 0; i < m_height; ++i) {
+		m_map[i] = new int[m_width];
 	}
 }
 void MapGenerator::deleteMap() {
-	if (map) {
-		for (int i = 0; i < height; ++i) {
-			delete[] map[i];
+	if (m_map) {
+		for (int i = 0; i < m_height; ++i) {
+			delete[] m_map[i];
 		}
-		delete[] map;
-		map = nullptr;
+		delete[] m_map;
+		m_map = nullptr;
 	}
 }
 void MapGenerator::generateMap(int width, int height) {
-	this->width = width;
-	this->height = height;
+	this->m_width = width;
+	this->m_height = height;
 	initializeMap();
 	generateTerrain();
 	generateObstacles();
@@ -92,61 +92,58 @@ void MapGenerator::generateMap(int width, int height) {
 }
 
 void MapGenerator::displayMap() {
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
-			std::cout << map[i][j] << " ";
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
+			std::cout << m_map[i][j] << " ";
 		}
 		std::cout << std::endl;
 	}
 }
 std::unordered_map<int, sf::Rect<int>> MapGenerator::loadTileset(const std::string& filename, int tileSize) {
-	this->tileSize = tileSize;
+   this->m_tileSize = tileSize;
 
-	std::unordered_map<int, sf::Rect<int>> p_tileRects;
-	sf::Texture p_tilesetTexture;
+   std::unordered_map<int, sf::Rect<int>> p_tileRects;
+   p_tileRects.clear();
+   p_tileRects.reserve(1000); // Reserve space for 256 tile types
+   // Create a texture object to hold the tileset image
+   sf::Texture p_tilesetTexture;
+   p_tilesetTexture.bind(nullptr); // Unbind any previously bound texture
 
-	if (!p_tilesetTexture.loadFromFile(filename)) {
-		std::cerr << "ERROR: Failed to load texture: " << filename << "\n";
-		return tileRects;
-	}
-	else {
-		std::cout << "Loaded texture: " << filename << "\n";
-	}
-	// Calculate how many tiles we have in the tileset
-	int tilesetWidth = p_tilesetTexture.getSize().x / tileSize;
-	int tilesetHeight = p_tilesetTexture.getSize().y / tileSize;
+   std::cout << filename;
+   // Check the return value of loadFromFile and handle errors properly
+   if (!p_tilesetTexture.loadFromFile(filename)) {
+       throw std::runtime_error("Failed to load texture: " + filename);
+   } else {
+       std::cout << "Loaded texture: " << filename << "\n";
+   }
+   // Calculate how many tiles we have in the tileset
+   int tilesetWidth = p_tilesetTexture.getSize().x / tileSize;
+   int tilesetHeight = p_tilesetTexture.getSize().y / tileSize;
 
+   // Automatically map tile types to texture rects
+   for (int y = 0; y < tilesetHeight; y++) {
+       for (int x = 0; x < tilesetWidth; x++) {
+           int tileType = y * tilesetWidth + x;
 
+           // Create the rectangle using the constructor
+           p_tileRects[tileType] = sf::IntRect(
+               sf::Vector2i(x * tileSize, y * tileSize),
+               sf::Vector2i(tileSize, tileSize)
+           );
+       }
+   }
 
-	// Automatically map tile types to texture rects
-	for (int y = 0; y < tilesetHeight; y++) {
-		for (int x = 0; x < tilesetWidth; x++) {
-			int tileType = y * tilesetWidth + x;
-			
-			// Create the rectangle using the constructor
-			p_tileRects[tileType] = sf::IntRect(
-				sf::Vector2i(x * tileSize, y * tileSize),
-				sf::Vector2i(tileSize, tileSize)
-			);
-		}
-		
-	}
-	if (filename != "assets/textures/tileset.png") {
-		std::cout << "Loaded tileset: " << filename << "\n";
-	}
-	else {
-		std::cout << "Loaded tileset: " << filename << "\n";
-		tileRects = p_tileRects;
-		tilesetTexture = p_tilesetTexture;
-	}
-	
-	return p_tileRects;
+   // Assign the loaded texture and tile rects to the class members
+   tileRects = p_tileRects;
+   m_tilesetTexture = std::move(p_tilesetTexture);
+
+   return p_tileRects;
 }
 
 sf::Sprite MapGenerator::getTileSprite(int tileX, int tileY) {
 	// Validate tile coordinates against tilesheet dimensions
-	int tilesheetWidth = tilesetTexture.getSize().x / tileSize;
-	int tilesheetHeight = tilesetTexture.getSize().y / tileSize;
+	int tilesheetWidth = m_tilesetTexture.getSize().x / m_tileSize;
+	int tilesheetHeight = m_tilesetTexture.getSize().y / m_tileSize;
 
 	if (tileX < 0 || tileX >= tilesheetWidth ||
 		tileY < 0 || tileY >= tilesheetHeight) {
@@ -155,10 +152,10 @@ sf::Sprite MapGenerator::getTileSprite(int tileX, int tileY) {
 		return sf::Sprite(texture); // Return empty sprite
 	}
 
-	sf::Sprite tileSprite(tilesetTexture);
+	sf::Sprite tileSprite(m_tilesetTexture);
 	tileSprite.setTextureRect(sf::IntRect(
-		sf::Vector2i(tileX * tileSize, tileY * tileSize),
-		sf::Vector2i(tileSize, tileSize)
+		sf::Vector2i(tileX * m_tileSize, tileY * m_tileSize),
+		sf::Vector2i(m_tileSize, m_tileSize)
 	));
 
 	return tileSprite;
@@ -166,7 +163,7 @@ sf::Sprite MapGenerator::getTileSprite(int tileX, int tileY) {
 
 
 std::unordered_map<int, sf::Rect<int>> MapGenerator::getCharacters() const {
-	return characters;
+	return m_characters;
 }
 
 // not using at the moment... do not need it currently
@@ -185,7 +182,7 @@ void MapGenerator::loadTextures() {
 	for (const auto& pair : texturePaths) {
 		sf::Texture texture;
 		if (texture.loadFromFile(pair.second)) {
-			tileTextures[pair.first] = texture;
+			m_tileTextures[pair.first] = texture;
 		}
 		else {
 			std::cerr << "Failed to load texture: " << pair.second << std::endl;
@@ -258,23 +255,23 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 	const int tileSize = 32;
 	const int tileSpacing = 0;
 
-	sf::Vector2f viewCenter(width * tileSize / 2.f, height * tileSize / 2.f);
+	sf::Vector2f viewCenter(m_width * tileSize / 2.f, m_height * tileSize / 2.f);
 	sf::View view(viewCenter, sf::Vector2f( static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y) ));
 	window.setView(view);
 
 	// Draw each tile
-	sf::Sprite tileSprite(tilesetTexture);
-	tileSprite.setTexture(tilesetTexture);
+	sf::Sprite tileSprite(m_tilesetTexture);
+	tileSprite.setTexture(m_tilesetTexture);
 
-	for (int y = 0; y < height; ++y) {
-		for (int x = 0; x < width; ++x) {
-			int tileType = map[y][x];
+	for (int y = 0; y < m_height; ++y) {
+		for (int x = 0; x < m_width; ++x) {
+			int tileType = m_map[y][x];
 
 			if (tileRects.empty()) {
 				std::cerr << "Error: tileRects is empty in renderMapSFML()\n";
 				return;
 			}
-			else if (!tilesetTexture.getSize().x) {
+			else if (!m_tilesetTexture.getSize().x) {
 				std::cerr << "Error: tilesetTexture not loaded properly\n";
 				return;
 			}
@@ -311,10 +308,10 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 
 void MapGenerator::generateTerrain() {
 	// Implementation for generating terrain
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			//assign terrain based on the appropriate tile
-			map[i][j] = 608;
+			m_map[i][j] = 608;
 			//map[i][j] = rand() % 2; // Randomly assign terrain type (0 or 1)
 		}
 	}
@@ -323,10 +320,10 @@ void MapGenerator::generateTerrain() {
 }
 void MapGenerator::generateObstacles() {
 	// Implementation for generating obstacles
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			if (rand() % 10 < 2) { // 20% chance to place an obstacle
-				map[i][j] = 609; // Assign obstacle type
+				m_map[i][j] = 609; // Assign obstacle type
 			}
 		}
 	}
@@ -334,10 +331,10 @@ void MapGenerator::generateObstacles() {
 }
 void MapGenerator::generateItems() {
 	// Implementation for generating items
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			if (rand() % 10 < 3) { // 30% chance to place an item
-				map[i][j] = 610; // Assign item type
+				m_map[i][j] = 610; // Assign item type
 			}
 		}
 	}
@@ -345,10 +342,10 @@ void MapGenerator::generateItems() {
 }
 void MapGenerator::generateEnemies() {
 	// Implementation for generating enemies
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			if (rand() % 10 < 5) { // 50% chance to place an enemy
-				map[i][j] = 612; // Assign enemy type
+				m_map[i][j] = 612; // Assign enemy type
 			}
 		}
 	}
@@ -356,10 +353,10 @@ void MapGenerator::generateEnemies() {
 }
 void MapGenerator::generateNPCs() {
 	// Implementation for generating NPCs
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			if (rand() % 10 < 4) { // 40% chance to place an NPC
-				map[i][j] = 611; // Assign NPC type
+				m_map[i][j] = 611; // Assign NPC type
 			}
 		}
 	}
@@ -367,10 +364,10 @@ void MapGenerator::generateNPCs() {
 }
 void MapGenerator::generateQuests() {
 	// Implementation for generating quests
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			if (rand() % 10 < 6) { // 60% chance to place a quest
-				map[i][j] = 6; // Assign quest type
+				m_map[i][j] = 6; // Assign quest type
 			}
 		}
 	}
@@ -378,10 +375,10 @@ void MapGenerator::generateQuests() {
 }
 void MapGenerator::generateEvents() {
 	// Implementation for generating events
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			if (rand() % 10 < 7) { // 70% chance to place an event
-				map[i][j] = 7; // Assign event type
+				m_map[i][j] = 7; // Assign event type
 			}
 		}
 	}
@@ -389,10 +386,10 @@ void MapGenerator::generateEvents() {
 }
 void MapGenerator::generateWeather() {
 	// Implementation for generating weather
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			if (rand() % 10 < 8) { // 80% chance to place a weather effect
-				map[i][j] = 8; // Assign weather type
+				m_map[i][j] = 8; // Assign weather type
 			}
 		}
 	}
@@ -401,10 +398,10 @@ void MapGenerator::generateWeather() {
 }
 void MapGenerator::generateDayNightCycle() {
 	// Implementation for generating day/night cycle
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			if (rand() % 10 < 9) { // 90% chance to place a day/night cycle
-				map[i][j] = 9; // Assign day/night type
+				m_map[i][j] = 9; // Assign day/night type
 			}
 		}
 	}
@@ -412,10 +409,10 @@ void MapGenerator::generateDayNightCycle() {
 }
 void MapGenerator::generateLore() {
 	// Implementation for generating lore
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			if (rand() % 10 < 1) { // 10% chance to place lore
-				map[i][j] = 10; // Assign lore type
+				m_map[i][j] = 10; // Assign lore type
 			}
 		}
 	}
@@ -423,10 +420,10 @@ void MapGenerator::generateLore() {
 }
 void MapGenerator::generateMusic() {
 	// Implementation for generating music
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			if (rand() % 10 < 2) { // 20% chance to place music
-				map[i][j] = 11; // Assign music type
+				m_map[i][j] = 11; // Assign music type
 			}
 		}
 	}
@@ -434,10 +431,10 @@ void MapGenerator::generateMusic() {
 }
 void MapGenerator::generateSoundEffects() {
 	// Implementation for generating sound effects
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			if (rand() % 10 < 3) { // 30% chance to place sound effects
-				map[i][j] = 12; // Assign sound effect type
+				m_map[i][j] = 12; // Assign sound effect type
 			}
 		}
 	}
@@ -445,10 +442,10 @@ void MapGenerator::generateSoundEffects() {
 }
 void MapGenerator::generateGraphics() {
 	// Implementation for generating graphics
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			if (rand() % 10 < 4) { // 40% chance to place graphics
-				map[i][j] = 13; // Assign graphic type
+				m_map[i][j] = 13; // Assign graphic type
 			}
 		}
 	}
@@ -456,10 +453,10 @@ void MapGenerator::generateGraphics() {
 }
 void MapGenerator::generateAnimations() {
 	// Implementation for generating animations
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			if (rand() % 10 < 5) { // 50% chance to place animations
-				map[i][j] = 14; // Assign animation type
+				m_map[i][j] = 14; // Assign animation type
 			}
 		}
 	}
@@ -467,10 +464,10 @@ void MapGenerator::generateAnimations() {
 }
 void MapGenerator::generateUserInterface() {
 	// Implementation for generating user interface
-	for (int i = 0; i < height; ++i) {
-		for (int j = 0; j < width; ++j) {
+	for (int i = 0; i < m_height; ++i) {
+		for (int j = 0; j < m_width; ++j) {
 			if (rand() % 10 < 6) { // 60% chance to place user interface
-				map[i][j] = 15; // Assign UI type
+				m_map[i][j] = 15; // Assign UI type
 			}
 		}
 	}
@@ -488,10 +485,10 @@ void MapGenerator::generateUserInterface() {
 void MapGenerator::saveMapToFile(const std::string& filename) {
 	std::ofstream file(filename);
 	if (file.is_open()) {
-		file << width << " " << height << std::endl;
-		for (int i = 0; i < height; ++i) {
-			for (int j = 0; j < width; ++j) {
-				file << map[i][j] << " ";
+		file << m_width << " " << m_height << std::endl;
+		for (int i = 0; i < m_height; ++i) {
+			for (int j = 0; j < m_width; ++j) {
+				file << m_map[i][j] << " ";
 			}
 			file << std::endl;
 		}
@@ -504,12 +501,12 @@ void MapGenerator::saveMapToFile(const std::string& filename) {
 void MapGenerator::loadMapFromFile(const std::string& filename) {
 	std::ifstream file(filename);
 	if (file.is_open()) {
-		file >> width >> height;
+		file >> m_width >> m_height;
 		deleteMap();
 		initializeMap();
-		for (int i = 0; i < height; ++i) {
-			for (int j = 0; j < width; ++j) {
-				file >> map[i][j];
+		for (int i = 0; i < m_height; ++i) {
+			for (int j = 0; j < m_width; ++j) {
+				file >> m_map[i][j];
 			}
 		}
 		file.close();
@@ -520,21 +517,21 @@ void MapGenerator::loadMapFromFile(const std::string& filename) {
 }
 void MapGenerator::setMapSize(int width, int height) {
 	deleteMap();
-	this->width = width;
-	this->height = height;
+	this->m_width = width;
+	this->m_height = height;
 	initializeMap();
 }
 void MapGenerator::setMapTile(int x, int y, int value) {
-	if (x >= 0 && x < width && y >= 0 && y < height) {
-		map[y][x] = value;
+	if (x >= 0 && x < m_width && y >= 0 && y < m_height) {
+		m_map[y][x] = value;
 	}
 	else {
 		std::cerr << "Invalid tile coordinates." << std::endl;
 	}
 }
 int MapGenerator::getMapTile(int x, int y) {
-	if (x >= 0 && x < width && y >= 0 && y < height) {
-		return map[y][x];
+	if (x >= 0 && x < m_width && y >= 0 && y < m_height) {
+		return m_map[y][x];
 	}
 	else {
 		std::cerr << "Invalid tile coordinates." << std::endl;
@@ -543,7 +540,7 @@ int MapGenerator::getMapTile(int x, int y) {
 }
 void MapGenerator::setMapTileType(int x, int y, const std::string& type) {
 	// Implementation for setting tile type
-	if (x >= 0 && x < width && y >= 0 && y < height) {
+	if (x >= 0 && x < m_width && y >= 0 && y < m_height) {
 		// Set the tile type here
 		std::cout << "Tile type set to: " << type << std::endl;
 
@@ -567,7 +564,7 @@ void MapGenerator::setMapTileType(int x, int y, const std::string& type) {
 std::string MapGenerator::getMapTileType(int x, int y) {
 	// Implementation for getting tile type
 
-	if (x >= 0 && x < width && y >= 0 && y < height) {
+	if (x >= 0 && x < m_width && y >= 0 && y < m_height) {
 		// Get the tile type here
 		std::string type = "Grass"; // Example: return the tile type
 		return type;
@@ -582,7 +579,7 @@ std::string MapGenerator::getMapTileType(int x, int y) {
 void MapGenerator::setMapTileProperties(int x, int y, const std::string& properties) {
 	// Implementation for setting tile properties
 
-	if (x >= 0 && x < width && y >= 0 && y < height) {
+	if (x >= 0 && x < m_width && y >= 0 && y < m_height) {
 		// Set the tile properties here
 		std::cout << "Tile properties set to: " << properties << std::endl;
 		// Example: map[y][x] = properties; // Assuming map is a 2D array of strings
@@ -603,7 +600,7 @@ void MapGenerator::setMapTileProperties(int x, int y, const std::string& propert
 std::string MapGenerator::getMapTileProperties(int x, int y) {
 	// Implementation for getting tile properties
 
-	if (x >= 0 && x < width && y >= 0 && y < height) {
+	if (x >= 0 && x < m_width && y >= 0 && y < m_height) {
 		// Get the tile properties here
 		std::string properties = "None"; // Example: return the tile properties
 		return properties;
@@ -617,7 +614,7 @@ std::string MapGenerator::getMapTileProperties(int x, int y) {
 };
 void MapGenerator::setMapTileEvent(int x, int y, const std::string& event) {
 	// Implementation for setting tile event
-	if (x >= 0 && x < width && y >= 0 && y < height) {
+	if (x >= 0 && x < m_width && y >= 0 && y < m_height) {
 		// Set the tile event here
 		std::cout << "Tile event set to: " << event << std::endl;
 		// Example: map[y][x] = event; // Assuming map is a 2D array of strings
@@ -635,7 +632,7 @@ void MapGenerator::setMapTileEvent(int x, int y, const std::string& event) {
 }
 std::string MapGenerator::getMapTileEvent(int x, int y) {
 	// Implementation for getting tile event
-	if (x >= 0 && x < width && y >= 0 && y < height) {
+	if (x >= 0 && x < m_width && y >= 0 && y < m_height) {
 		// Get the tile event here
 		std::string event = "None"; // Example: return the tile event
 		return event;
@@ -649,7 +646,7 @@ std::string MapGenerator::getMapTileEvent(int x, int y) {
 }
 void MapGenerator::setMapTileNPC(int x, int y, const std::string& npc) {
 	// Implementation for setting tile NPC
-	if (x >= 0 && x < width && y >= 0 && y < height) {
+	if (x >= 0 && x < m_width && y >= 0 && y < m_height) {
 		// Set the tile NPC here
 		std::cout << "Tile NPC set to: " << npc << std::endl;
 		// Example: map[y][x] = npc; // Assuming map is a 2D array of strings
@@ -667,7 +664,7 @@ void MapGenerator::setMapTileNPC(int x, int y, const std::string& npc) {
 }
 std::string MapGenerator::getMapTileNPC(int x, int y) {
 	// Implementation for getting tile NPC
-	if (x >= 0 && x < width && y >= 0 && y < height) {
+	if (x >= 0 && x < m_width && y >= 0 && y < m_height) {
 		// Get the tile NPC here
 		std::string npc = "None"; // Example: return the tile NPC
 		return npc;

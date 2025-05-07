@@ -10,16 +10,25 @@ Enemy::Enemy(int id, int x, int y, int width, int height, int health, int damage
 };
 
 void Enemy::followTarget(entity& target, float deltaTime) {
-
 	if (!isAlive() || !target.isAlive()) return;
 
 	// Get target position (convert to float if needed)
 	sf::Vector2f targetPos(static_cast<float>(target.getX()),
 		static_cast<float>(target.getY()));
+	
+	sf::Vector2f direction = targetPos - this->getSprite().getGlobalBounds().getCenter();
+	
+	float targetX = target.getX();
+	float targetY = target.getY();
+	float enemyX = getX();
+	float enemyY = getY();
 
-	// Calculate direction vector
-	sf::Vector2f direction = targetPos - sf::Vector2f(getX(), getY());
-	float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+	// 2. Calculate direction vector
+	float dx = targetX - enemyX;
+	float dy = targetY - enemyY;
+
+	float distance = std::sqrt(dx * dx + dy * dy);
+
 
 	// Normalize direction and scale by speed
 	if (distance > 0) {
@@ -38,6 +47,18 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 			//}
 		}
 	}
+	// 3. Normalize the direction (convert to unit vector)
+	float length = sqrt(dx * dx + dy * dy);
+	if (length > 0) {
+		dx /= length;
+		dy /= length;
+	}
+	deltaTime = 2;// Assuming a fixed time step for simplicity
+	// 4. Move toward target
+	float moveDistance = m_speed * deltaTime;
+	setPosition(enemyX + dx * moveDistance,
+			enemyY + dy * moveDistance);
+	
 }
 void Enemy::attack(entity& target, float deltaTime) {
 	if (isAlive() && target.isAlive()) {
