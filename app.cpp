@@ -11,11 +11,11 @@
 int main() {
 	
 	// Create a window object
-	sf::VideoMode vm({ 1920, 1080 }); // Set the video mode with width and height
+	sf::VideoMode vm({ 800, 600 }); // Set the video mode with width and height
 	sf::RenderWindow vw(vm, "Game Window"); // Create a window with specified width and height
 
 	// Set the window properties
-	vw.setFramerateLimit(160); // Set frame rate limit
+	vw.setFramerateLimit(60); // Set frame rate limit
 	vw.setVerticalSyncEnabled(true); // Enable VSync
 	vw.setMouseCursorVisible(true); // Show mouse cursor
 	vw.setMouseCursorGrabbed(false); // Don't grab mouse cursor
