@@ -18,7 +18,6 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 	sf::Vector2f targetPos(static_cast<float>(target.getX()),
 		static_cast<float>(target.getY()));
 	
-	sf::Vector2f direction = targetPos - this->getSprite().getGlobalBounds().getCenter();
 	
 	float targetX = target.getX();
 	float targetY = target.getY();
@@ -29,8 +28,7 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 	sf::Vector2f direction = targetPos - sf::Vector2f({ getX(), getY() });
 	float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
-	float distance = std::sqrt(dx * dx + dy * dy);
-
+	
 
 	// Normalize direction and scale by speed
 	if (distance > 0) {
