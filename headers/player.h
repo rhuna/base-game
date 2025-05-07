@@ -31,7 +31,7 @@
 
 class player : public entity {
 public:
-	player(int id, int x, int y, int width, int height, int health, int damage, sf::Sprite sprite);
+	player(int id, float x, float y, int width, int height, int health, int damage, sf::Sprite sprite);
 	void attack(entity& target);
 	void move(int deltaX, int deltaY);
 	void useItem(const Item& item);
@@ -85,7 +85,6 @@ private:
 
 	//player sprite and texture setup
 	sf::Sprite& m_sprite;
-	float x, y;
 	sf::Texture m_texture; // Assuming texture is a member variable of type sf::Texture
 	sf::Vector2f m_position;
 	// Player-specific attributes can be added here

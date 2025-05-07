@@ -6,7 +6,7 @@ Enemy::Enemy(int id, float x, float y, int width, int height, int health, int da
 	: entity(id, x, y, width, height, health, damage), m_aggroRange(100), m_loot(), m_aiType("default"), m_sprite(sprite),
 	m_texture(), m_health(health), m_damage(damage), alive(true), m_speed(5)
 {
-	m_sprite.setPosition({ x, y });
+	//m_sprite.setPosition({ x, y });
 	setPosition(x, y);
 };
 

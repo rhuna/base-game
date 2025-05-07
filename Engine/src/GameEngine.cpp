@@ -193,24 +193,24 @@ void GameEngine::run()  {
 				wall.setPosition({ static_cast<float>(i * i),static_cast<float>(i+3 * i) });
 				m_window.draw(wall);
 				i++;
-			}
-			if (checkCollision(player1.getSprite(), wall_Sprite)) {
-				//logic for wall collision
+				if (checkCollision(player1.getSprite(), wall )) {
+					//logic for wall collision
 
-				if ((wall_Sprite.getGlobalBounds().getCenter().x + 15) == (player1.getSprite().getGlobalBounds().getCenter().x - 15)) {
-					player1.setPosition(player1.getX() + 5, player1.getY());
+					if ((wall.getGlobalBounds().getCenter().x + 15) == (player1.getSprite().getGlobalBounds().getCenter().x - 15)) {
+						player1.setPosition(player1.getX() + 5, player1.getY());
+					}
+					else if ((wall.getGlobalBounds().getCenter().x - 15) == (player1.getSprite().getGlobalBounds().getCenter().x + 15)) {
+						player1.setPosition(player1.getX() - 5, player1.getY());
+					}
+					if ((wall.getGlobalBounds().getCenter().y - 15) == (player1.getSprite().getGlobalBounds().getCenter().y + 15)) {
+						player1.setPosition(player1.getX(), player1.getY()-5);
+					}
+					else if ((wall.getGlobalBounds().getCenter().y + 15) == (player1.getSprite().getGlobalBounds().getCenter().y - 15)) {
+						player1.setPosition(player1.getX(), player1.getY() + 5);
+					}
 				}
-				else if ((wall_Sprite.getGlobalBounds().getCenter().x - 15) == (player1.getSprite().getGlobalBounds().getCenter().x + 15)) {
-					player1.setPosition(player1.getX() - 5, player1.getY());
-				}
-				if ((wall_Sprite.getGlobalBounds().getCenter().y - 15) == (player1.getSprite().getGlobalBounds().getCenter().y + 15)) {
-					player1.setPosition(player1.getX(), player1.getY()-5);
-				}
-				else if ((wall_Sprite.getGlobalBounds().getCenter().y + 15) == (player1.getSprite().getGlobalBounds().getCenter().y - 15)) {
-					player1.setPosition(player1.getX(), player1.getY() + 5);
-				}
-			}
 
+			}
 			
 
 			for (auto& enemy : m_enemies) {
@@ -233,16 +233,16 @@ void GameEngine::run()  {
 				if (checkCollision(player1.getSprite(), enemy.getSprite())) {
 					//logic for wall collision
 
-					if ((player1.getSprite().getGlobalBounds().getCenter().x ) == (enemy.getSprite().getGlobalBounds().getCenter().x)) {
+					if ((player1.getSprite().getGlobalBounds().getCenter().x + 15) == (enemy.getSprite().getGlobalBounds().getCenter().x)) {
 						player1.setPosition(player1.getX(), player1.getY());
 					}
-					else if ((player1.getSprite().getGlobalBounds().getCenter().x) == (enemy.getSprite().getGlobalBounds().getCenter().x)) {
+					else if ((player1.getSprite().getGlobalBounds().getCenter().x - 15) == (enemy.getSprite().getGlobalBounds().getCenter().x)) {
 						player1.setPosition(player1.getX(), player1.getY());
 					}
-					if ((player1.getSprite().getGlobalBounds().getCenter().y ) == (enemy.getSprite().getGlobalBounds().getCenter().y)) {
+					if ((player1.getSprite().getGlobalBounds().getCenter().y - 15) == (enemy.getSprite().getGlobalBounds().getCenter().y)) {
 						player1.setPosition(player1.getX(), player1.getY());
 					}
-					else if ((player1.getSprite().getGlobalBounds().getCenter().y) == (enemy.getSprite().getGlobalBounds().getCenter().y)) {
+					else if ((player1.getSprite().getGlobalBounds().getCenter().y + 15) == (enemy.getSprite().getGlobalBounds().getCenter().y)) {
 						player1.setPosition(player1.getX(), player1.getY());
 					}
 				}

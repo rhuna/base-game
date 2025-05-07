@@ -42,7 +42,7 @@ private:
 	float m_previousX;
 	float m_previousY;
 	int id;
-	float x, y;
+	float m_x, m_y;
 	int width, height;
 	int health;
 	int damage;
