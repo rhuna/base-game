@@ -80,13 +80,14 @@ public:
 	sf::Sprite& getSprite() const;
 	void handleInput();
 
+
 private:
 
 	//player sprite and texture setup
 	sf::Sprite& m_sprite;
-
+	float x, y;
 	sf::Texture m_texture; // Assuming texture is a member variable of type sf::Texture
-
+	sf::Vector2f m_position;
 	// Player-specific attributes can be added here
 	// For example, inventory, score, etc.
 	int m_inventorySize;

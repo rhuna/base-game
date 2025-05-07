@@ -6,19 +6,13 @@ GameEngine::GameEngine(sf::VideoMode& vm, sf::RenderWindow& window)
 	: Engine(), m_frameRate(60.0f), m_width(800), m_height(600),
 	m_initialized(false), m_window(window), m_vm(vm) // Initialize the window member variable
 {
-	 // Initialize the window member variable
-	// Default constructor implementation
+
 	std::cout << "GameEngine created with default settings." << std::endl;
 	m_initialized = false; // Set the initialized flag to false
 	m_window.create(vm, "GameEngine Window"); // Create a window with the specified video mode and title
-	//m_window = sf::RenderWindow(vm, "GameEngine Window");
 	initialize();
 	start();
 	render();
-	// Set default background color
-	//m_window.clear(sf::Color(0, 0, 0)); // Black background
-	//m_window.display(); // Display the window contents
-
 	 
 
 }
@@ -91,8 +85,7 @@ sf::RenderWindow& GameEngine::getWindow() {
 /// <param name="window"></param>
 
 void GameEngine::run()  {
-	//open window
-	//sf::RenderWindow window(sf::VideoMode(vm.width, vm.height), "GameEngine Window");
+
 	// Set the window properties
 	m_window.setFramerateLimit(60); // Set frame rate limit
 	m_window.setVerticalSyncEnabled(true); // Enable VSync
@@ -192,12 +185,12 @@ void GameEngine::run()  {
 #endif // _WIN32
 	
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 1; i++) {
 				m_walls.push_back(wall_Sprite);
 			}
 			int i = 0;
 			for (auto& wall : m_walls) {
-				wall.setPosition({ static_cast<float>(i * i),static_cast<float>(i * i) });
+				wall.setPosition({ static_cast<float>(i * i),static_cast<float>(i+3 * i) });
 				m_window.draw(wall);
 				i++;
 			}
@@ -218,34 +211,48 @@ void GameEngine::run()  {
 				}
 			}
 
+			
 
 			for (auto& enemy : m_enemies) {
 				m_window.draw(enemy.getSprite());
+				if (player1.getPosition()  != enemy.getPosition() ) {
+
+					std::cout << "player --" << "{x: " << player1.getPosition().x << ", y: " << player1.getPosition().x << "}\n";
+					std::cout << "enemy --" << "{x: " << enemy.getPosition().x << ", y: " << enemy.getPosition().x << "}\n";
+
+				}
+				else if (player1.getPosition() == enemy.getPosition()) {
+
+					std::cout << "player --" << "{x: " << player1.getPosition().x << ", y: " << player1.getPosition().x << "}\n";
+					std::cout <<"enemy --" << "{x: " << enemy.getPosition().x << ", y: " << enemy.getPosition().x << "}\n";
+
+				}
+
 				bool isColliding = checkCollision(player1.getSprite(), enemy.getSprite());
 
 				if (checkCollision(player1.getSprite(), enemy.getSprite())) {
 					//logic for wall collision
 
-					if ((enemy.getSprite().getGlobalBounds().getCenter().x + 15) == (player1.getSprite().getGlobalBounds().getCenter().x)) {
-						player1.setPosition(player1.getX() + 5, player1.getY());
+					if ((player1.getSprite().getGlobalBounds().getCenter().x ) == (enemy.getSprite().getGlobalBounds().getCenter().x)) {
+						player1.setPosition(player1.getX(), player1.getY());
 					}
-					else if ((enemy.getSprite().getGlobalBounds().getCenter().x - 15) == (player1.getSprite().getGlobalBounds().getCenter().x)) {
-						player1.setPosition(player1.getX() - 5, player1.getY());
+					else if ((player1.getSprite().getGlobalBounds().getCenter().x) == (enemy.getSprite().getGlobalBounds().getCenter().x)) {
+						player1.setPosition(player1.getX(), player1.getY());
 					}
-					if ((enemy.getSprite().getGlobalBounds().getCenter().y - 15) == (player1.getSprite().getGlobalBounds().getCenter().y)) {
-						player1.setPosition(player1.getX(), player1.getY() - 5);
+					if ((player1.getSprite().getGlobalBounds().getCenter().y ) == (enemy.getSprite().getGlobalBounds().getCenter().y)) {
+						player1.setPosition(player1.getX(), player1.getY());
 					}
-					else if ((enemy.getSprite().getGlobalBounds().getCenter().y + 15) == (player1.getSprite().getGlobalBounds().getCenter().y)) {
-						player1.setPosition(player1.getX(), player1.getY() + 5);
+					else if ((player1.getSprite().getGlobalBounds().getCenter().y) == (enemy.getSprite().getGlobalBounds().getCenter().y)) {
+						player1.setPosition(player1.getX(), player1.getY());
 					}
 				}
 				
 				if (isColliding) {
 					// Calculate push-back direction
-					sf::Vector2f playerPos(player1.getX(), player1.getY());
-					sf::Vector2f enemyPos(enemy.getX(), enemy.getY());
+					sf::Vector2f playerPos(static_cast<float>(player1.getX()), static_cast<float>(player1.getY()));
+					sf::Vector2f enemyPos(static_cast<float>(enemy.getX()), static_cast<float>(enemy.getY()));
 					sf::Vector2f direction = enemyPos - playerPos;
-					float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+					float distance = std::sqrt(std::pow(player1.getX() - enemy.getX(), 2) + std::pow(player1.getY() - enemy.getY(), 2));
 
 					if (playerPos == enemyPos) {
 						enemy.attack(player1, m_deltaTime);
@@ -257,7 +264,7 @@ void GameEngine::run()  {
 						// Push enemy back to just outside collision range
 						float minDistance = (player1.getWidth() + enemy.getWidth()) / 2.0f;
 						sf::Vector2f newPos = playerPos + direction * minDistance;
-						enemy.setPosition(newPos.x, newPos.y);
+						enemy.setPosition(static_cast<float>(newPos.x), static_cast<float>(newPos.y));
 					}
 				}
 				else {
@@ -292,10 +299,11 @@ void GameEngine::run()  {
 bool  GameEngine::checkCollision(const sf::Sprite& sprite1, const sf::Sprite& sprite2) {
 	// Check if the two sprites are colliding
 	if (sprite1.getGlobalBounds().findIntersection(sprite2.getGlobalBounds()).has_value()) {
-		std::cout << "collision detected" << std::endl;
+		//std::cout << "collision detected" << std::endl;
+
 	}
 	else {
-		std::cout << "no collision detected" << std::endl;
+		//std::cout << "no collision detected" << std::endl;
 	}
 	return sprite1.getGlobalBounds().findIntersection(sprite2.getGlobalBounds()).has_value();
 }
@@ -311,12 +319,7 @@ void GameEngine::update(float deltaTime) {
 		m_fps = 1.0f / m_deltaTime; // Calculate FPS
 		m_frameCount = 0; // Reset frame count
 	}
-	// Example update logic
-	// Update game objects, physics, etc.
-	// For example, update player position, check collisions, etc.
-
-
-	std::cout << "Updating game state with deltaTime: " << m_time << " seconds." << std::endl;
+	
 }
 void GameEngine::render() {
 	// Render game graphics

@@ -26,7 +26,7 @@ class Enemy : public entity
 {
 
 public:
-	Enemy(int id, int x, int y, int width, int height, int health, int damage, sf::Sprite sprite);
+	Enemy(int id, float x, float y, int width, int height, int health, int damage, sf::Sprite sprite);
 	void attack(entity& target, float deltaTime);
 	void move(float deltaX, float deltaY);
 	void takeDamage(int damage);
@@ -39,8 +39,7 @@ public:
 	void setAIType(const std::string& aiType);
 	std::string getAIType() const;
 	sf::Sprite getSprite();
-	void setTexture(const std::string& texturePath);
-	void setPosition(int x, int y);	
+	void setTexture(const std::string& texturePath);;	
 	void setScale(float scaleX, float scaleY);
 	void setOrigin(float x, float y);
 	void setRotation(float angle);
@@ -54,7 +53,7 @@ public:
 
 private:
 
-	
+	sf::Vector2f m_position;
 	int m_speed;
 	int m_health;
 	int m_damage;

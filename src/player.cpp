@@ -6,7 +6,8 @@
 player::player(int id, int x, int y, int width, int height, int health, int damage, sf::Sprite sprite)
 	: entity(id, x, y, width, height, health, damage), m_gold(0), m_inventorySize(10), m_score(0), m_level(1), m_experiencePoints(0),
 	m_healthPotions(0), m_manaPotions(0), m_playerName("Default Player"), m_playerClass("Warrior"), m_active(true),
-	m_quests(), m_equipment(), m_inventory(), m_skills(), m_achievements(), m_buffs(), m_debuffs(), m_sprite(sprite) // Initialize sprite
+	m_quests(), m_equipment(), m_inventory(), m_skills(), m_achievements(), m_buffs(), m_debuffs(), m_sprite(sprite), m_position(x, y),
+	x(x), y(y)
 {
 	
 
@@ -34,8 +35,7 @@ void player::addQuest(std::unique_ptr<Quest> quest) {
 
 };
 void player::setActive(bool active) {
-	// Logic to set the player's active status
-	// This could involve updating the player's state, notifying other systems, etc.
+	
 	m_active = active; // Assuming m_active is a member variable of type bool
 	//std::cout << "Player active status set to: " << (active ? "true" : "false") << std::endl;
 
@@ -63,8 +63,6 @@ void player::handleInput() {
 }
 bool player::isActive() const {
 
-	// Logic to check if the player is active
-	// This could involve checking the player's state, status effects, etc.
 	return m_active; // Assuming m_active is a member variable of type bool
 	//std::cout << "Player active status: " << (m_active ? "true" : "false") << std::endl;
 };

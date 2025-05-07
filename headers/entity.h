@@ -19,10 +19,10 @@
 
 class entity {
 public:
-	entity(int id, int x, int y, int width, int height, int health, int damage);
+	entity(int id, float x, float y, int width, int height, int health, int damage);
 	int getId() const;
-	int getX() const;
-	int getY() const;
+	float getX() const;
+	float getY() const;
 	int getWidth() const;
 	int getHeight() const;
 	int getHealth() const;
@@ -30,16 +30,19 @@ public:
 	bool isAlive() const;
 	void setPosition(int newX, int newY);
 	void takeDamage(int amount);
-	int getPreviousX() const { return m_previousX; }
-	int getPreviousY() const { return m_previousY; }
+	float getPreviousX() const { return m_previousX; }
+	float getPreviousY() const { return m_previousY; }
+	sf::Vector2f getPosition();
 
 
 private:
 
-	int m_previousX;
-	int m_previousY;
+	sf::Vector2f m_position;
+
+	float m_previousX;
+	float m_previousY;
 	int id;
-	int x, y;
+	float x, y;
 	int width, height;
 	int health;
 	int damage;
