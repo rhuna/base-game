@@ -179,6 +179,8 @@ void GameEngine::run()  {
 
 
 
+
+
 			m_window.clear();
 			player1.handleInput();
 
