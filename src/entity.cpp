@@ -40,6 +40,7 @@ void entity::setPosition(int newX, int newY) {
 	m_y = newY;
 	m_position = { static_cast<float>(m_x), static_cast<float>(m_y) };
 }
+
 sf::Vector2f entity::getPosition() {
 	return m_position;
 }
