@@ -1,8 +1,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-class MapGenerator;
-
 #if defined(_WIN64)  
 	#include <SFML/Graphics.hpp>  // Adjusted to use the default include path for Windows 64-bit
 	//#include <../../../SFML/x64/include/SFML/Graphics.hpp>  
@@ -19,6 +17,7 @@ class MapGenerator;
 
 
 
+
 #include "Item.h"
 #include "entity.h"
 #include "Quest.h"
@@ -32,8 +31,7 @@ class MapGenerator;
 
 class player : public entity {
 public:
-	player(int id, int x, int y, int width, int height, int health, int damage, MapGenerator mapGen);
-	~player();
+	player(int id, float x, float y, int width, int height, int health, int damage, sf::Sprite sprite);
 	void attack(entity& target);
 	void move(int deltaX, int deltaY);
 	void useItem(const Item& item);
@@ -82,13 +80,13 @@ public:
 	sf::Sprite& getSprite() const;
 	void handleInput();
 
+
 private:
 
 	//player sprite and texture setup
 	sf::Sprite& m_sprite;
-
 	sf::Texture m_texture; // Assuming texture is a member variable of type sf::Texture
-
+	sf::Vector2f m_position;
 	// Player-specific attributes can be added here
 	// For example, inventory, score, etc.
 	int m_inventorySize;

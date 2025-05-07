@@ -61,13 +61,13 @@ public:
 	
 private:
 
-	int** m_map;
-	int m_width;
-	int m_height;
-	int m_tileSize;
-	std::map<int, sf::Texture> m_tileTextures;
-	sf::Texture m_tilesetTexture;
-	std::unordered_map<int, sf::Rect<int>> m_characters;
+	int** map;
+	int width;
+	int height;
+	int tileSize;
+	std::map<int, sf::Texture> tileTextures;
+	sf::Texture tilesetTexture;
+	std::unordered_map<int, sf::Rect<int>> characters;
 	void initializeMap();
 	void deleteMap();
 	void generateTerrain();
