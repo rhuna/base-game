@@ -25,7 +25,7 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 	// Normalize direction and scale by speed
 	if (distance > 0) {
 		direction /= distance;
-		deltaTime = 20;
+		deltaTime = 1;
 		// Move toward target (frame-rate independent)
 		float moveDistance = m_speed * deltaTime;
 		if (distance > 15.0f) { 
