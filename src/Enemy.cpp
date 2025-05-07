@@ -6,7 +6,7 @@ Enemy::Enemy(int id, float x, float y, int width, int height, int health, int da
 	: entity(id, x, y, width, height, health, damage), m_aggroRange(100), m_loot(), m_aiType("default"), m_sprite(sprite),
 	m_texture(), m_health(health), m_damage(damage), alive(true), m_speed(5)
 {
-	//m_sprite.setPosition({ x, y });
+	m_sprite.setPosition({ x, y });
 	setPosition(x, y);
 };
 
@@ -25,7 +25,7 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 	// Normalize direction and scale by speed
 	if (distance > 0) {
 		direction /= distance;
-		deltaTime = 10;
+		deltaTime = 20;
 		// Move toward target (frame-rate independent)
 		float moveDistance = m_speed * deltaTime;
 		if (distance > 15.0f) { 

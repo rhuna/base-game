@@ -217,14 +217,9 @@ void GameEngine::run()  {
 				m_window.draw(enemy.getSprite());
 				if (player1.getPosition()  != enemy.getPosition() ) {
 
-					std::cout << "player --" << "{x: " << player1.getPosition().x << ", y: " << player1.getPosition().x << "}\n";
-					std::cout << "enemy --" << "{x: " << enemy.getPosition().x << ", y: " << enemy.getPosition().x << "}\n";
+					std::cout << "player --" << "{x: " << player1.getPosition().x << ", y: " << player1.getPosition().y << "}\n";
+					std::cout << "enemy --" << "{x: " << enemy.getPosition().x << ", y: " << enemy.getPosition().y << "}\n";
 
-				}
-				else if (player1.getPosition() == enemy.getPosition()) {
-
-					std::cout << "player --" << "{x: " << player1.getPosition().x << ", y: " << player1.getPosition().x << "}\n";
-					std::cout <<"enemy --" << "{x: " << enemy.getPosition().x << ", y: " << enemy.getPosition().x << "}\n";
 
 				}
 

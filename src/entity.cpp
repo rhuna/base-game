@@ -7,9 +7,8 @@
 entity::entity(int id, float x, float y, int width, int height, int health, int damage)
 	: id(id), m_x(x), m_y(y), width(width), height(height), health(health), damage(damage), alive(true),
 	m_previousX(x), m_previousY(y) // Initialize previous position
-{// Constructor implementation
-	// Initialize other member variables if needed
-	// For example, you can set default values for alive, m_previousX, m_previousY, etc.
+{
+	
 	alive = true; // Set alive to true by default
 	m_x = x; // Initialize previous X position
 	m_y = y; // Initialize previous Y position
