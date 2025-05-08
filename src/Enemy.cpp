@@ -10,7 +10,13 @@ Enemy::Enemy(int id, float x, float y, int width, int height, int health, int da
 	setPosition(x, y);
 };
 
+
+
+
+
 void Enemy::followTarget(entity& target, float deltaTime) {
+
+	
 
 	if (!isAlive() || !target.isAlive()) return;
 
@@ -24,6 +30,7 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 
 	// Calculate direction vector
 	sf::Vector2f direction = targetPos - enemyPos;
+	std::cout << "direction: {" << direction.x << ", " << direction.y << "}s\n";
 	std::cout << "player: {" << targetPos.x << ", " << targetPos.y << "}s\n";
 	std::cout << "enemy: {" << enemyPos.x << ", " << enemyPos.y << "}s\n";
 	float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
@@ -32,16 +39,23 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 
 	// Normalize direction and scale by speed
 	if (distance > 0) {
+
+		//example info direction = direction / distance(-100,-50);
 		direction /= distance;
 		deltaTime = 0.05f;
+
+
 		// Move toward target (frame-rate independent)
 		float moveDistance = m_speed * deltaTime;
+
+		
+
 		move(direction.x, direction.y);
-		//if (distance <= 10.0f) { 
-			m_position = { getX() + direction.x * moveDistance,
-				getY() + direction.y * moveDistance };
-		//}
+		m_position = { getX() + direction.x * moveDistance, getY() + direction.y * moveDistance };
 		m_sprite.setPosition(m_position);
+
+
+
 	}
 
 }
