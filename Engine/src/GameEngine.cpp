@@ -130,10 +130,10 @@ void GameEngine::run()  {
 	player1.setActive(true);
 
 
-	Enemy minotaur(5, 300, 450, 32, 32, 100, 5, minotaur_with_bow);
-	Enemy rockEyes(4, 300, 50, 432, 32, 100, 5, rock_with_eyes);
-	Enemy frog(5, 300, 150, 132, 32, 100, 5, Frog_sprite);
-	Enemy shirtless_bald_guy(5, 300, 50, 32, 32, 100, 15 ,Shirtless_baldy_sprite);
+	Enemy minotaur(6, 300, 450, 32, 32, 100, 5, minotaur_with_bow);
+	Enemy rockEyes(4, 300, 50, 32, 32, 100, 5, rock_with_eyes);
+	Enemy frog(5, 300, 150, 32, 32, 100, 5, Frog_sprite);
+	Enemy shirtless_bald_guy(7, 300, 50, 32, 32, 100, 15 ,Shirtless_baldy_sprite);
 	Enemy wizard(1, 50, 50, 32, 32, 100, 1, wizard_Sprite);
 	Enemy armored_devil_troll(2, 100, 100, 32, 32, 100, 5, armored_devil_troll_Sprite);
 	Enemy yellow_dragon(3, 250, 250, 32, 32, 100, 5, yellow_dragon_Sprite);
