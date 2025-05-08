@@ -17,15 +17,15 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 	// Get target position (convert to float if needed)
 	sf::Vector2f targetPos(static_cast<float>(target.getX()),
 		static_cast<float>(target.getY()));
+	sf::Vector2f enemyPos(static_cast<float>(getX()),
+		static_cast<float>(getY()));
+
 	
-	
-	float targetX = target.getX();
-	float targetY = target.getY();
-	float enemyX = getX();
-	float enemyY = getY();
 
 	// Calculate direction vector
-	sf::Vector2f direction = targetPos - sf::Vector2f({ getX(), getY() });
+	sf::Vector2f direction = targetPos - enemyPos;
+	std::cout << "player: {" << targetPos.x << ", " << targetPos.y << "}s\n";
+	std::cout << "enemy: {" << enemyPos.x << ", " << enemyPos.y << "}s\n";
 	float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
 	
@@ -33,9 +33,10 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 	// Normalize direction and scale by speed
 	if (distance > 0) {
 		direction /= distance;
-		//deltaTime = 1.03;
+		deltaTime = 0.25f;
 		// Move toward target (frame-rate independent)
 		float moveDistance = m_speed * deltaTime;
+		move(direction.x * moveDistance, direction.y * moveDistance);
 		if (distance >= 5.0f) { 
 			m_position = { getX() + direction.x * moveDistance,
 				getY() + direction.y * moveDistance };
@@ -57,7 +58,7 @@ void Enemy::attack(entity& target, float deltaTime) {
 void Enemy::move(float deltaX, float deltaY) {
 	setPosition(getX() + deltaX, getY() + deltaY );
 };
-void Enemy::takeDamage(int damage) {
+void Enemy::takeDamage(float damage) {
 
 	if (isAlive()) {
 		setHealth(getHealth() - damage);

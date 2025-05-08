@@ -22,7 +22,7 @@ sf::Sprite& player::getSprite() const {
 	return m_sprite;
 }
 // Additional player-specific methods can be added here
-void player::move(int deltaX, int deltaY) {
+void player::move(float deltaX, float deltaY) {
 	this->setPosition(getX() + deltaX, getY() + deltaY);
 }
 void player::attack(entity& target) {
@@ -30,6 +30,27 @@ void player::attack(entity& target) {
 		target.takeDamage(getDamage());
 	}
 }
+
+void player::setHealth(float health) {
+
+};
+
+void player::die() {
+
+}
+void player::takeDamage(float damage) {
+
+	if (isAlive()) {
+		setHealth(getHealth() - damage);
+		std::cout << "Enemy took " << damage << " damage. Remaining health: " << getHealth() << std::endl;
+		if (getHealth() <= 0) {
+			die();
+		}
+	}
+	else {
+		std::cout << "Enemy is already dead." << std::endl;
+	}
+};
 void player::addQuest(std::unique_ptr<Quest> quest) {
 	//add quest
 	m_quests.push_back(std::move(quest));
@@ -61,7 +82,6 @@ void player::handleInput() {
 
 	// Update sprite position to match entity position
 	m_sprite.setPosition({ static_cast<float>(getX()), static_cast<float>(getY()) });
-	std::cout << "player health = " << this->getHealth() << "\n";
 }
 bool player::isActive() const {
 

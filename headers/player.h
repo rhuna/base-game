@@ -33,7 +33,7 @@ class player : public entity {
 public:
 	player(int id, float x, float y, int width, int height, int health, int damage, sf::Sprite sprite);
 	void attack(entity& target);
-	void move(int deltaX, int deltaY);
+	void move(float deltaX, float deltaY);
 	void useItem(const Item& item);
 	void setSprite(sf::Sprite& sprite);
 	void addQuest(std::unique_ptr<Quest> quest);
@@ -79,6 +79,10 @@ public:
 	std::vector<Debuff> getDebuffs() const;
 	sf::Sprite& getSprite() const;
 	void handleInput();
+	void takeDamage(float damage);
+	void setHealth(float health);
+	void die();
+
 
 
 private:

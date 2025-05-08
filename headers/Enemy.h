@@ -29,7 +29,7 @@ public:
 	Enemy(int id, float x, float y, int width, int height, int health, int damage, sf::Sprite sprite);
 	void attack(entity& target, float deltaTime);
 	void move(float deltaX, float deltaY);
-	void takeDamage(int damage);
+	void takeDamage(float damage);
 	void setHealth(int damage);
 	void die();
 	void setAggroRange(int range);

@@ -17,13 +17,13 @@ entity::entity(int id, float x, float y, int width, int height, int health, int 
 int entity::getId() const { return id; }
 float entity::getX() const { return m_x; }
 float entity::getY() const { return m_y; }
-int entity::getWidth() const { return width; }
-int entity::getHeight() const { return height; }
-int entity::getHealth() const { return health; }
-int entity::getDamage() const { return damage; }
+float entity::getWidth() const { return width; }
+float entity::getHeight() const { return height; }
+float entity::getHealth() const { return health; }
+float entity::getDamage() const { return damage; }
 bool entity::isAlive() const { return alive; }
 
-void entity::takeDamage(int amount) {
+void entity::takeDamage(float amount) {
 	if (alive) {
 		health -= amount;
 		if (health <= 0) {
@@ -32,7 +32,7 @@ void entity::takeDamage(int amount) {
 	}
 }
 
-void entity::setPosition(int newX, int newY) {
+void entity::setPosition(float newX, float newY) {
 	m_previousX = m_x;
 	m_previousY = m_y;
 	m_x = newX;

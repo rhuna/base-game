@@ -23,13 +23,13 @@ public:
 	int getId() const;
 	float getX() const;
 	float getY() const;
-	int getWidth() const;
-	int getHeight() const;
-	int getHealth() const;
-	int getDamage() const;
+	float getWidth() const;
+	float getHeight() const;
+	float getHealth() const;
+	float getDamage() const;
 	bool isAlive() const;
-	void setPosition(int newX, int newY);
-	void takeDamage(int amount);
+	void setPosition(float newX, float newY);
+	void takeDamage(float amount);
 	float getPreviousX() const { return m_previousX; }
 	float getPreviousY() const { return m_previousY; }
 	sf::Vector2f getPosition();
@@ -43,9 +43,9 @@ private:
 	float m_previousY;
 	int id;
 	float m_x, m_y;
-	int width, height;
-	int health;
-	int damage;
+	float width, height;
+	float health;
+	float damage;
 	bool alive;
 
 
