@@ -95,7 +95,7 @@ void GameEngine::run()  {
 	m_window.setMouseCursorVisible(true); // Show mouse cursor
 	m_window.setMouseCursorGrabbed(false); // Don't grab mouse cursor
 
-	MapGenerator mapGen(100, 100);//mapgenerator function is called in constructor
+	MapGenerator mapGen(32, 32);//mapgenerator function is called in constructor
 	mapGen.displayMap();
 	m_maps.push_back(mapGen); // Add the map to the maps vector
 
@@ -110,7 +110,7 @@ void GameEngine::run()  {
 	sf::Sprite rock_with_eyes = mapGen.getTileSprite(16, 61);
 	sf::Sprite Frog_sprite = mapGen.getTileSprite(56, 62);
 
-	player player1(1, 50, 50, 32, 32, 1000, 5, player_Sprite);
+	player player1(1, 50, 50, 32, 32, 100, 5, player_Sprite);
 	player1.setPlayerName("Hero");
 	player1.setPlayerClass("Warrior");
 	player1.setGold(100);
@@ -149,7 +149,7 @@ void GameEngine::run()  {
 		m_height, // height
 		m_frameRate, // frameRate
 		m_window, // Initialize window 
-		player(0, 0, 0, 32, 32, 1000, 10, player1.getSprite()), // player object
+		player(0, 0, 0, 32, 32, 100, 10, player1.getSprite()), // player object
 		m_enemies, // enemies
 		m_maps, // maps 
 		m_lootableItems, // lootableItems
@@ -251,14 +251,19 @@ void GameEngine::run()  {
 				//	}
 				//}
 				
-				if (isColliding) {
+				if (!isColliding) {
+				
+					enemy.followTarget(player1, m_deltaTime);
+				
+				}else{
 					// Calculate push-back direction
 					sf::Vector2f playerPos(static_cast<float>(player1.getX()), static_cast<float>(player1.getY()));
 					sf::Vector2f enemyPos(static_cast<float>(enemy.getX()), static_cast<float>(enemy.getY()));
 					sf::Vector2f direction = enemyPos - playerPos;
 					float distance = std::sqrt(std::pow(player1.getX() - enemy.getX(), 2) + std::pow(player1.getY() - enemy.getY(), 2));
 
-					if (playerPos == enemyPos) {
+					if (playerPos.x+15 == enemyPos.x-15 || playerPos.y + 15 == enemyPos.y - 15 ||
+						playerPos.x - 15 == enemyPos.x + 15 || playerPos.y - 15 == enemyPos.y + 15) {
 						enemy.attack(player1, m_deltaTime);
 					}
 
@@ -271,9 +276,7 @@ void GameEngine::run()  {
 						enemy.setPosition(static_cast<float>(newPos.x), static_cast<float>(newPos.y));
 					}
 				}
-				else {
-					enemy.followTarget(player1, m_deltaTime);
-				}
+				
 				// Check if the enemy is within aggro range
 				float distance = std::sqrt(std::pow(player1.getX() - enemy.getX(), 2) + std::pow(player1.getY() - enemy.getY(), 2));
 				if (distance < enemy.getAggroRange()) {

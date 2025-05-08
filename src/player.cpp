@@ -61,6 +61,7 @@ void player::handleInput() {
 
 	// Update sprite position to match entity position
 	m_sprite.setPosition({ static_cast<float>(getX()), static_cast<float>(getY()) });
+	std::cout << "player health = " << this->getHealth() << "\n";
 }
 bool player::isActive() const {
 

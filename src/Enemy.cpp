@@ -33,7 +33,7 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 	// Normalize direction and scale by speed
 	if (distance > 0) {
 		direction /= distance;
-		deltaTime = 1;
+		//deltaTime = 1.03;
 		// Move toward target (frame-rate independent)
 		float moveDistance = m_speed * deltaTime;
 		if (distance >= 5.0f) { 
@@ -47,6 +47,7 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 void Enemy::attack(entity& target, float deltaTime) {
 	if (isAlive() && target.isAlive()) {
 		target.takeDamage(getDamage());
+		std::cout << "player damage taken: " << getDamage() << "\n";
 	}
 	else {
 		std::cout << "Target is not alive." << std::endl;
