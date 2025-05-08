@@ -92,7 +92,7 @@ public:
 	int getWidth() const;
 	sf::RenderWindow& getWindow();
 	bool checkCollision(const sf::Sprite& sprite1, const sf::Sprite& sprite2);
-
+	void createWalls(MapGenerator mapGen);
 
 	
 private:

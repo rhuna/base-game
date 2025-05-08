@@ -36,11 +36,13 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 		deltaTime = 1;
 		// Move toward target (frame-rate independent)
 		float moveDistance = m_speed * deltaTime;
-		if (distance > 15.0f) { 
-				setPosition(getX() + direction.x * moveDistance,
-					getY() + direction.y * moveDistance);
+		if (distance >= 5.0f) { 
+			m_position = { getX() + direction.x * moveDistance,
+				getY() + direction.y * moveDistance };
 		}
+		m_sprite.setPosition(m_position);
 	}
+
 }
 void Enemy::attack(entity& target, float deltaTime) {
 	if (isAlive() && target.isAlive()) {
