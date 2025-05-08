@@ -254,23 +254,23 @@ void GameEngine::run()  {
 
 			//player world boundaries
 			//left
-			if (player1.getSprite().getLocalBounds().position.x < 0) {
-				player1.setPosition(player1.getSprite().getLocalBounds().position.x+15, 
-									player1.getSprite().getLocalBounds().position.y);
-			}
-			//top
-			if (player1.getSprite().getLocalBounds().getCenter().y < 0) {
-				player1.setPosition(player1.getSprite().getLocalBounds().position.x, 
-									player1.getSprite().getLocalBounds().position.y+15);
-			}
-			if (player1.getSprite().getLocalBounds().getCenter().x > 3150) {
-				player1.setPosition(player1.getSprite().getLocalBounds().position.x-15,
-									player1.getSprite().getLocalBounds().position.y);
-			}
-			if (player1.getSprite().getLocalBounds().getCenter().y > 3150) {
-				player1.setPosition(player1.getSprite().getLocalBounds().position.x,
-									player1.getSprite().getLocalBounds().position.y-15);
-			}
+			//if (player1.getSprite().getLocalBounds().position.x < 0) {
+			//	player1.setPosition(player1.getSprite().getLocalBounds().position.x+15, 
+			//						player1.getSprite().getLocalBounds().position.y);
+			//}
+			////top
+			//if (player1.getSprite().getLocalBounds().getCenter().y < 0) {
+			//	player1.setPosition(player1.getSprite().getLocalBounds().position.x, 
+			//						player1.getSprite().getLocalBounds().position.y+15);
+			//}
+			//if (player1.getSprite().getLocalBounds().getCenter().x > 3150) {
+			//	player1.setPosition(player1.getSprite().getLocalBounds().position.x-15,
+			//						player1.getSprite().getLocalBounds().position.y);
+			//}
+			//if (player1.getSprite().getLocalBounds().getCenter().y > 3150) {
+			//	player1.setPosition(player1.getSprite().getLocalBounds().position.x,
+			//						player1.getSprite().getLocalBounds().position.y-15);
+			//}
 			for (auto& enemy : m_enemies) {
 				m_window.draw(enemy.getSprite());
 				if (player1.getPosition()  != enemy.getPosition() ) {
@@ -295,10 +295,6 @@ void GameEngine::run()  {
 					sf::Vector2f direction = enemyPos - playerPos;
 					float distance = std::sqrt(std::pow(player1.getX() - enemy.getX(), 2) + std::pow(player1.getY() - enemy.getY(), 2));
 
-					if (playerPos.x+15 == enemyPos.x-15 || playerPos.y + 15 == enemyPos.y - 15 ||
-						playerPos.x - 15 == enemyPos.x + 15 || playerPos.y - 15 == enemyPos.y + 15) {
-						enemy.attack(player1, m_deltaTime);
-					}
 
 					if (distance > 0) {
 						direction /= distance;
