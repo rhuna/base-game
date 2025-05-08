@@ -104,7 +104,7 @@ void GameEngine::run()  {
 	m_window.setMouseCursorVisible(true); // Show mouse cursor
 	m_window.setMouseCursorGrabbed(false); // Don't grab mouse cursor
 
-	MapGenerator mapGen(32, 32);//mapgenerator function is called in constructor
+	MapGenerator mapGen(100, 100);//mapgenerator function is called in constructor
 	mapGen.displayMap();
 	m_maps.push_back(mapGen); // Add the map to the maps vector
 
@@ -154,13 +154,13 @@ void GameEngine::run()  {
 	healthText.setFont(m_font); // Use the loaded font
 	healthText.setCharacterSize(24); // Set the character size
 	healthText.setFillColor(sf::Color::Red); // Set the color
-	healthText.setPosition({ player1.getX()+200, player1.getY()-10}); // Set position (top-left corner of the window)
+	healthText.setPosition({ player1.getX()+40, player1.getY()+40}); // Set position (top-left corner of the window)
 
 	sf::Text goldText(m_font);
 	goldText.setFont(m_font);
 	goldText.setCharacterSize(24);
 	goldText.setFillColor(sf::Color::Yellow);
-	goldText.setPosition({ player1.getX(), player1.getY() - 10}); // Position below health text
+	goldText.setPosition({ player1.getX()-40, player1.getY()+40}); // Position below health text
 
 	GameState currentGameState = {
 		0, // ID
@@ -250,6 +250,19 @@ void GameEngine::run()  {
 
 			}
 			
+			//player world boundaries
+			if (player1.getSprite().getGlobalBounds().getCenter().x  == 3150) {
+				player1.setPosition(player1.getX() - 15, player1.getY());
+			}
+			else if (player1.getSprite().getGlobalBounds().getCenter().x == 15) {
+				player1.setPosition(player1.getX() + 15, player1.getY());
+			}
+			else if (player1.getSprite().getGlobalBounds().getCenter().y == 15) {
+				player1.setPosition(player1.getX(), player1.getY() + 15);
+			}
+			else if (player1.getSprite().getGlobalBounds().getCenter().y == 3150) {
+				player1.setPosition(player1.getX(), player1.getY() -15);
+			}
 
 			for (auto& enemy : m_enemies) {
 				m_window.draw(enemy.getSprite());
