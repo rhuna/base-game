@@ -23,7 +23,16 @@ GameEngine::~GameEngine() = default;
 
 void GameEngine::initialize() {
 
-	// Initialize the engine
+	// load font
+	// Load font for HUD
+	if (!m_font.openFromFile("assets/fonts/Nasa21.ttf")) // Replace with the path to your font file
+	{
+		std::cerr << "Error loading font file!" << std::endl;
+		// Handle error: perhaps set a flag or throw an exception
+	}
+	else {
+		std::cout << "Font loaded successfully." << std::endl;
+	}
 
 	// Additional initialization logic if needed
 	m_initialized = true; // Set the initialized flag to true
@@ -137,6 +146,21 @@ void GameEngine::run()  {
 
 	sf::FloatRect viewRect({ 0.0f, 0.0f }, { static_cast<float>(m_width), static_cast<float>(m_height) });
 	sf::View gameView(viewRect);
+
+	//gameView.rotate(sf::degrees(20.0f));
+
+	 // *** Create HUD text elements ***
+	sf::Text healthText(m_font);
+	healthText.setFont(m_font); // Use the loaded font
+	healthText.setCharacterSize(24); // Set the character size
+	healthText.setFillColor(sf::Color::Red); // Set the color
+	healthText.setPosition({ player1.getX()+200, player1.getY()-10}); // Set position (top-left corner of the window)
+
+	sf::Text goldText(m_font);
+	goldText.setFont(m_font);
+	goldText.setCharacterSize(24);
+	goldText.setFillColor(sf::Color::Yellow);
+	goldText.setPosition({ player1.getX(), player1.getY() - 10}); // Position below health text
 
 	GameState currentGameState = {
 		0, // ID
@@ -295,6 +319,19 @@ void GameEngine::run()  {
 				
 			}
 
+			m_window.setView(m_window.getDefaultView());
+
+			// Update and draw health text
+			std::stringstream ssHealth;
+			ssHealth << "Health: " << player1.getHealth();
+			healthText.setString(ssHealth.str());
+			m_window.draw(healthText);
+
+			// Update and draw gold text
+			std::stringstream ssGold;
+			ssGold << "Gold: " << player1.getGold();
+			goldText.setString(ssGold.str());
+			m_window.draw(goldText);
 
 
 			m_window.display();

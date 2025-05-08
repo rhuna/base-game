@@ -19,6 +19,7 @@
 #include "Engine.h"
 #include <ctime>
 #include <iostream>
+#include <sstream>
 #include <stdexcept> // For std::runtime_error
 #include <memory> // For std::unique_ptr
 #include <iomanip> // For std::put_time
@@ -124,7 +125,9 @@ private:
 	float m_lastFrameTime = 0.0f; // Time of the last frame
 	//current frame time
 	float m_currentFrameTime = 0.0f; // Time of the current frame
-	//game state
+	
+	//font
+	sf::Font m_font;
 	
 	
 
