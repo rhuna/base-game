@@ -250,19 +250,7 @@ void GameEngine::run()  {
 
 			}
 			
-			//player world boundaries
-			if (player1.getSprite().getGlobalBounds().getCenter().x  == 3150) {
-				player1.setPosition(player1.getX() - 15, player1.getY());
-			}
-			else if (player1.getSprite().getGlobalBounds().getCenter().x == 15) {
-				player1.setPosition(player1.getX() + 15, player1.getY());
-			}
-			else if (player1.getSprite().getGlobalBounds().getCenter().y == 15) {
-				player1.setPosition(player1.getX(), player1.getY() + 15);
-			}
-			else if (player1.getSprite().getGlobalBounds().getCenter().y == 3150) {
-				player1.setPosition(player1.getX(), player1.getY() -15);
-			}
+			
 
 			for (auto& enemy : m_enemies) {
 				m_window.draw(enemy.getSprite());
@@ -275,23 +263,7 @@ void GameEngine::run()  {
 				}
 
 				bool isColliding = checkCollision(player1.getSprite(), enemy.getSprite());
-				//
-				//if (checkCollision(player1.getSprite(), enemy.getSprite())) {
-				//	//logic for wall collision
-				//
-				//	if ((player1.getSprite().getGlobalBounds().getCenter().x + 10) == (enemy.getSprite().getGlobalBounds().getCenter().x-15)) {
-				//		player1.setPosition(player1.getX() +1, player1.getY());
-				//	}
-				//	else if ((player1.getSprite().getGlobalBounds().getCenter().x - 10) == (enemy.getSprite().getGlobalBounds().getCenter().x+15)) {
-				//		player1.setPosition(player1.getX()-1, player1.getY());
-				//	}
-				//	if ((player1.getSprite().getGlobalBounds().getCenter().y - 10) == (enemy.getSprite().getGlobalBounds().getCenter().y+15)) {
-				//		player1.setPosition(player1.getX(), player1.getY()-1);
-				//	}
-				//	else if ((player1.getSprite().getGlobalBounds().getCenter().y + 10) == (enemy.getSprite().getGlobalBounds().getCenter().y-15)) {
-				//		player1.setPosition(player1.getX(), player1.getY()+1);
-				//	}
-				//}
+				
 				
 				if (!isColliding) {
 				
@@ -330,6 +302,22 @@ void GameEngine::run()  {
 					enemy.setPosition(enemy.getX(), enemy.getY());
 				}
 				
+			}
+
+			//player world boundaries
+			//left
+			if (player1.getSprite().getLocalBounds().position.x - 15 < 0) {
+				player1.setPosition(0, player1.getSprite().getLocalBounds().position.x + 15);
+			}
+			//top
+			if (player1.getSprite().getLocalBounds().getCenter().y - 15 < 0) {
+				player1.setPosition(player1.getSprite().getLocalBounds().position.y + 15, 0);
+			}
+			if (player1.getSprite().getLocalBounds().getCenter().x + 15 > 3150) {
+				player1.setPosition(player1.getSprite().getLocalBounds().position.x - 15, 0);
+			}
+			if (player1.getSprite().getLocalBounds().getCenter().y + 15 > 3150) {
+				player1.setPosition(player1.getSprite().getLocalBounds().position.y - 15, 0);
 			}
 
 			m_window.setView(m_window.getDefaultView());
