@@ -135,6 +135,9 @@ void GameEngine::run()  {
 	m_enemies.push_back(rockEyes);
 	m_enemies.push_back(frog);
 
+	sf::FloatRect viewRect({ 0.0f, 0.0f }, { static_cast<float>(m_width), static_cast<float>(m_height) });
+	sf::View gameView(viewRect);
+
 	GameState currentGameState = {
 		0, // ID
 		m_clock, // clock
@@ -179,6 +182,8 @@ void GameEngine::run()  {
 
 			m_window.clear();
 			player1.handleInput();
+			gameView.setCenter(player1.getPosition());
+			m_window.setView(gameView);
 
 			mapGen.renderMapSFML(m_window);
 

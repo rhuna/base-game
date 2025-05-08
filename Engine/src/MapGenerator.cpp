@@ -258,9 +258,9 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 	const int tileSize = 32;
 	const int tileSpacing = 0;
 
-	sf::Vector2f viewCenter(width * tileSize / 2.f, height * tileSize / 2.f);
-	sf::View view(viewCenter, sf::Vector2f( static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y) ));
-	window.setView(view);
+	//sf::Vector2f viewCenter(width * tileSize / 2.f, height * tileSize / 2.f);
+	//sf::View view(viewCenter, sf::Vector2f( static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y) ));
+	//window.setView(view);
 
 	// Draw each tile
 	sf::Sprite tileSprite(tilesetTexture);
@@ -300,7 +300,7 @@ void MapGenerator::renderMapSFML(sf::RenderWindow& window) {
 		}
 	}
 
-	window.setView(window.getDefaultView());
+	//window.setView(window.getDefaultView());
 }
 
 
