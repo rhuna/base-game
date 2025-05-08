@@ -33,13 +33,13 @@ void Enemy::followTarget(entity& target, float deltaTime) {
 	// Normalize direction and scale by speed
 	if (distance > 0) {
 		direction /= distance;
-		deltaTime = 0.25f;
+		deltaTime = 0.05f;
 		// Move toward target (frame-rate independent)
 		float moveDistance = m_speed * deltaTime;
-		if (distance <= 100.0f) { 
+		move(direction.x, direction.y);
+		if (distance <= 10.0f) { 
 			m_position = { getX() + direction.x * moveDistance,
 				getY() + direction.y * moveDistance };
-			move(direction.x * moveDistance, direction.y * moveDistance);
 		}
 		m_sprite.setPosition(m_position);
 	}

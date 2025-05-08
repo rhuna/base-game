@@ -252,6 +252,25 @@ void GameEngine::run()  {
 			
 			
 
+			//player world boundaries
+			//left
+			if (player1.getSprite().getLocalBounds().position.x < 0) {
+				player1.setPosition(player1.getSprite().getLocalBounds().position.x+15, 
+									player1.getSprite().getLocalBounds().position.y);
+			}
+			//top
+			if (player1.getSprite().getLocalBounds().getCenter().y < 0) {
+				player1.setPosition(player1.getSprite().getLocalBounds().position.x, 
+									player1.getSprite().getLocalBounds().position.y+15);
+			}
+			if (player1.getSprite().getLocalBounds().getCenter().x > 3150) {
+				player1.setPosition(player1.getSprite().getLocalBounds().position.x-15,
+									player1.getSprite().getLocalBounds().position.y);
+			}
+			if (player1.getSprite().getLocalBounds().getCenter().y > 3150) {
+				player1.setPosition(player1.getSprite().getLocalBounds().position.x,
+									player1.getSprite().getLocalBounds().position.y-15);
+			}
 			for (auto& enemy : m_enemies) {
 				m_window.draw(enemy.getSprite());
 				if (player1.getPosition()  != enemy.getPosition() ) {
@@ -304,21 +323,6 @@ void GameEngine::run()  {
 				
 			}
 
-			//player world boundaries
-			//left
-			if (player1.getSprite().getLocalBounds().position.x - 15 < 0) {
-				player1.setPosition(0, player1.getSprite().getLocalBounds().position.x + 15);
-			}
-			//top
-			if (player1.getSprite().getLocalBounds().getCenter().y - 15 < 0) {
-				player1.setPosition(player1.getSprite().getLocalBounds().position.y + 15, 0);
-			}
-			if (player1.getSprite().getLocalBounds().getCenter().x + 15 > 3150) {
-				player1.setPosition(player1.getSprite().getLocalBounds().position.x - 15, 0);
-			}
-			if (player1.getSprite().getLocalBounds().getCenter().y + 15 > 3150) {
-				player1.setPosition(player1.getSprite().getLocalBounds().position.y - 15, 0);
-			}
 
 			m_window.setView(m_window.getDefaultView());
 
